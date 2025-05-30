@@ -30,8 +30,9 @@
     /* Paths */
     "baseUrl": ".",
     "paths": {
-      "@/shared/*": ["lib/shared/*"],
-      "@/components/*": ["lib/components/*"]
+      "@/*": ["./lib/*"],
+      "@/components/*": ["./lib/components/*"],
+      "@/components/ui/*": ["./lib/components/ui/*"],
     }
   },
   "include": ["src"]
