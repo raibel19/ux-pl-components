@@ -9,7 +9,7 @@ import react from 'eslint-plugin-react';
 
 export default tseslint.config(
   {
-    ignores: ['dist', 'node_modules', 'public', '*.local', 'package-lock.json', '/*.config.*'],
+    ignores: ['dist', 'node_modules', 'public', '*.local', 'package-lock.json', '/*.config.*', 'lib/components/ui/*'],
   },
   ...tseslint.config(js.configs.recommended, tseslint.configs.recommended, {
     rules: {

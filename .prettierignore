@@ -7,3 +7,4 @@ package-lock.json
 public
 src/components/ui/*
 tailwind.config*.ts
+lib/components/ui/*.tsx
