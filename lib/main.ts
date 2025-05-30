@@ -1,2 +1,3 @@
 // export { Button } from "./components/Button";
-export * as components from "./components";
+import './global.css';
+export * as components from './components';
