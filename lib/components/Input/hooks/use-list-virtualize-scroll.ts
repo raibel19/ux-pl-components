@@ -32,6 +32,7 @@ export default function useListVirtualizeScroll<AutoCompData extends string>(pro
 
       return () => cancelAnimationFrame(id);
     }
+    return undefined;
   }, [openState, rowVirtualizer]);
 
   useLayoutEffect(() => {

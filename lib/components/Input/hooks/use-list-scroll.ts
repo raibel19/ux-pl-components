@@ -5,7 +5,7 @@ import { IAutocompleteItemsExtend } from '../interfaces/internals';
 interface IProps<AutoCompData extends string> {
   commandValueState: string;
   openState: boolean;
-  scrollAreaRef: RefObject<HTMLDivElement>;
+  scrollAreaRef: RefObject<HTMLDivElement | null>;
   inputSelectedValueState: string;
   itemsState: Map<string, IAutocompleteItemsExtend<AutoCompData>>;
 }

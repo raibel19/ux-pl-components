@@ -10,12 +10,12 @@ import {
   useRef,
   useState,
 } from 'react';
+import { djb2Hash } from 'ux-pl/utils/hash';
+import { equals } from 'ux-pl/utils/object';
 
 import { Command, CommandEmpty, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent } from '@/components/ui/popover';
 
-import { djb2Hash } from '@/lib/helpers/hash';
-import { equals } from '@/lib/helpers/object';
 import { cn } from '@/lib/utils';
 
 import {
@@ -155,8 +155,8 @@ export default forwardRef(function Autocomplete<Data, AutoCompData extends strin
     ({ resetInput, resetOpen }: IResetFnc = {}) => {
       prevInputSelectedValueRef.current = '';
       setInputSelectedValueFnc('');
-      resetInput && resetInputFnc();
-      resetOpen && setOpenFnc(false);
+      if (resetInput) resetInputFnc();
+      if (resetOpen) setOpenFnc(false);
     },
     [resetInputFnc, setInputSelectedValueFnc, setOpenFnc],
   );
@@ -185,6 +185,7 @@ export default forwardRef(function Autocomplete<Data, AutoCompData extends strin
     if (!valueInput) return messages?.initMessage;
     else if (valueInput.length >= minLingthValue) return messages?.noData;
     else if (valueInput.length < minLingthValue) return messages?.minLengthMessage;
+    return undefined;
   }, [
     messages?.initMessage,
     messages?.minLengthMessage,
@@ -223,11 +224,11 @@ export default forwardRef(function Autocomplete<Data, AutoCompData extends strin
   }, [reset, valueInput]);
 
   useEffect(() => {
-    isLoading !== undefined && setIsLoadingFnc(isLoading);
+    if (isLoading !== undefined) setIsLoadingFnc(isLoading);
   }, [isLoading, setIsLoadingFnc]);
 
   useEffect(() => {
-    items.length === 0 && setIsLoadingFnc(false);
+    if (items.length === 0) setIsLoadingFnc(false);
   }, [items, setIsLoadingFnc]);
 
   useEffect(() => {
@@ -360,4 +361,4 @@ export default forwardRef(function Autocomplete<Data, AutoCompData extends strin
   );
 }) as <Data, AutoCompData extends string>(
   props: IAutocompleteProps<Data, AutoCompData> & { ref?: ForwardedRef<AutocompleteForwardRefType> },
-) => JSX.Element;
+) => React.JSX.Element;

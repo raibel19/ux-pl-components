@@ -1,4 +1,4 @@
-import { getLocale, localeToCurrency } from '@/lib/helpers/numbers';
+import { getLocale, localeToCurrency } from 'ux-pl/utils/numbers';
 
 import { IInputProps } from '../interfaces/input';
 

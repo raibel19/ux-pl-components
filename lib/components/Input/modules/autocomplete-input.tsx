@@ -63,6 +63,7 @@ export default forwardRef(function AutocompleteInput<Data, AutoCompData extends 
         if (!nonOpeningKeys.includes(key)) {
           return true;
         }
+        return undefined;
       });
       onKeyDown?.(event);
     },
@@ -174,4 +175,4 @@ export default forwardRef(function AutocompleteInput<Data, AutoCompData extends 
   );
 }) as <Data, AutoCompData extends string>(
   props: IAutocompleteInputProps<Data, AutoCompData> & { ref?: ForwardedRef<IAutocompleteInputForwardRefType> },
-) => JSX.Element;
+) => React.JSX.Element;

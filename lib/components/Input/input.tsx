@@ -12,13 +12,13 @@ import {
   useState,
 } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { numberFormatter } from 'ux-pl/utils/numbers';
+import { equals } from 'ux-pl/utils/object';
 
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 
-import { numberFormatter } from 'ux-pl/utils/numbers';
-import { equals } from 'ux-pl/utils/object';
-import { cn } from '@/shared/cn';
+import { cn } from '@/lib/utils';
 
 import { calculateInitialInputValues } from './helpers/initial-props';
 import { sanitizeNumberInput } from './helpers/utils';
@@ -81,7 +81,9 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
 
   const nativeType = nativeInputsProps!.type;
   const existNativeValueOrChecked =
-    nativeInputsProps && (nativeInputsProps.hasOwnProperty('value') || nativeInputsProps.hasOwnProperty('checked'));
+    nativeInputsProps &&
+    (Object.prototype.hasOwnProperty.call(nativeInputsProps, 'value') ||
+      Object.prototype.hasOwnProperty.call(nativeInputsProps, 'checked'));
 
   const [inputValueState, setInputValueState] = useState<IInputInternalValueState>(() => {
     const nativeProps: ICalculateInitialInputValues = {
@@ -392,7 +394,9 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
   }, [resetValue, setReset]);
 
   useEffect(() => {
-    focusSubscribeState && focusSubscribeState(hasFocusRef.current);
+    if (focusSubscribeState) {
+      focusSubscribeState(hasFocusRef.current);
+    }
   }, [focusSubscribeState]);
 
   useEffect(() => {
@@ -506,4 +510,4 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
   );
 }) as <Data, AutoCompData extends string>(
   props: IInputProps<Data, AutoCompData> & { ref?: ForwardedRef<InputForwardRefType> },
-) => JSX.Element;
+) => React.JSX.Element;

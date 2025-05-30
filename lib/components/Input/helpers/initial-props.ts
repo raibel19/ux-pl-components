@@ -1,4 +1,4 @@
-import { numberFormatter } from '@/lib/helpers/numbers';
+import { numberFormatter } from 'ux-pl/utils/numbers';
 
 import { IInputResponseEventProps, InputResponseDefaultValueType, InputResponseValueType } from '../interfaces';
 import { ICalculateInitialInputValues } from '../interfaces/internals';

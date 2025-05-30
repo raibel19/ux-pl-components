@@ -1,7 +1,6 @@
 import { VariantProps } from 'class-variance-authority';
 import { HTMLInputTypeAttribute, InputHTMLAttributes, MutableRefObject, ReactNode } from 'react';
-
-import { INumberFormatterOptions } from '@/lib/helpers/numbers';
+import { INumberFormatterOptions } from 'ux-pl/utils/numbers';
 
 import { inputVariants } from '../helpers/variants';
 import { IInputResponseEventProps, InputResponseValueType } from './index';

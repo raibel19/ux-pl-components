@@ -2,12 +2,12 @@
 import { CloseOutline, Warning } from '@carbon/icons-react';
 import { VariantProps } from 'class-variance-authority';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { equals } from 'ux-pl/utils/object';
+import { genericMemo } from 'ux-pl/utils/react';
 
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
-import { equals } from '@/lib/helpers/object';
-import { genericMemo } from '@/lib/helpers/react';
 import { cn } from '@/lib/utils';
 
 import { elementsVariants } from '../helpers/variants';

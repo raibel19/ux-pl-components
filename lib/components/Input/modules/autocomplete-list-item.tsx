@@ -1,15 +1,15 @@
 import { Check } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
+import { equals } from 'ux-pl/utils/object';
+import { genericMemo } from 'ux-pl/utils/react';
 
 import { CommandItem } from '@/components/ui/command';
 
-import { equals } from '@/lib/helpers/object';
-import { genericMemo } from '@/lib/helpers/react';
 import { cn } from '@/lib/utils';
 
 import { IAutocompleteListItemProps } from '../interfaces/internals';
 
-export default genericMemo(
+const AutocompleteListItem = genericMemo(
   function AutocompleteListItem<AutoCompData extends string>(
     props: Omit<IAutocompleteListItemProps<AutoCompData>, 'labelSelected'>,
   ) {
@@ -73,3 +73,5 @@ export default genericMemo(
     return equals(prevProps, nextProps);
   },
 );
+
+export default AutocompleteListItem;

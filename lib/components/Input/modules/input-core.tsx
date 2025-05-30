@@ -1,9 +1,9 @@
 import { ForwardedRef, forwardRef, useCallback, useEffect, useId, useImperativeHandle, useMemo, useRef } from 'react';
+import { createFileList, fileHash } from 'ux-pl/utils/file';
+import { numberFormatter } from 'ux-pl/utils/numbers';
 
 import { Input } from '@/components/ui/input';
 
-import { createFileList, fileHash } from '@/lib/helpers/file';
-import { numberFormatter } from '@/lib/helpers/numbers';
 import { cn } from '@/lib/utils';
 
 import {
@@ -131,7 +131,8 @@ export default forwardRef(function InputCore<Data, AutoCompData extends string>(
         if (isMinExceededValue || isMaxExceededValue) {
           if (reset) resetInput = true;
           if (showErrorLimits) showError = true;
-          isMinExceededValue ? (errorType = 'min') : (errorType = 'max');
+          if (isMinExceededValue) errorType = 'min';
+          else errorType = 'max';
         }
       }
 
@@ -349,4 +350,4 @@ export default forwardRef(function InputCore<Data, AutoCompData extends string>(
   );
 }) as <Data, AutoCompData extends string>(
   props: IInputCoreProps<Data, AutoCompData> & { ref: ForwardedRef<InputCoreForwardRefType> },
-) => JSX.Element;
+) => React.JSX.Element;

@@ -1,6 +1,5 @@
 import { ComponentPropsWithoutRef, Dispatch, ReactNode, SetStateAction } from 'react';
-
-import { INumberFormatterOptions } from '@/lib/helpers/numbers';
+import { INumberFormatterOptions } from 'ux-pl/utils/numbers';
 
 import { IInputResponseEventProps } from '.';
 
@@ -833,7 +832,7 @@ export interface IElement<Data> {
   onClick?: (_: { item: IInputResponseEventProps<Data> }) => void;
 }
 
-interface IClearElement extends Omit<IElement<unknown>, 'text' | 'type' | 'renderContainer' | 'onClick'> {}
+type IClearElement = Omit<IElement<unknown>, 'text' | 'type' | 'renderContainer' | 'onClick'>;
 interface ICounterElement extends Pick<IElement<unknown>, 'separator'> {
   /**
    * Activa o desactiva un contador el cual mostrará la cantidad de palabras escritas contra la cantidad que se puede escribir.

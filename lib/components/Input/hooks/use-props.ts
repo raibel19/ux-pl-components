@@ -1,9 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useRef } from 'react';
-
-import { merge } from '@/lib/helpers/merge';
-import { equals } from '@/lib/helpers/object';
+import { merge } from 'ux-pl/utils/merge';
+import { equals } from 'ux-pl/utils/object';
 
 import { DEFAULTS_PROPS_MERGE } from '../helpers/defaults';
 import { IInputProps } from '../interfaces/input';
@@ -14,11 +13,11 @@ export default function useProps<Data, AutoCompData extends string>(props: IInpu
   const subscribeBetweenRef = useRef(props.validations?.number?.between?.subscribeBetween);
   const sanitizeOptionsRef = useRef(props.sanitize);
   const sanitizeMaxDecimalDigits = useRef(props.sanitize?.maxDecimalDigits);
-  const propsRef = useRef<typeof props>();
+  const propsRef = useRef<typeof props>(undefined);
 
   const defaultsProps = useMemo(() => DEFAULTS_PROPS_MERGE<Data, AutoCompData>(), []);
 
-  const previousMergedPropsRef = useRef<IInputProps<Data, AutoCompData>>();
+  const previousMergedPropsRef = useRef<IInputProps<Data, AutoCompData>>(undefined);
   const propsWithDefault = useMemo(() => {
     const isEquals = equals(propsRef.current, props);
 
