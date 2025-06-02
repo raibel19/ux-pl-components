@@ -2,6 +2,9 @@ import type * as Preset from '@docusaurus/preset-classic';
 import type { Config } from '@docusaurus/types';
 import { themes as prismThemes } from 'prism-react-renderer';
 
+import talwindPlugin from './plugins/tailwind-config';
+import customWebpackAliasPlugin from './plugins/webpack-alias';
+
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
@@ -41,6 +44,7 @@ const config: Config = {
       'classic',
       {
         docs: {
+          routeBasePath: '/',
           sidebarPath: './sidebars.ts',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
@@ -61,7 +65,8 @@ const config: Config = {
           onUntruncatedBlogPosts: 'warn',
         },
         theme: {
-          customCss: './src/css/custom.css',
+          // customCss: './src/css/custom.css',
+          customCss: './src/css/global.css',
         },
       } satisfies Preset.Options,
     ],
@@ -141,6 +146,8 @@ const config: Config = {
       darkTheme: prismThemes.dracula,
     },
   } satisfies Preset.ThemeConfig,
+
+  plugins: [customWebpackAliasPlugin, talwindPlugin],
 };
 
 export default config;

@@ -31,7 +31,9 @@ export default function Home(): ReactNode {
   return (
     <Layout description="React Components">
       <HomepageHeader />
-      <main>{/* <HomepageFeatures /> */}</main>
+      <main>
+        <HomepageFeatures />
+      </main>
     </Layout>
   );
 }
