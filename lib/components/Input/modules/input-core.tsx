@@ -171,9 +171,11 @@ export default forwardRef(function InputCore<Data, AutoCompData extends string>(
       if (resetInput) {
         setInputValue({ value: '', checked: undefined, files: undefined }, 'string');
         setInputValueFormat('');
-      } else {
+      } else if (formatter?.active) {
         const formatted = numberFormatter(formatter).format(valueSantize);
         setInputValueFormat(formatted);
+      } else {
+        setInputValueFormat(valueSantize);
       }
     },
     [
