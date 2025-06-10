@@ -66,7 +66,7 @@ const config: Config = {
         },
         theme: {
           // customCss: './src/css/custom.css',
-          customCss: './src/css/global.css',
+          customCss: ['./src/css/global.css', './src/css/custom.css'],
         },
       } satisfies Preset.Options,
     ],
@@ -74,27 +74,37 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
+    colorMode: {
+      defaultMode: 'light',
+    },
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'UX-PL',
       logo: {
         alt: 'ux pl components',
         src: 'img/components-white.svg',
+        srcDark: 'img/components-white.svg',
       },
       items: [
         {
           type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
+          sidebarId: 'componentes_navbar',
           position: 'left',
-          label: 'Tutorial',
+          label: 'Componentes',
         },
-        { to: '/blog', label: 'Blog', position: 'left' },
+        // { to: '/blog', label: 'Blog', position: 'left' },
+        {
+          type: 'localeDropdown',
+          position: 'right',
+        },
         {
           href: 'https://github.com/facebook/docusaurus',
           label: 'GitHub',
           position: 'right',
         },
       ],
+      hideOnScroll: false,
+      style: 'dark',
     },
     footer: {
       style: 'dark',
@@ -141,9 +151,14 @@ const config: Config = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
     },
+    tableOfContents: {
+      minHeadingLevel: 2,
+      maxHeadingLevel: 5,
+    },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+      defaultLanguage: 'typescript',
     },
   } satisfies Preset.ThemeConfig,
 
