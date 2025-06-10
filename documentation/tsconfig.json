@@ -5,7 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "@site/*": ["./*"],
-      "@/*": ["../lib/*"],
+      // "@/*": ["../lib/*"],
       "@/components/*": ["../lib/components/*"],
       "@/components/ui/*": ["../lib/components/ui/*"],
     }
