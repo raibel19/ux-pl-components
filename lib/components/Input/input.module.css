@@ -1,0 +1,9 @@
+:where(.baseStyle) {
+  --ux-white: 0 0% 100%; /* #ffffff */
+  --ux-black: 0 0% 9%; /* #171717 */
+
+  --ux-input-background: var(--ux-white);
+
+  --ux-input-label: var(--ux-black);
+  --ux-input-label-background: var(--ux-white);
+}
