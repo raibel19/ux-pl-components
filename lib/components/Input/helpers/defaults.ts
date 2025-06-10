@@ -22,6 +22,7 @@ export const DEFAULTS_PROPS_MERGE = <Data, AutoCompData extends string>(): IInpu
   showRequired: false,
   showTextRequired: false,
   textRequired: 'Completar',
+  theme: 'default',
   sanitize: {
     maxDecimalDigits: 2,
     onPropertyEntry: {
@@ -47,6 +48,7 @@ export const DEFAULTS_PROPS_MERGE = <Data, AutoCompData extends string>(): IInpu
     },
   },
   formatter: {
+    active: false,
     locale: getLocale(),
     options: {
       currency: localeToCurrency.get(getLocale()),
