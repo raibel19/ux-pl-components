@@ -1,6 +1,5 @@
 import { VariantProps } from 'class-variance-authority';
 import { HTMLInputTypeAttribute, InputHTMLAttributes, MutableRefObject, ReactNode } from 'react';
-import { INumberFormatterOptions } from 'ux-pl/utils/numbers';
 
 import { inputVariants } from '../helpers/variants';
 import { IInputResponseEventProps, InputResponseValueType } from './index';
@@ -8,6 +7,7 @@ import {
   IAutocomplete,
   IAutoCompleteItems,
   IElement,
+  IFormatter,
   IInputProps,
   IInputValidations,
   IInputValidationsSanitize,
@@ -183,7 +183,7 @@ export interface IAutocompleteListHeaderProps<AutoCompData extends string> {
 export interface IInputCoreProps<Data, AutoCompData extends string> {
   autocomplete: IAutocomplete<AutoCompData> | undefined;
   classNameInput: string | undefined;
-  formatter?: INumberFormatterOptions;
+  formatter?: IFormatter;
   inputValue: IInputInternalValueState;
   inputValueFormat: InputResponseValueType;
   leftWidth: string | number;
@@ -218,7 +218,7 @@ export interface ICalculateInitialInputValues {
   checked: InputHTMLAttributes<HTMLInputElement>['checked'];
   defaultChecked: InputHTMLAttributes<HTMLInputElement>['defaultChecked'];
   defaultValue: InputHTMLAttributes<HTMLInputElement>['defaultValue'];
-  formatter: INumberFormatterOptions | undefined;
+  formatter: IFormatter | undefined;
   isFirstRender: boolean;
   maxLength: number | undefined;
   nativeType: HTMLInputTypeAttribute | undefined;

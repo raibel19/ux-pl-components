@@ -643,7 +643,7 @@ export interface IElement<Data> {
    * <IbmDb2 size={18} strokeWidth={2} aria-hidden="true" className={classNameIcon} />
    * ```
    */
-  icon?: ReactNode;
+  icon?: React.ReactElement | undefined;
   /**
    * Clase personalizada para el elemento.
    *
@@ -1387,6 +1387,17 @@ export interface IAutocomplete<AutoCompData extends string> {
   virtualizeSuggestionsList?: boolean;
 }
 
+export type InputTheme = 'default' | (string & {});
+
+export interface IFormatter extends INumberFormatterOptions {
+  /**
+   * Activa o desactiva el formato del número
+   * @default
+   * false
+   */
+  active?: boolean;
+}
+
 export interface IInputProps<Data, AutoCompData extends string> extends IInputClassNames {
   /**
    * Muestra u oculta un label arriba del input.
@@ -1419,7 +1430,7 @@ export interface IInputProps<Data, AutoCompData extends string> extends IInputCl
    *
    * Este texto es visible cuando "showTextRequired" es true.
    * @default
-   * Completar
+   * 'Completar'
    */
   textRequired?: string;
   /**
@@ -1437,10 +1448,13 @@ export interface IInputProps<Data, AutoCompData extends string> extends IInputCl
    * limpia el Input. Esto encadena un evento change.
    *
    * <strong style="color:red">Nota:</strong> no olvidar volver a pasar el campo a false y solo enviar true cuando se ocupe.
+   * @default false
    */
   reset?: boolean;
   /**
-   * Permite setear el valor por default del input.
+   * Permite setear el valor por default del input siempre que se limpie con "reset" o mediante el boton "clear" dentro de las propiedades "rightElement".
+   *
+   * El valor por default se toma de la propiedad "defaultValue" o en caso contrario si se maneja un valor controlado se toma del primer valor de la propiedad "value".
    *
    * Esta propiedad es útil cuando se tiene un input que se puede limpiar y se quiere volver a setear el valor por default.
    * @default
@@ -1475,7 +1489,7 @@ export interface IInputProps<Data, AutoCompData extends string> extends IInputCl
    * @param {IInputResponseEventProps} item - Datos del input.
    * @returns {void}
    */
-  onChange?: (_: { item: IInputResponseEventProps<Data> }) => void;
+  onChange?: (_: IInputResponseEventProps<Data>) => void;
   /**
    * Tiempo de espera para llamar al onChange.
    *
@@ -1532,7 +1546,8 @@ export interface IInputProps<Data, AutoCompData extends string> extends IInputCl
    *   roundDecimals: true
    * }
    */
-  formatter?: INumberFormatterOptions;
+  formatter?: IFormatter;
+  theme?: InputTheme;
 }
 
 export type NativeInputPropsType<Data, AutoCompData extends string> = Omit<
