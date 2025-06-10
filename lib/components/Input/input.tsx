@@ -24,6 +24,7 @@ import { calculateInitialInputValues } from './helpers/initial-props';
 import { sanitizeNumberInput } from './helpers/utils';
 import { labelVariants } from './helpers/variants';
 import useProps from './hooks/use-props';
+import inputStyle from './input.module.css';
 import { IInputResponseEventProps, InputResponseDefaultValueType, InputResponseValueType } from './interfaces';
 import { IInputProps, InputForwardRefType, ISubscribeBetween } from './interfaces/input';
 import {
@@ -69,6 +70,7 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
     textRequired,
     validations,
     waitTime,
+    theme,
   } = useMemo(() => propsWithDefault, [propsWithDefault]);
 
   const {
@@ -129,6 +131,16 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
     data: dataRef.current,
     defaultValue: undefined,
   });
+
+  const baseStyle = inputStyle.baseStyle;
+  const themeStyle = useMemo(() => {
+    switch (theme) {
+      case 'default':
+        return '';
+      default:
+        return theme ?? '';
+    }
+  }, [theme]);
 
   const responseEventData = useMemo(
     (): IInputResponseEventProps<Data> => ({
@@ -276,7 +288,7 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
   );
 
   const onChangeFunc = useDebouncedCallback((newItem: IInputResponseEventProps<Data>) => {
-    onChangeRef.current?.({ item: newItem });
+    onChangeRef.current?.(newItem);
   }, waitTime);
 
   useEffect(() => {
@@ -407,7 +419,7 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
   }, [betweenSubscribeState, subscribeBetweenRef]);
 
   useEffect(() => {
-    if (formatter && nativeType === 'number' && !hasFocusRef.current) {
+    if (formatter && formatter.active && nativeType === 'number' && !hasFocusRef.current) {
       const formatted = numberFormatter(formatter).format(inputValueState.value ?? '');
       setInputValueFormat(formatted);
     }
@@ -431,11 +443,11 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
   }
 
   return (
-    <div className={cn('w-full space-y-1', classNamePrincipalContainer)}>
+    <div className={cn(baseStyle, themeStyle, 'w-full space-y-1', classNamePrincipalContainer)}>
       <div className={cn('relative w-full', classNameInputContainer)}>
         <Label
           className={cn(
-            labelVariants({ show: showTextLabel || showRequired || showTextRequired }),
+            labelVariants({ show: showTextLabel || showRequired || showTextRequired, gradient: true }),
             classNameLabel || null,
           )}
           htmlFor={inputCoreRef.current?.inputId}
