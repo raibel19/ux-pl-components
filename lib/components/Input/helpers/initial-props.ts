@@ -60,9 +60,11 @@ export const calculateInitialInputValues = <Data>(props: ICalculateInitialInputV
       if (validateMaxLengtNumbers(value, maxLengthProp)) {
         value = '';
         valueFormatted = '';
-      } else {
+      } else if (formatterProp?.active) {
         const formatted = numberFormatter(formatterOptions).format(value);
         valueFormatted = formatted;
+      } else {
+        valueFormatted = value;
       }
       initialValueFormat = valueFormatted;
     }
