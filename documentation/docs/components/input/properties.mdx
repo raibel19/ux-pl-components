@@ -1,0 +1,682 @@
+---
+sidebar_position: 2
+title: Propiedades
+sidebar_label: Propiedades
+tags: [input, component, configuracion]
+description: Documentación de la props del componente Input
+last_update:
+  author: Polo
+  date: 2025-06-03
+keywords: [react, componentes, ux-pl, input, typescript, tailwind]
+---
+
+import DetailsBlock from '@site/src/components/details-block';
+import DefaultValue from '@site/src/components/default-value';
+import { INPUT_DEFAULTS_PROPS } from '@site/src/helpers/props-defaults';
+
+# Referencia de Propiedades
+
+El componente `Input` es altamente configurable a través de las siguientes propiedades. Están agrupadas por funcionalidad para facilitar su consulta.
+
+---
+
+Estas son las propiedades de nivel superior que controlan el comportamiento general y la apariencia básica del `Input`.`
+
+:::info Para tu información
+
+Cuando veas la palabra `"undefined"` como un valor dentro de un objeto de ejemplo, significa que el valor de esa propiedad es realmente `undefined`. Se muestra explícitamente para una mayor claridad de la estructura del objeto.
+
+:::
+
+## Propiedades Principales
+
+| Propiedad                    | Tipo              | Default                                                              | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| :--------------------------- | :---------------- | :------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`showTextLabel`**          | `boolean`         | <DefaultValue value={INPUT_DEFAULTS_PROPS.showTextLabel} />          | <p className='max-w-3xl'>Muestra u oculta la etiqueta de texto (`label`) sobre el input.</p>                                                                                                                                                                                                                                                                                                                                                              |
+| **`textLabel`**              | `string`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.textLabel} />              | <p className='max-w-3xl'>Texto que aparecerá en la etiqueta (`label`).</p><p className='mt-2 max-w-3xl'>Visible cuando `showTextLabel` es `true`.</p>                                                                                                                                                                                                                                                                                                     |
+| **`showRequired`**           | `boolean`         | <DefaultValue value={INPUT_DEFAULTS_PROPS.showRequired} />           | <p className='max-w-3xl'>Muestra u oculta el símbolo de requerido `*`.</p>                                                                                                                                                                                                                                                                                                                                                                                |
+| **`showTextRequired`**       | `boolean`         | <DefaultValue value={INPUT_DEFAULTS_PROPS.showTextRequired} />       | <p className='max-w-3xl'>Muestra u oculta el texto que aparece a la izquierda del símbolo `*`.</p>                                                                                                                                                                                                                                                                                                                                                        |
+| **`textRequired`**           | `string`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.textRequired} />           | <p className='max-w-3xl'>Texto que aparece al lado izquierdo del símbolo `*`.</p><p className='mt-2 max-w-3xl'>Visible cuando `showTextRequired` es `true`.</p>                                                                                                                                                                                                                                                                                           |
+| **`validations`**            | `object`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations} />            | <p className='max-w-3xl'>Configuración de validaciones [**Ver detalles.**](#validaciones-validations).</p>                                                                                                                                                                                                                                                                                                                                                |
+| **`data`**                   | `Data` (genérico) | <DefaultValue value={INPUT_DEFAULTS_PROPS.data} />                   | <p className='max-w-3xl'>Permite retornar un modelo de datos personalizado en el evento `onChange`.</p><p className='mt-2 max-w-3xl'>Útil cuando el componente se genera dinámicamente.</p>                                                                                                                                                                                                                                                               |
+| **`reset`**                  | `boolean`         | <DefaultValue value={INPUT_DEFAULTS_PROPS.reset} />                  | <p className='max-w-3xl'>Al pasar a `true`, limpia el valor del Input. Esto encadena un evento `onChange`.</p><p className='mt-2 max-w-3xl'>**Nota:** No olvidar devolver la prop a `false`; solo enviar `true` cuando se ocupe.</p>                                                                                                                                                                                                                      |
+| **`setDefaultValueInReset`** | `boolean`         | <DefaultValue value={INPUT_DEFAULTS_PROPS.setDefaultValueInReset} /> | <p className='max-w-3xl'>Al limpiar el `Input` con la prop `reset` o miente el botón `clear` que se encuentra dentro de las propiedades `rightElement`, permite volver a establecer el valor que tenía por defecto.</p><p className='mt-2 max-w-3xl'>**Nota:** El valor por default se toma de la propiedad (`defaultValue`) o en caso contrario si se maneja un valor controlado con la propiedad (`value`) se toma el primer valor asignado a este.</p> |
+| **`showSkeleton`**           | `boolean`         | <DefaultValue value={INPUT_DEFAULTS_PROPS.showSkeleton} />           | <p className='max-w-3xl'>Muestra u oculta una animación de esqueleto (skeleton) en lugar del input. Útil para indicar estados de carga.</p>                                                                                                                                                                                                                                                                                                               |
+| **`leftElement`**            | `object`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.leftElement} />            | <p className='max-w-3xl'>Configura un elemento que se muestra a la izquierda del input [**Ver detalles.**](#elementos-adicionales)</p>                                                                                                                                                                                                                                                                                                                    |
+| **`rightElement`**           | `object`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.rightElement} />           | <p className='max-w-3xl'>Configura multiples elementos que se muestran a la derecha del input [**Ver detalles.**](#elementos-adicionales)</p>                                                                                                                                                                                                                                                                                                             |
+| **`autocomplete`**           | `object`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.autocomplete} />           | <p className='max-w-3xl'>Configuración que permite convertir el input en un campo de busqueda con un panel de sugerencias. [**Ver detalles.**](#autocompletado-autocomplete)</p>                                                                                                                                                                                                                                                                          |
+| **`nativeInputsProps`**      | `object`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.nativeInputsProps} />      | <p className='max-w-3xl'>Objeto que contiene todas las propiedades nativas del input. [**Ver detalles.**](#)</p>                                                                                                                                                                                                                                                                                                                                          |
+| **`onChange`**               | ...               | ...                                                                  | <p className='max-w-3xl'>[**Ver detalles.**](#onchange)</p>                                                                                                                                                                                                                                                                                                                                                                                               |
+| **`waitTime`**               | `number`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.waitTime} />               | <p className='max-w-3xl'>Tiempo de espera en milisegundos (debounce) para llamar al evento `onChange` mientras el usuario escribe.</p>                                                                                                                                                                                                                                                                                                                    |
+| **`sanitize`**               | `object`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.sanitize} />               | <p className='max-w-3xl'>Configuración para sanitizar los valores ingresados. [**Ver detalles.**](#sanitización-de-entrada-sanitize)</p><p className='mt-2 max-w-3xl'>**Nota:** Esta configuración solamente tiene efecto en inputs de tipo numérico.</p>                                                                                                                                                                                                 |
+| **`formatter`**              | `object`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.formatter} />              | <p className='max-w-3xl'>Configuración para formatear un número visualmente siempre que el input pierda el foco, este formato se basa en `Intl.NumberFormat` [**Ver detalles.**](#formato-de-números-formatter)</p>                                                                                                                                                                                                                                       |
+| **`theme`**                  | `string`          | <DefaultValue value={INPUT_DEFAULTS_PROPS.theme} />                  | <p className='max-w-3xl'>Permite aplicar un tema visual al componente. Acepta `'default'` o cualquier otra `string` para temas personalizados.</p>                                                                                                                                                                                                                                                                                                        |
+| **`className*`**             | ...               | ...                                                                  | <p className='max-w-3xl'>Clases que permiten permiten personalizar la aparencia de partes específicas del componente. [**Ver detalles.**](#estilos-personalizados-classnames)</p>                                                                                                                                                                                                                                                                         |
+
+---
+
+## Eventos
+
+### `onChange`
+
+| Propiedad      | Tipo                                          | Default                                                | Descripción                                                                                                                                                                                                                                                   |
+| :------------- | :-------------------------------------------- | :----------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`onChange`** | `(_: IInputResponseEventProps<Data>) => void` | <DefaultValue value={INPUT_DEFAULTS_PROPS.onChange} /> | <p className='max-w-3xl'>Evento que se dispara cuando el valor del input cambia (después del `waitTime`).</p><p className='mt-2 max-w-3xl'>Regresa un objeto `item` con el estado actual del input (`value`, `checked`, `files`, `defaultValue`, `data`).</p> |
+
+<DetailsBlock summary="IInputResponseEventProps">
+```ts
+export interface IInputResponseEventProps<Data> {
+  value: string | undefined;
+  checked: boolean | undefined;
+  files: Map<string, File> | undefined;
+  defaultValue: string | number | boolean | undefined;
+  data: Data | undefined;
+}
+```
+</DetailsBlock>
+
+---
+
+## Estilos Personalizados (`classNames`)
+
+Estas propiedades permiten pasar clases de Tailwind CSS para personalizar la apariencia de partes específicas del componente.
+
+| Propiedad                         | Tipo     | Default                                                                   | Descripción                                                                                                                                                                   |
+| :-------------------------------- | :------- | :------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`classNamePrincipalContainer`** | `string` | <DefaultValue value={INPUT_DEFAULTS_PROPS.classNamePrincipalContainer} /> | <p className='max-w-3xl'>Clase para el contenedor principal que envuelve todo (label, input, errores). [**Ver detalle.**](#-como-se-aplican-los-classnames-)</p>              |
+| **`classNameInputContainer`**     | `string` | <DefaultValue value={INPUT_DEFAULTS_PROPS.classNameInputContainer} />     | <p className='max-w-3xl'>Clase para el contenedor que envuelve solo al input y sus elementos (`left/rightElement`). [**Ver detalle.**](#-como-se-aplican-los-classnames-)</p> |
+| **`classNameLabel`**              | `string` | <DefaultValue value={INPUT_DEFAULTS_PROPS.classNameLabel} />              | <p className='max-w-3xl'>Clase para el elemento `label`. [**Ver detalle.**](#-como-se-aplican-los-classnames-)</p>                                                            |
+| **`classNameInput`**              | `string` | <DefaultValue value={INPUT_DEFAULTS_PROPS.classNameInput} />              | <p className='max-w-3xl'>Clase para el elemento `<input>`. [**Ver detalle.**](#-como-se-aplican-los-classnames-)</p>                                                          |
+| **`classNameSkeletonContainer`**  | `string` | <DefaultValue value={INPUT_DEFAULTS_PROPS.classNameSkeletonContainer} />  | <p className='max-w-3xl'>Clase para el contenedor skeleton. [**Ver detalle.**](#-como-se-aplican-los-classnames-)</p>                                                         |
+| **`classNameSkeleton`**           | `string` | <DefaultValue value={INPUT_DEFAULTS_PROPS.classNameSkeleton} />           | <p className='max-w-3xl'>Clase para el elemento skeleton. [**Ver detalle.**](#-como-se-aplican-los-classnames-)</p>                                                           |
+
+### ¿ Como se aplican los `classNames` ?
+
+Aquí puedes ver en detalle cómo se aplican estas clases en el código.
+
+<DetailsBlock summary="classNamePrincipalContainer" showIcon={false}>
+
+```tsx showLineNumbers {3}
+//Internamente se usa la función 'cn' para fusionar clases
+//Así es como se usaría tu prop:
+cn('space-y-2', classNamePrincipalContainer);
+```
+
+</DetailsBlock>
+
+<DetailsBlock summary="classNameInputContainer" showIcon={false}>
+
+```tsx showLineNumbers {3}
+//Internamente se usa la función 'cn' para fusionar clases
+//Así es como se usaría tu prop:
+cn('relative', classNameInputContainer);
+```
+
+</DetailsBlock>
+
+<DetailsBlock summary="classNameLabel" showIcon={false}>
+
+```tsx showLineNumbers {3}
+//Internamente se usa la función 'cn' para fusionar clases
+//Así es como se usaría tu prop:
+cn(labelVariants({ show: showTextLabel || showRequired || showTextRequired, gradient: true }), classNameLabel || null);
+
+labelVariants = cva(
+  [
+    'absolute',
+    'left-0',
+    'top-0',
+    'z-[1]',
+    '-mt-2',
+    'ml-2',
+    'bg-ux-input-label',
+    'px-1.5',
+    'text-xs',
+    'text-ux-input-label',
+    'font-normal',
+  ],
+  {
+    variants: {
+      show: {
+        false: 'hidden',
+      },
+      isError: {
+        true: 'text-destructive',
+      },
+      gradient: {
+        true: [
+          'ml-1 inline-block px-4',
+          '[-webkit-mask-image:linear-gradient(to_right,_transparent_0%,_black_9%,_black_90%,_transparent_100%)]',
+          '[mask-image:linear-gradient(to_right,_transparent_0%,_black_9%,_black_90%,_transparent_100%)]',
+          '[-webkit-mask-repeat:no-repeat]',
+          '[mask-repeat:no-repeat]',
+        ],
+      },
+    },
+  },
+);
+```
+
+</DetailsBlock>
+
+<DetailsBlock summary="classNameInput" showIcon={false}>
+
+```tsx showLineNumbers {6-13}
+variantLeftElement={leftElement?.show || leftElement?.renderContainer ? leftElement?.type : 'default'}
+variantIsError={showErrorState || showErrorNumericState.show}
+
+//Internamente se usa la función 'cn' para fusionar clases
+//Así es como se usaría tu prop:
+cn(
+  inputVariants({
+    leftElement: variantLeftElement,
+    isError: variantIsError,
+  }),
+  classNameInput || null,
+);
+
+inputVariants = cva(
+  [
+    'w-full',
+    'placeholder:text-gray-400',
+    'focus-visible:ring-1',
+    'focus-visible:ring-slate-300',
+    'focus-visible:ring-offset-0',
+    'pe-[--rightWidth]',
+    'text-foreground',
+    'border-solid',
+  ],
+  {
+    variants: {
+      leftElement: {
+        button: 'ps-9',
+        icon: 'ps-9',
+        text: 'ps-[--leftWidth]',
+        clear: 'ps-[--leftWidth]',
+        default: '',
+      },
+      isError: {
+        true: [
+          'border-destructive/80',
+          // 'text-destructive',
+          'focus-visible:border-destructive/80',
+          'focus-visible:ring-destructive/20',
+        ],
+      },
+    },
+    defaultVariants: {
+      leftElement: 'default',
+      isError: false,
+    },
+  },
+);
+
+//Nota:
+// 'leftWidth' y 'rightWidth' son valores calculados en automático.
+// Estos valores se calculan según los elementos que te tienen a la izquierda o derecha del input.
+// El valor se usa para agregar un padding para ayudar a visualizar correctamente donde empieza o termina el texto ingresado.
+```
+
+</DetailsBlock>
+
+<DetailsBlock summary="classNameSkeletonContainer" showIcon={false}>
+
+```tsx showLineNumbers {3}
+//Internamente se usa la función 'cn' para fusionar clases
+//Así es como se usaría tu prop:
+cn('relative w-full content-center justify-items-center text-center', classNameSkeletonContainer || null);
+```
+
+</DetailsBlock>
+
+<DetailsBlock summary="classNameSkeleton" showIcon={false}>
+
+```tsx showLineNumbers {3}
+//Internamente se usa la función 'cn' para fusionar clases
+//Así es como se usaría tu prop:
+cn('bg-input/60 h-10 w-full', classNameSkeleton || null);
+```
+
+</DetailsBlock>
+
+---
+
+## Propiedades de `ref` (`InputForwardRefType`)
+
+Cuando usas una `ref` con el componente `Input`, el objeto `ref.current` tendrá acceso a los siguientes métodos para un control imperativo del componente.
+
+| Método                         | Tipo                       | Descripción y Uso                                                                                                                                                                                                                                                                                                                                                   |
+| :----------------------------- | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`focus()`**                  | `() => void`               | <p className='max-w-3xl'>Pone el foco en el elemento `<input>`.</p>                                                                                                                                                                                                                                                                                                 |
+| **`blur()`**                   | `() => void`               | <p className='max-w-3xl'>Quita el foco del elemento `<input>`.</p>                                                                                                                                                                                                                                                                                                  |
+| **`get()`**                    | `() => HTMLElement │ null` | <p className='max-w-3xl'>Retorna el nodo del DOM del elemento `<input>` real para manipulación directa si es necesario.</p>                                                                                                                                                                                                                                         |
+| **`subscribeFocus(callback)`** | `(callback) => void`       | <p className='max-w-3xl'>Permite suscribirse a los cambios de estado de `focus` del input. Es ideal para reaccionar cuando el usuario interactúa con el campo.</p><p className='mt-2'>**Parámetro:**<br/>`callback: (isFocus: boolean) => void`</p><p className='mt-2'>**Ejemplo en una línea:**<br/>`miRef.current?.subscribeFocus(foco => console.log(foco))`</p> |
+
+---
+
+### ¿ Como usar las propiedades `ref` ?
+
+Este ejemplo muestra cómo declarar una `ref`, acceder a sus métodos dentro de un `useEffect` para poner el foco al montar el componente y suscribirse a los cambios de foco.
+
+```jsx
+import { useRef, useEffect } from 'react';
+import { Input } from 'ux-pl-components/components/Input'; // Asegúrate que la ruta sea correcta
+import { InputForwardRefType } from 'ux-pl-components/components/Input/interfaces/input'; // Asegúrate que la ruta sea correcta
+
+function MiComponenteConRef() {
+  const inputRef = useRef < InputForwardRefType > null;
+
+  useEffect(() => {
+    // 1. Poner el foco en el input cuando el componente se monta
+    inputRef.current?.focus();
+
+    // 2. Suscribirse a los cambios de foco para realizar acciones
+    inputRef.current?.subscribeFocus((isFocused) => {
+      console.log('El estado del foco del input es:', isFocused);
+      // Aquí podrías, por ejemplo, mandar a llamar una API si el usuario deja el campo.
+    });
+  }, []);
+
+  return (
+    <div>
+      <p>Este es un ejemplo de cómo usar la ref con el componente Input.</p>
+      <Input ref={inputRef} textLabel="Input con Ref" />
+    </div>
+  );
+}
+```
+
+## Validaciones (`validations`)
+
+La prop `validations` es un objeto que agrupa todas las lógicas de validación para el `Input`, permitiendo un control granular sobre el comportamiento del componente ante diferentes tipos de entrada.
+
+| Propiedad                     | Tipo                 | Default                                                                           | Descripción                                                                                                                                                              |
+| :---------------------------- | :------------------- | :-------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`number`**                  | `object`             | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.number} />                  | <p className='max-w-3xl'>Un objeto que contiene todas las validaciones específicas para inputs de tipo numérico. [**Ver detalles.**](#validationsnumber)</p>             |
+| **`maxLength`**               | `number`             | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.maxLength} />               | <p className='max-w-3xl'>Cantidad máxima de carácteres permitidos. Si se envía `0`, se ignora la validación. Funciona con inputs de tipo `text`, `number` y `range`.</p> |
+| **`showError`**               | `boolean`            | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.showError} />               | <p className='max-w-3xl'>Una bandera general para forzar el estado de error del input (borde rojo), útil para mostrar errores de validación externos.</p>                |
+| **`errorMessages`**           | `object`             | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.errorMessages} />           | <p className='max-w-3xl'>Objeto para personalizar los mensajes de error que se muestran debajo del input. [**Ver detalles.**](#detalle-de-validationserrormessages)</p>  |
+| **`classNameErrorContainer`** | `string │ undefined` | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.classNameErrorContainer} /> | <p className='max-w-3xl'>Permite pasar una clase personalizada al contenedor que envuelve los mensajes de error.</p>                                                     |
+
+---
+
+### `validations.number`
+
+Este objeto agrupa las validaciones numéricas. Solo tiene efecto si el `type` del input es `number`.
+
+| Propiedad     | Tipo     | Default                                                                  | Descripción                                                                                                                                                                                                    |
+| :------------ | :------- | :----------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`limits`**  | `object` | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.number.limits} />  | <p className='max-w-3xl'>Permite definir valores mínimos y máximos absolutos que se pueden ingresar. [**Ver detalles.**](#validationsnumberlimits)</p>                                                         |
+| **`between`** | `object` | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.number.between} /> | <p className='max-w-3xl'>Permite definir un rango en el que debe encontrarse el valor ingresado. Esta validación tiene prioridad sobre `limits`. [**Ver detalles.**](#detalle-de-validationsnumberbetween)</p> |
+
+---
+
+#### `validations.number.limits`
+
+| Propiedad       | Tipo      | Default                                                                           | Descripción                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| :-------------- | :-------- | :-------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`min`**       | `number`  | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.number.limits.min} />       | <p className='max-w-3xl'>Valor mínimo permitido.</p><p className='mt-2 max-w-3xl'>Esta validación se activa cuando el input pierde el foco</p><p className='mt-2 max-w-3xl'>A diferencia de la propiedad `max` el valor de `0` si cuenta como un valor mínimo</p><p className='mt-2 max-w-3xl'>**Nota:** Si se requiere validar un rango usar la propiedad `between`</p>                                                                        |
+| **`max`**       | `number`  | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.number.limits.max} />       | <p className='max-w-3xl'>Valor máximo permitido.</p><p className='mt-2 max-w-3xl'>Esta validación se activa cuando el input pierde el foco</p><p className='mt-2 max-w-3xl'>A diferencia de la propiedad `min` el valor de `0` tiene el mismo valor que `undefined` lo que causará que no se active.</p><p className='mt-2 max-w-3xl'>**Nota:** Si se requiere validar un rango usar la propiedad `between`</p>                                 |
+| **`reset`**     | `boolean` | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.number.limits.reset} />     | <p className='max-w-3xl'>Si es `true`, resetea el valor del input si no cumple con `min` o `max`.</p>                                                                                                                                                                                                                                                                                                                                           |
+| **`showError`** | `boolean` | <DefaultValue value={INPUT_DEFAULTS_PROPS.validations.number.limits.showError} /> | <p className='max-w-3xl'>Si es `true`, muestra el estado de error (borde y texto rojo) cuando no se cumplen los límites.</p><p className='mt-2 max-w-3xl'>Si es `false`, no mostrará el estado de error aunque no se hayan cumplido las valicaciones.</p><p className='mt-2 max-w-3xl'>Esta validación se activa cuando el input pierde el foco</p><p className='mt-2 max-w-3xl'>Esta propiedad es específica para los errores de `limits`.</p> |
+
+#### ¿ Como se aplica `validations.number.limits` ?
+
+---
+
+#### Detalle de `validations.number.between`
+
+| Propiedad              | Tipo       | Default     | Descripción                                                                                                                        |
+| :--------------------- | :--------- | :---------- | :--------------------------------------------------------------------------------------------------------------------------------- |
+| **`min`**              | `number`   | -           | El valor mínimo del rango. Es una propiedad requerida dentro de este objeto.                                                       |
+| **`max`**              | `number`   | -           | El valor máximo del rango. Es una propiedad requerida dentro de este objeto.                                                       |
+| **`reset`**            | `boolean`  | `false`     | Si es `true`, resetea el valor del input si no se encuentra dentro del rango.                                                      |
+| **`showError`**        | `boolean`  | `false`     | Si es `true`, muestra el estado de error cuando el valor está fuera del rango. Específico para los errores de `between`.           |
+| **`subscribeBetween`** | `function` | `undefined` | Función de subscripción que se ejecuta cuando el input pierde el foco. [**Ver detalles y ejemplo.**](#detalle-de-subscribebetween) |
+
+---
+
+##### Detalle de `subscribeBetween`
+
+Esta función te permite reaccionar y recibir información sobre si el valor ingresado cumple con la validación de rango `between`.
+
+- **Parámetros del Callback:** La función recibe un objeto con las siguientes propiedades booleanas:
+  - `isLess`: `true` si el valor es menor al `min` del rango.
+  - `isGreater`: `true` si el valor es mayor al `max` del rango.
+  - `inRange`: `true` si el valor está dentro del rango `min` y `max`.
+- **Ejemplo de Uso:**
+  ```jsx
+  <Input
+    validations={{
+      number: {
+        between: {
+          min: 5,
+          max: 15,
+          subscribeBetween: ({ isLess, isGreater, inRange }) => {
+            console.log('Validación de rango:', { isLess, isGreater, inRange });
+            if (!inRange) {
+              // Lógica personalizada si el valor está fuera de rango
+            }
+          },
+        },
+      },
+    }}
+  />
+  ```
+
+## Elementos Adicionales
+
+Puedes añadir elementos interactivos o decorativos a la izquierda y derecha del campo de entrada para extender su funcionalidad.
+
+| Propiedad          | Tipo                  | Default     | Descripción                                                                                                                                     |
+| :----------------- | :-------------------- | :---------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`leftElement`**  | `IElement<Data>`      | `undefined` | Un objeto para configurar un único elemento que aparece a la izquierda del input. [**Ver detalles de IElement.**](#detalle-del-objeto-ielement) |
+| **`rightElement`** | `IRightElement<Data>` | `undefined` | Un objeto para configurar múltiples elementos que aparecen a la derecha del input. [**Ver detalles.**](#detalle-de-rightelement)                |
+
+---
+
+### Detalle del Objeto `IElement`
+
+Este es el objeto de configuración base para cualquier elemento individual que puedas añadir al `Input`. La prop `leftElement` usa este objeto, y también el array `elements` dentro de `rightElement`.
+
+| Propiedad                     | Tipo                         | Default                        | Descripción                                                                                                                                                                      |
+| :---------------------------- | :--------------------------- | :----------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`id`**                      | `string`                     | -                              | **Requerido.** Identificador único para el elemento, necesario para renderizado y control.                                                                                       |
+| **`show`**                    | `boolean`                    | `false`                        | Muestra u oculta el elemento.                                                                                                                                                    |
+| **`icon`**                    | `React.ReactElement`         | (Icono de `Search` o `IbmDb2`) | Un elemento de React para usar como icono. Sobrescribe el icono por defecto.                                                                                                     |
+| **`className`**               | `string`                     | `undefined`                    | Clase personalizada para el contenedor principal del elemento.                                                                                                                   |
+| **`classNameIcon`**           | `string`                     | `undefined`                    | Clase personalizada que se aplica solo al icono por defecto. No aplica si se provee un `icon` personalizado.                                                                     |
+| **`text`**                    | `string`                     | `undefined`                    | Texto a mostrar si el `type` del elemento es `'text'`.                                                                                                                           |
+| **`type`**                    | `'button' │ 'icon' │ 'text'` | `'icon'`                       | El tipo de elemento a mostrar.                                                                                                                                                   |
+| **`separator`**               | `boolean`                    | `false`                        | Si es `true`, muestra un separador a la derecha del elemento. Solo es visible si no es el último elemento en el lado derecho.                                                    |
+| **`hoverContent`**            | `ReactNode`                  | `undefined`                    | Contenido a mostrar en un pop-up al hacer hover sobre el elemento. Activa el hover si no es `undefined`.                                                                         |
+| **`classNameHoverContent`**   | `string`                     | `undefined`                    | Clase para el contenedor del pop-up de hover.                                                                                                                                    |
+| **`tooltipContent`**          | `ReactNode`                  | `undefined`                    | Contenido a mostrar en un `tooltip` al pasar el cursor sobre el elemento.                                                                                                        |
+| **`classNameTooltipContent`** | `string`                     | `undefined`                    | Clase para el contenedor del contenido del `tooltip`.                                                                                                                            |
+| **`renderContainer`**         | `function`                   | `undefined`                    | Función que permite renderizar un contenedor completamente personalizado para el elemento. Anula la mayoría de las otras props. [**Ver detalles.**](#detalle-de-rendercontainer) |
+| **`onClick`**                 | `function`                   | `undefined`                    | Evento que se ejecuta al hacer clic en el elemento si su `type` es `'button'`. [**Ver detalles.**](#detalle-de-onclick)                                                          |
+
+---
+
+#### Detalle de `renderContainer`
+
+Esta función te da control total sobre el renderizado del elemento, deshabilitando la mayoría de las otras props de estilo y comportamiento (`type`, `className`, etc.).
+
+- **Firma de la Función:** `(icon: ReactNode) => ReactNode`
+- **Parámetros:**
+  - `icon`: El `ReactNode` del icono que se habría renderizado por defecto (ya sea el default de la librería o el que pasaste en la prop `icon`). Puedes usarlo dentro de tu renderizado personalizado.
+- **Retorna:** Un `ReactNode` que será renderizado como el elemento.
+
+---
+
+#### Detalle de `onClick`
+
+Esta función se invoca cuando un elemento de `type: 'button'` es presionado.
+
+- **Firma de la Función:** `(_: { item: IInputResponseEventProps<Data> }) => void`
+- **Parámetros:**
+  - `item`: Un objeto que contiene el estado actual del `Input` en el momento del clic. Su tipo es `IInputResponseEventProps<Data>`, el mismo que se recibe en el `onChange` principal.
+
+---
+
+### Detalle de `rightElement`
+
+La prop `rightElement` es un objeto que te permite componer la sección derecha del `Input` con diferentes tipos de elementos predefinidos y una lista de elementos personalizados.
+
+| Propiedad      | Tipo               | Default                | Descripción                                                                                                                                  |
+| :------------- | :----------------- | :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`elements`** | `IElement<Data>[]` | `undefined`            | Un array de objetos `IElement` para dibujar elementos personalizados. [**Ver la tabla de `IElement` arriba.**](#detalle-del-objeto-ielement) |
+| **`clear`**    | `IClearElement`    | `{ show: false, ... }` | Configuración para el botón de "limpiar input" (icono de 'x'). [**Ver detalles.**](#detalle-de-rightelementclear)                            |
+| **`counter`**  | `ICounterElement`  | `{ show: false, ... }` | Configuración para el contador de caracteres. [**Verdejemplo detalles.**](#detalle-de-rightelementcounter)                                   |
+| **`error`**    | `IErrorElement`    | `{ show: true, ... }`  | Configuración para el icono de error que aparece cuando el input está en estado de error. [**Ver detalles.**](#detalle-de-rightelementerror) |
+
+---
+
+#### Detalle de `rightElement.clear`
+
+Configuración para el botón de "limpiar input" (generalmente un icono de 'x').
+
+Este objeto es una versión simplificada de `IElement`. Hereda la mayoría de sus propiedades (`id`, `show`, `icon`, `className`, `hoverContent`, etc.) pero **omite** las siguientes: `text`, `type`, `renderContainer` y `onClick`, ya que su funcionalidad de limpieza es interna y automática.
+
+| Propiedad  | Tipo      | Descripción                           |
+| :--------- | :-------- | :------------------------------------ |
+| **`id`**   | `string`  | **Requerido.** Identificador único.   |
+| **`show`** | `boolean` | Muestra u oculta el botón de limpiar. |
+| ...        | ...       | ...                                   |
+
+---
+
+#### Detalle de `rightElement.counter`
+
+Configura el contador de caracteres, que funciona en conjunto con la prop `validations.maxLength`.
+
+| Propiedad                   | Tipo      | Default     | Descripción                                                                                 |
+| :-------------------------- | :-------- | :---------- | :------------------------------------------------------------------------------------------ |
+| **`show`**                  | `boolean` | `false`     | Muestra u oculta el contador.                                                               |
+| **`separator`**             | `boolean` | `false`     | Si es `true`, muestra un separador a la derecha del contador (si no es el último elemento). |
+| **`className`**             | `string`  | `undefined` | Clase personalizada para el contenedor del contador.                                        |
+| **`classNameInfinityIcon`** | `string`  | `undefined` | Clase para el icono de infinito que aparece si `maxLength` es 0 o no está definido.         |
+
+---
+
+#### Detalle de `rightElement.error`
+
+Configura el icono de exclamación que aparece cuando el `Input` está en estado de error.
+
+Este objeto es una versión simplificada de `IElement`. Hereda la mayoría de sus propiedades (`id`, `show`, `icon`, `className`, `hoverContent`, etc.) pero **omite** las siguientes: `text`, `type`, `renderContainer`, `onClick` y `separator`.
+
+| Propiedad  | Tipo      | Default | Descripción                                                            |
+| :--------- | :-------- | :------ | :--------------------------------------------------------------------- |
+| **`show`** | `boolean` | `true`  | Muestra u oculta el icono de error cuando el input está en modo error. |
+| ...        | ...       | ...     |                                                                        |
+
+## Autocompletado (`autocomplete`)
+
+La prop `autocomplete` es un objeto que permite convertir un `Input` estándar en un campo de búsqueda con un panel de sugerencias, similar a un "combobox".
+
+### Detalle de `autocomplete`
+
+| Propiedad                        | Tipo                        | Default                  | Descripción                                                                                                                                   |
+| :------------------------------- | :-------------------------- | :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`show`**                       | `boolean`                   | `false`                  | Activa o desactiva la funcionalidad de autocompletado.                                                                                        |
+| **`isLoading`**                  | `boolean`                   | `false`                  | Bandera para controlar la visualización de los skeletons de carga mientras se buscan sugerencias. Eres responsable de gestionar este estado.  |
+| **`showLoading`**                | `boolean`                   | `true`                   | Muestra u oculta los skeletons cuando `isLoading` es `true`.                                                                                  |
+| **`items`**                      | `IAutoCompleteItems[]`      | `[]`                     | El array de objetos que representa las sugerencias a mostrar. [**Ver detalles del objeto.**](#detalle-de-iautocompleteitems)                  |
+| **`itemIconSelected`**           | `ReactNode`                 | (Icono de `Check`)       | Icono que aparece a la izquierda de la sugerencia actualmente seleccionada en la lista.                                                       |
+| **`showIconSelected`**           | `boolean`                   | `true`                   | Muestra u oculta el `itemIconSelected`.                                                                                                       |
+| **`minLengthRequired`**          | `number`                    | `0`                      | Número mínimo de caracteres que el usuario debe escribir para que se muestren los mensajes de "sin datos" o "mínimo de caracteres requerido". |
+| **`setInputSelected`**           | Función `set` de `useState` | `undefined`              | Se espera la función `set` de un hook `useState<string>`. Se usa para obtener el valor de la sugerencia seleccionada.                         |
+| **`onBlurConfig`**               | `object`                    | `{ default: true, ... }` | Permite configurar el comportamiento del input cuando pierde el foco (`onBlur`). [**Ver detalles.**](#detalle-de-autocompleteonblurconfig)    |
+| **`resetOnSameItem`**            | `boolean`                   | `false`                  | Si es `true`, al hacer clic en un ítem ya seleccionado en la lista, se limpiará el input.                                                     |
+| **`classNamePopover`**           | `object`                    | `undefined`              | Clases para los contenedores del panel de sugerencias (popover). [**Ver detalles.**](#detalle-de-autocompleteclassnamepopover)                |
+| **`classNamePopoverHeader`**     | `object`                    | `undefined`              | Clases para el encabezado del panel de sugerencias. [**Ver detalles.**](#detalle-de-autocompleteclassnamepopoverheader)                       |
+| **`classNamePopoverScrollArea`** | `object`                    | `undefined`              | Clases para los ítems y el área de scroll de las sugerencias. [**Ver detalles.**](#detalle-de-autocompleteclassnamepopoverscrollarea)         |
+| **`showMessages`**               | `boolean`                   | `true`                   | Muestra u oculta los mensajes informativos (como "sin sugerencias") en el panel.                                                              |
+| **`messages`**                   | `object`                    | `undefined`              | Permite personalizar los textos de los mensajes informativos. [**Ver detalles.**](#detalle-de-autocompletemessages)                           |
+| **`virtualizeSuggestionsList`**  | `boolean`                   | `false`                  | Si es `true`, utiliza virtualización para renderizar listas muy grandes de sugerencias y mejorar el rendimiento.                              |
+
+---
+
+#### Detalle de `IAutoCompleteItems`
+
+Este es el formato que debe tener cada objeto dentro del array `items`.
+
+| Propiedad             | Tipo      | Descripción                                                                         |
+| :-------------------- | :-------- | :---------------------------------------------------------------------------------- |
+| **`labelSelected`**   | `string`  | **Requerido.** El valor real que se usará cuando el ítem sea seleccionado.          |
+| **`labelSuggestion`** | `string`  | **Requerido.** El texto que se mostrará en la lista de sugerencias para el usuario. |
+| **`disable`**         | `boolean` | Si es `true`, el ítem aparecerá en la lista pero no se podrá seleccionar.           |
+
+---
+
+#### Detalle de `autocomplete.onBlurConfig`
+
+Define el comportamiento del input al perder el foco.
+
+| Propiedad                        | Tipo      | Default | Descripción                                                                                                                                                |
+| :------------------------------- | :-------- | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`resetOnNoSelection`**         | `boolean` | `false` | Si es `true` y el texto no coincide con una sugerencia, el input se resetea. `default` debe ser `false`.                                                   |
+| **`reassignSelectedSuggestion`** | `boolean` | `false` | Si es `true` y el texto no coincide con la sugerencia ya seleccionada, el valor de la sugerencia se vuelve a asignar al input. `default` debe ser `false`. |
+| **`default`**                    | `boolean` | `true`  | El comportamiento por defecto: al perder el foco no pasa nada, el texto escrito se mantiene. Debes ponerlo en `false` para activar las otras opciones.     |
+
+---
+
+#### Detalle de `autocomplete.classNamePopover`
+
+Clases para personalizar los contenedores principales del panel de sugerencias.
+
+| Propiedad                        | Tipo     | Descripción                                                                           |
+| :------------------------------- | :------- | :------------------------------------------------------------------------------------ |
+| **`classNameContent`**           | `string` | Clase que aplica al `PopoverContent` (el contenedor principal del popover).           |
+| **`classNameList`**              | `string` | Clase que aplica al `CommandList` dentro del popover.                                 |
+| **`classNameEmpty`**             | `string` | Clase que aplica al contenedor de mensajes cuando la lista de sugerencias está vacía. |
+| **`classNameSketetonContainer`** | `string` | Clase que aplica al contenedor de los skeletons de carga.                             |
+| **`classNameSketeton`**          | `string` | Clase para cada elemento `Skeleton` individual.                                       |
+
+---
+
+#### Detalle de `autocomplete.classNamePopoverHeader`
+
+Clases para personalizar el encabezado del panel de sugerencias.
+
+| Propiedad                | Tipo     | Descripción                                                |
+| :----------------------- | :------- | :--------------------------------------------------------- |
+| **`classNameContainer`** | `string` | Clase para el `div` padre de todo el encabezado.           |
+| **`classNameContent`**   | `string` | Clase para el contenedor del título y el botón de limpiar. |
+| **`classNameButton`**    | `string` | Clase para el botón de limpiar (`x`).                      |
+| **`classNameIcon`**      | `string` | Clase para el icono `x` dentro del botón de limpiar.       |
+
+---
+
+#### Detalle de `autocomplete.classNamePopoverScrollArea`
+
+Clases para personalizar las sugerencias y su contenedor con scroll.
+
+| Propiedad                | Tipo     | Descripción                                                                   |
+| :----------------------- | :------- | :---------------------------------------------------------------------------- |
+| **`classNameContainer`** | `string` | Clase para el `ScrollArea` que contiene la lista de sugerencias.              |
+| **`classNameGroup`**     | `string` | Clase para el `CommandGroup` que envuelve los ítems de sugerencias.           |
+| **`classNameItem`**      | `string` | Clase que aplica a cada ítem de sugerencia (`CommandItem`).                   |
+| **`classNameItemIcon`**  | `string` | Clase para el icono que aparece a la izquierda de la sugerencia seleccionada. |
+
+---
+
+#### Detalle de `autocomplete.messages`
+
+Personaliza los diferentes textos que aparecen en el panel de sugerencias.
+
+| Propiedad              | Tipo     | Default                              | Descripción                                                           |
+| :--------------------- | :------- | :----------------------------------- | :-------------------------------------------------------------------- |
+| **`noData`**           | `string` | `'No existen sugerencias'`           | Mensaje que aparece cuando no hay resultados para la búsqueda.        |
+| **`initMessage`**      | `string` | `'Escriba para mostrar sugerencias'` | Mensaje inicial que aparece cuando el input está vacío.               |
+| **`minLengthMessage`** | `string` | `'Escriba almenos X carácteres'`     | Mensaje que aparece si el texto es más corto que `minLengthRequired`. |
+| **`title`**            | `string` | `'Sugerencias'`                      | Título que aparece en el encabezado del panel de sugerencias.         |
+
+## Sanitización de Entrada (`sanitize`)
+
+La prop `sanitize` es un objeto que agrupa configuraciones para limpiar o "sanitizar" los valores ingresados, especialmente útil para inputs de tipo numérico.
+
+<div className="admonition admonition-danger">
+  <strong>Nota Importante:</strong> Toda la funcionalidad de <code>sanitize</code> solamente tiene efecto en inputs de
+  tipo numérico.
+</div>
+
+### Detalle de `sanitize`
+
+| Propiedad              | Tipo     | Default | Descripción                                                                                                                                     |
+| :--------------------- | :------- | :------ | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`maxDecimalDigits`** | `number` | `2`     | Número máximo de decimales permitidos en todas las fases de sanitización.                                                                       |
+| **`onPropertyEntry`**  | `object` | `{...}` | Configuración de sanitización para los valores de entrada (`value` y `defaultValue`). [**Ver detalles.**](#detalle-de-sanitizeonpropertyentry)  |
+| **`onInput`**          | `object` | `{...}` | Configuración de sanitización que se aplica mientras el usuario escribe caracter por caracter. [**Ver detalles.**](#detalle-de-sanitizeoninput) |
+| **`onChange`**         | `object` | `{...}` | Configuración de sanitización que se aplica justo antes de que se emita el evento `onChange`. [**Ver detalles.**](#detalle-de-sanitizeonchange) |
+
+---
+
+#### Detalle de `sanitize.onPropertyEntry`
+
+Define cómo se sanitizan los valores que llegan al componente a través de las props `value` y `defaultValue`. Es crucial para manejar la interacción con inputs controlados en React.
+
+<details>
+<summary>Explicación detallada del comportamiento con `useState`</summary>
+
+Cuando usas `useState` para controlar el `value` de un `Input`, la configuración de `onPropertyEntry` interactúa directamente con los eventos `onChange` y `onInput`.
+
+Por ejemplo, si `onPropertyEntry` tiene `removeDotIfLastCharacter: true` y tu `onChange` intenta actualizar el estado con un valor como `"123."`, cuando ese nuevo valor del estado se vuelve a pasar al `Input`, `onPropertyEntry` lo sanitizará a `"123"`. Esto puede impedir que el usuario escriba decimales si las configuraciones no están alineadas. La clave es entender que `onPropertyEntry` limpia el valor que "entra" al componente, afectando lo que el usuario ve finalmente.
+
+</details>
+
+**Propiedades del objeto `onPropertyEntry`:**
+
+| Propiedad                                 | Tipo      | Default | Descripción                                                           |
+| :---------------------------------------- | :-------- | :------ | :-------------------------------------------------------------------- |
+| **`removeDecimalPoint`**                  | `boolean` | `false` | Si es `true`, elimina cualquier punto decimal del valor.              |
+| **`removeNegativeSign`**                  | `boolean` | `false` | Si es `true`, elimina cualquier símbolo negativo (`-`).               |
+| **`removeDotIfLastCharacter`**            | `boolean` | `true`  | Si el último carácter es un punto, lo elimina.                        |
+| **`removeDecimalPointIfSingleCharacter`** | `boolean` | `true`  | Si el valor es solo un punto (`.`), lo convierte en una cadena vacía. |
+| **`removeNegativeIfSingleCharacter`**     | `boolean` | `true`  | Si el valor es solo un guion (`-`), lo convierte en una cadena vacía. |
+
+---
+
+#### Detalle de `sanitize.onInput`
+
+Define la sanitización que ocurre en tiempo real, cada vez que el usuario presiona una tecla. Está optimizado para permitir una experiencia de escritura fluida.
+
+Por defecto, en esta configuración, las props como `removeDotIfLastCharacter` o `removeNegativeIfSingleCharacter` están en `false` para permitir que el usuario pueda escribir números negativos (`-25`) o decimales (`123.`) sin que el sanitizador elimine el `-` o el `.` al instante.
+
+**Propiedades del objeto `onInput`:**
+_(Este objeto comparte las mismas propiedades que `onPropertyEntry` pero con diferentes valores por defecto para una mejor experiencia de usuario al escribir)._
+
+| Propiedad                                 | Tipo      | Default | Descripción                                                           |
+| :---------------------------------------- | :-------- | :------ | :-------------------------------------------------------------------- |
+| **`removeDecimalPoint`**                  | `boolean` | `false` | Si es `true`, elimina cualquier punto decimal.                        |
+| **`removeNegativeSign`**                  | `boolean` | `false` | Si es `true`, elimina cualquier símbolo negativo (`-`).               |
+| **`removeDotIfLastCharacter`**            | `boolean` | `false` | Si el último carácter es un punto, lo elimina.                        |
+| **`removeDecimalPointIfSingleCharacter`** | `boolean` | `false` | Si el valor es solo un punto (`.`), lo convierte en una cadena vacía. |
+| **`removeNegativeIfSingleCharacter`**     | `boolean` | `false` | Si el valor es solo un guion (`-`), lo convierte en una cadena vacía. |
+
+---
+
+#### Detalle de `sanitize.onChange`
+
+Define la sanitización que se aplica al valor justo antes de que el componente emita el evento `onChange`. Esto es útil para limpiar el valor final antes de que llegue a tu lógica de estado.
+
+Por defecto, esta configuración es más estricta que `onInput`. Por ejemplo, si el usuario deja `"123."` en el campo, `onChange` lo limpiará a `"123"` antes de enviarlo, ya que `removeDotIfLastCharacter` es `true`.
+
+**Propiedades del objeto `onChange`:**
+_(Este objeto comparte las mismas propiedades que `onPropertyEntry` y `onInput` pero con una combinación de valores por defecto pensada para el valor final)._
+
+| Propiedad                                 | Tipo      | Default | Descripción                                                           |
+| :---------------------------------------- | :-------- | :------ | :-------------------------------------------------------------------- |
+| **`removeDecimalPoint`**                  | `boolean` | `false` | Si es `true`, elimina cualquier punto decimal.                        |
+| **`removeNegativeSign`**                  | `boolean` | `false` | Si es `true`, elimina cualquier símbolo negativo (`-`).               |
+| **`removeDotIfLastCharacter`**            | `boolean` | `true`  | Si el último carácter es un punto, lo elimina.                        |
+| **`removeDecimalPointIfSingleCharacter`** | `boolean` | `true`  | Si el valor es solo un punto (`.`), lo convierte en una cadena vacía. |
+| **`removeNegativeIfSingleCharacter`**     | `boolean` | `true`  | Si el valor es solo un guion (`-`), lo convierte en una cadena vacía. |
+
+---
+
+## Formato de Números (`formatter`)
+
+La prop `formatter` es un objeto que permite formatear visualmente el valor numérico del input cuando este pierde el foco. Se basa en la API `Intl.NumberFormat` del navegador.
+
+<div className="admonition admonition-info">
+  <strong>Nota:</strong> El formateo es puramente visual. Cuando el input recupera el foco, el valor vuelve a su estado
+  original sin formato. El valor enviado en el evento <code>onChange</code> tampoco incluye el formato.
+</div>
+
+| Propiedad           | Tipo      | Default                  | Descripción                                                                                                                                                                                                                     |
+| :------------------ | :-------- | :----------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`locale`**        | `string`  | (El local del navegador) | El código de localización a usar para el formato (ej. `'en-US'`, `'es-MX'`).                                                                                                                                                    |
+| **`options`**       | `object`  | `{...}`                  | Un objeto con las opciones de formato de `Intl.NumberFormat`. [Ver documentación de MDN para todas las opciones](https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat). |
+| **`roundDecimals`** | `boolean` | `true`                   | Si es `true`, redondea los decimales según las reglas de `minimumFractionDigits` y `maximumFractionDigits`.                                                                                                                     |
+
+**Ejemplo del valor por defecto de `options`:**
+
+```js
+{
+  currency: 'MXN', // (Obtenido del locale, ej. para 'es-MX')
+  style: 'decimal',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+}
+```
