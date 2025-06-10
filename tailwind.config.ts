@@ -2,7 +2,10 @@ import type { Config } from 'tailwindcss';
 import tailwindcssAnimate from 'tailwindcss-animate';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
+import {presetConfig} from './lib/tailwind.config-components';
+
 const config: Config = {
+  presets: [presetConfig],
     darkMode: ["class"],
     content: [
     "./index.html",
