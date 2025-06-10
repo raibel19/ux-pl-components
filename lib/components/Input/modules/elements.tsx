@@ -1,6 +1,7 @@
 import { IbmDb2, Search } from '@carbon/icons-react';
 import { VariantProps } from 'class-variance-authority';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import React from 'react';
 
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -28,16 +29,33 @@ export default function Elements<Data>(props: IElementsProps<Data>) {
     classNameTooltipContent,
   } = element || {};
 
-  const searchIconMemo = useMemo(
-    () =>
+  const elementIcon = useMemo(() => {
+    let iconJSX =
       position === 'left' ? (
-        <Search size={18} strokeWidth={2} aria-hidden="true" className={classNameIcon} />
+        <Search
+          size={18}
+          strokeWidth={2}
+          aria-hidden="true"
+          className={cn('h-[clamp(1.13rem,55%,2rem)] w-[clamp(1.13rem,55%,2rem)]', classNameIcon)}
+        />
       ) : (
-        <IbmDb2 size={18} strokeWidth={2} aria-hidden="true" className={classNameIcon} />
-      ),
-    [classNameIcon, position],
-  );
-  const elementIcon = icon || searchIconMemo;
+        <IbmDb2
+          size={18}
+          strokeWidth={2}
+          aria-hidden="true"
+          className={cn('h-[clamp(1.13rem,55%,2rem)] w-[clamp(1.13rem,55%,2rem)]', classNameIcon)}
+        />
+      );
+
+    if (icon) {
+      const existingClassName = icon.props.className || '';
+      iconJSX = React.cloneElement(icon, {
+        className: cn('h-[clamp(1.13rem,55%,2rem)] w-[clamp(1.13rem,55%,2rem)]', existingClassName, classNameIcon),
+      });
+    }
+
+    return iconJSX;
+  }, [classNameIcon, icon, position]);
 
   const modelVariants = useMemo(
     (): VariantProps<typeof elementsVariants> => ({
@@ -51,8 +69,8 @@ export default function Elements<Data>(props: IElementsProps<Data>) {
     [disable, isLastElement, position, show, showError, showNumericValidationErrors, type],
   );
 
-  const renderButton = useCallback(() => {
-    const btn = (
+  const renderButton = useMemo(() => {
+    const buttonJsx = (
       <button
         className={cn(elementsVariants(modelVariants), className || null)}
         onMouseDown={(e) => e.preventDefault()}
@@ -65,7 +83,7 @@ export default function Elements<Data>(props: IElementsProps<Data>) {
     if (hoverContent) {
       return (
         <HoverCard>
-          <HoverCardTrigger asChild>{btn}</HoverCardTrigger>
+          <HoverCardTrigger asChild>{buttonJsx}</HoverCardTrigger>
           <HoverCardContent className={cn('w-80', classNameHoverContent || null)}>{hoverContent}</HoverCardContent>
         </HoverCard>
       );
@@ -75,14 +93,14 @@ export default function Elements<Data>(props: IElementsProps<Data>) {
       return (
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>{btn}</TooltipTrigger>
+            <TooltipTrigger asChild>{buttonJsx}</TooltipTrigger>
             <TooltipContent className={classNameTooltipContent}>{tooltipContent}</TooltipContent>
           </Tooltip>
         </TooltipProvider>
       );
     }
 
-    return btn;
+    return buttonJsx;
   }, [
     className,
     classNameHoverContent,
@@ -95,7 +113,7 @@ export default function Elements<Data>(props: IElementsProps<Data>) {
     tooltipContent,
   ]);
 
-  const renderIcon = useCallback(() => {
+  const renderIcon = useMemo(() => {
     const isDisabled = modelVariants.disable || false;
     const iconJsx = (
       <div
@@ -137,7 +155,7 @@ export default function Elements<Data>(props: IElementsProps<Data>) {
     tooltipContent,
   ]);
 
-  const renderText = useCallback(() => {
+  const renderText = useMemo(() => {
     const isDisabled = modelVariants.disable || false;
     const textJsx = (
       <span className={cn(elementsVariants(modelVariants), !isDisabled && 'pointer-events-auto', className || null)}>
@@ -175,9 +193,9 @@ export default function Elements<Data>(props: IElementsProps<Data>) {
   return (
     <>
       {renderContainer && renderContainer(elementIcon)}
-      {type === 'button' && renderButton()}
-      {type === 'icon' && renderIcon()}
-      {type === 'text' && renderText()}
+      {type === 'button' && renderButton}
+      {type === 'icon' && renderIcon}
+      {type === 'text' && renderText}
     </>
   );
 }
