@@ -9,6 +9,7 @@ export const inputVariants = cva(
     'focus-visible:ring-offset-0',
     'pe-[--rightWidth]',
     'text-foreground',
+    'border-solid',
   ],
   {
     variants: {
@@ -43,10 +44,10 @@ export const labelVariants = cva(
     'z-[1]',
     '-mt-2',
     'ml-2',
-    'bg-primary-foreground',
+    'bg-ux-input-label',
     'px-1.5',
     'text-xs',
-    'text-foreground',
+    'text-ux-input-label',
     'font-normal',
   ],
   {
@@ -56,6 +57,15 @@ export const labelVariants = cva(
       },
       isError: {
         true: 'text-destructive',
+      },
+      gradient: {
+        true: [
+          'ml-1 inline-block px-4',
+          '[-webkit-mask-image:linear-gradient(to_right,_transparent_0%,_black_9%,_black_90%,_transparent_100%)]',
+          '[mask-image:linear-gradient(to_right,_transparent_0%,_black_9%,_black_90%,_transparent_100%)]',
+          '[-webkit-mask-repeat:no-repeat]',
+          '[mask-repeat:no-repeat]',
+        ],
       },
     },
   },
@@ -78,6 +88,7 @@ export const elementsVariants = cva(
           'pointer-events-auto',
           'text-muted-foreground/80',
           'transition-colors',
+          'bg-transparent',
         ],
         icon: ['peer-disabled:opacity-50', 'pointer-events-none', 'text-muted-foreground/80'],
         text: ['peer-disabled:opacity-50', 'pointer-events-none', 'text-muted-foreground', 'text-sm'],
@@ -94,6 +105,7 @@ export const elementsVariants = cva(
           'pointer-events-auto',
           'text-muted-foreground/80',
           'transition-colors',
+          'bg-transparent',
         ],
       },
       show: {
@@ -106,8 +118,8 @@ export const elementsVariants = cva(
         true: 'pointer-events-none',
       },
       position: {
-        left: 'start-0 rounded-s-md ps-3',
-        right: 'end-0 pe-3',
+        left: 'start-0 rounded-s-md ps-2',
+        right: 'end-0 pe-2',
       },
       isLastElement: {
         true: 'rounded-e-md',
