@@ -2,6 +2,7 @@
 import { CloseOutline, Warning } from '@carbon/icons-react';
 import { VariantProps } from 'class-variance-authority';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+import React from 'react';
 import { equals } from 'ux-pl/utils/object';
 import { genericMemo } from 'ux-pl/utils/react';
 
@@ -183,9 +184,22 @@ export default function RightElement<Data>(props: IRightElementProps<Data>) {
     showNumericValidationErrors,
   ]);
 
-  const renderClear = useCallback(() => {
-    const iconDefault = <CloseOutline size={18} strokeWidth={2} aria-hidden="true" className={classNameIconClear} />;
-    const icon = iconClear || iconDefault;
+  const renderClear = useMemo(() => {
+    let iconJSX: React.JSX.Element = (
+      <CloseOutline
+        size={18}
+        strokeWidth={2}
+        aria-hidden="true"
+        className={cn('h-[clamp(1.13rem,55%,2rem)] w-[clamp(1.13rem,55%,2rem)]', classNameIconClear)}
+      />
+    );
+
+    if (iconClear) {
+      const existingClassName = iconClear.props.className || '';
+      iconJSX = React.cloneElement(iconClear, {
+        className: cn('h-[clamp(1.13rem,55%,2rem)] w-[clamp(1.13rem,55%,2rem)]', existingClassName, classNameIconClear),
+      });
+    }
 
     const clearJsx = (
       <div className={cn('flex h-full items-center', modelVariants.isLastElement || false ? 'rounded-e-md' : null)}>
@@ -197,7 +211,7 @@ export default function RightElement<Data>(props: IRightElementProps<Data>) {
             setReset?.(true);
           }}
         >
-          {icon}
+          {iconJSX}
         </button>
         <Separator
           isError={modelVariants.isError || false}
@@ -244,13 +258,26 @@ export default function RightElement<Data>(props: IRightElementProps<Data>) {
     tooltipContentClear,
   ]);
 
-  const renderError = useCallback(() => {
-    const iconDefault = <Warning size={18} strokeWidth={2} aria-hidden={true} className={classNameIconError} />;
-    const icon = iconError || iconDefault;
+  const renderError = useMemo(() => {
+    let iconJSX: React.JSX.Element = (
+      <Warning
+        size={18}
+        strokeWidth={2}
+        aria-hidden={true}
+        className={cn('h-[clamp(1.13rem,55%,2rem)] w-[clamp(1.13rem,55%,2rem)]', classNameIconError)}
+      />
+    );
+
+    if (iconError) {
+      const existingClassName = iconError.props.className || '';
+      iconJSX = React.cloneElement(iconError, {
+        className: cn('h-[clamp(1.13rem,55%,2rem)] w-[clamp(1.13rem,55%,2rem)]', existingClassName, classNameIconError),
+      });
+    }
 
     const errorJsx = (
       <div className={cn(elementsVariants(errorModelVariants), 'pointer-events-auto', classNameError || null)}>
-        {icon}
+        {iconJSX}
       </div>
     );
 
@@ -276,7 +303,7 @@ export default function RightElement<Data>(props: IRightElementProps<Data>) {
       );
     }
 
-    return <div className={cn(elementsVariants(errorModelVariants), classNameError || null)}>{icon}</div>;
+    return <div className={cn(elementsVariants(errorModelVariants), classNameError || null)}>{iconJSX}</div>;
   }, [
     classNameError,
     classNameHoverContentError,
@@ -320,8 +347,8 @@ export default function RightElement<Data>(props: IRightElementProps<Data>) {
           showNumericValidationErrors={showNumericValidationErrors}
         />
       ))}
-      {showClear && !disable && renderClear()}
-      {showErrorElement && (showError || showNumericValidationErrors) && renderError()}
+      {showClear && !disable && renderClear}
+      {showErrorElement && (showError || showNumericValidationErrors) && renderError}
     </div>
   );
 }
