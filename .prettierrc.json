@@ -5,7 +5,8 @@
     "printWidth": 120,
     "tabWidth": 2,
     "plugins": [
-        "prettier-plugin-tailwindcss"
+        "prettier-plugin-tailwindcss",
+        "prettier-plugin-css-order"
     ],
     "tailwindFunctions": [
         "cva",
@@ -13,5 +14,19 @@
         "cx",
         "cn",
         "twMerge"
+    ],
+    "overrides": [
+        {
+            "files": [
+                "*.css",
+                "*.scss",
+                "*.less"
+            ],
+            "options": {
+                "printWidth": 180,
+                "singleQuote": false,
+                "tabWidth": 2
+            }
+        }
     ]
 }
