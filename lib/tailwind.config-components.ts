@@ -1,9 +1,9 @@
 import type { Config } from 'tailwindcss';
 
+import tailwindInput from './components/Input/tailwind.config-input';
+
 export const presetConfig: Partial<Config> = {
-  content: [
-    './node_modules/ux-pl-components/dist/**/*.{js,ts,jsx,tsx}',
-  ],
+  presets: [tailwindInput],
 };
 
 export const uxPlContentPaths: string[] = [
