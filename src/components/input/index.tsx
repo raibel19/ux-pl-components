@@ -2,7 +2,6 @@ import { Information } from '@carbon/icons-react';
 import { useEffect, useState } from 'react';
 
 import { Input } from '@/components/Input';
-import { getLocale, localeToCurrency } from 'ux-pl/utils/numbers';
 
 export default function InputsExamples() {
   const [resetInputState, setResetInputState] = useState(false);
@@ -127,7 +126,7 @@ export default function InputsExamples() {
             // // data={1}
             onChange={async ({ value }) => {
               console.log('onChange', value);
-              const currentValue = value || '';
+              // const currentValue = value || '';
               // if (currentValue.length >= 5) {
               //   setMaterialState(currentValue);
               // } else {
