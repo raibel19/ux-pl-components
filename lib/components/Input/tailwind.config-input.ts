@@ -6,17 +6,17 @@ const presetConfig: Partial<Config> = {
       backgroundColor: (cnf) => ({
         ...cnf.theme('colors'),
         'ux-input-label': {
-          DEFAULT: 'hsl(var(--ux-input-label-background) / <alpha-value>)'
-        }
+          DEFAULT: 'hsl(var(--ux-input-label-background) / <alpha-value>)',
+        },
       }),
       textColor: (cnf) => ({
         ...cnf.theme('colors'),
         'ux-input-label': {
-          DEFAULT: 'hsl(var(--ux-input-label) / <alpha-value>)'
-        }
+          DEFAULT: 'hsl(var(--ux-input-label) / <alpha-value>)',
+        },
       }),
-    }
-  }
+    },
+  },
 };
 
 export default presetConfig;
