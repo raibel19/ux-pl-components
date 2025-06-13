@@ -1,9 +1,0 @@
-{
-    "label": "Iniciando",
-    "position": 2,
-    "link": {
-        "type": "generated-index",
-        "title": "Guías para Empezar",
-        "description": "Aprende cómo instalar, configurar y verificar la compatibilidad de la librería."
-    }
-}
