@@ -28,6 +28,8 @@ export default defineConfig({
       external: [
         'react',
         'react-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
         'tailwindcss',
         '@carbon/icons-react',
         '@radix-ui/react-dialog',
@@ -37,21 +39,39 @@ export default defineConfig({
         '@radix-ui/react-separator',
         '@radix-ui/react-hover-card',
         '@radix-ui/react-tooltip',
+        'lucide-react',
         /^node:.*/,
       ],
       input: Object.fromEntries(
-        glob.sync('lib/**/*.{ts,tsx}', { ignore: ['lib/**/*.d.ts'] }).map((file) => [
-          //The name of the entry point
-          // lib/nested/foo.ts becomes nested/foo
-          relative('lib', file.slice(0, file.length - extname(file).length)),
-          // The absolute path to the entry file
-          // lib/nested/foo.ts becomes /project/lib/nested/foo.ts
-          fileURLToPath(new URL(file, import.meta.url)),
-        ]),
+        glob
+          .sync(
+            [
+              // 'lib/**/*.{ts,tsx}',
+              'lib/main.ts',
+              'lib/tailwind.config-components.ts',
+              'lib/components/index.ts',
+              'lib/components/*/index.ts?(x)',
+            ],
+            { ignore: ['lib/**/*.d.ts'] },
+          )
+          .map((file) => [
+            //The name of the entry point
+            // lib/nested/foo.ts becomes nested/foo
+            relative('lib', file.slice(0, file.length - extname(file).length)),
+            // The absolute path to the entry file
+            // lib/nested/foo.ts becomes /project/lib/nested/foo.ts
+            fileURLToPath(new URL(file, import.meta.url)),
+          ]),
       ),
       output: {
         assetFileNames: 'assets/[name][extname]',
         entryFileNames: '[name].js',
+        globals: {
+          'react-dom': 'ReactDom',
+          react: 'React',
+          'react/jsx-runtime': 'ReactJsxRuntime',
+          'react/jsx-dev-runtime': 'ReactJsxDevRuntime',
+        },
       },
     },
   },
