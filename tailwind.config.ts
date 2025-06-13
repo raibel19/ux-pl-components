@@ -2,16 +2,12 @@ import type { Config } from 'tailwindcss';
 import tailwindcssAnimate from 'tailwindcss-animate';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
-import {presetConfig} from './lib/tailwind.config-components';
+import { presetConfig } from './lib/tailwind.config-components';
 
 const config: Config = {
   presets: [presetConfig],
-    darkMode: ["class"],
-    content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-	  "./lib/**/*.{js,ts,jsx,tsx}"
-  ],
+  darkMode: ['class'],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}', './lib/**/*.{js,ts,jsx,tsx}'],
   theme: {
     fontFamily: {
       sans: ['var(--font-roboto)', ...defaultTheme.fontFamily.sans],
@@ -125,6 +121,6 @@ const config: Config = {
     },
   },
   plugins: [tailwindcssAnimate],
-}
+};
 
 export default config;
