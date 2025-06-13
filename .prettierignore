@@ -6,5 +6,5 @@ node_modules
 package-lock.json
 public
 src/components/ui/*
-tailwind.config*.ts
+# tailwind.config*.ts
 lib/components/ui/*.tsx
