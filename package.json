@@ -2,7 +2,7 @@
   "name": "ux-pl-components",
   "private": false,
   "version": "0.1.0",
-  "description": "Funciones para array, base64, blob, file, hash, interval, merge, mime, mobile, numbers, object, react, string, units, url",
+  "description": "Componentes",
   "keywords": [
     "typescript",
     "helpers",
