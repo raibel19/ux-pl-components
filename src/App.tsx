@@ -1,11 +1,11 @@
-import Inputs from './components/input';
+import CardExamples from './components/card/examples';
+import InputsExamples from './components/input';
 
 function App() {
   return (
     <div className="container py-5">
-      <div className="flex w-full flex-col">
-        <Inputs />
-      </div>
+      <InputsExamples />
+      <CardExamples />
     </div>
   );
 }
