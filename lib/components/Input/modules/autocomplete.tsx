@@ -84,10 +84,12 @@ export default forwardRef(function Autocomplete<Data, AutoCompData extends strin
   const itemsCache = useRef<Map<string, string>>(new Map());
   const autocompleteInputRef = useRef<IAutocompleteInputForwardRefType>(null);
 
-  const baseStyle = inputStyle.baseStyle;
+  const themeCore = inputStyle['input-core'];
   const themeStyle = useMemo(() => {
     switch (theme) {
       case 'default':
+        return inputStyle['input-theme-default'];
+      case 'inherit':
         return '';
       default:
         return theme ?? '';
@@ -317,7 +319,7 @@ export default forwardRef(function Autocomplete<Data, AutoCompData extends strin
             }
           }}
           className={cn(
-            baseStyle,
+            themeCore,
             themeStyle,
             'w-[--radix-popover-trigger-width] p-0',
             classNamePopover?.classNameContent || null,

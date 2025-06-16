@@ -1387,7 +1387,7 @@ export interface IAutocomplete<AutoCompData extends string> {
   virtualizeSuggestionsList?: boolean;
 }
 
-export type InputTheme = 'default' | (string & {});
+export type InputTheme = 'default' | 'inherit' | (string & {});
 
 export interface IFormatter extends INumberFormatterOptions {
   /**

@@ -132,10 +132,12 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
     defaultValue: undefined,
   });
 
-  const baseStyle = inputStyle.baseStyle;
+  const themeCore = inputStyle['input-core'];
   const themeStyle = useMemo(() => {
     switch (theme) {
       case 'default':
+        return inputStyle['input-theme-default'];
+      case 'inherit':
         return '';
       default:
         return theme ?? '';
@@ -433,7 +435,7 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
     return (
       <div
         className={cn(
-          baseStyle,
+          themeCore,
           themeStyle,
           'relative flex w-full content-center items-center justify-items-center gap-1 text-center',
           classNameSkeletonContainer || null,
@@ -445,7 +447,7 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
   }
 
   return (
-    <div className={cn(baseStyle, themeStyle, 'w-full space-y-1', classNamePrincipalContainer)}>
+    <div className={cn(themeCore, themeStyle, 'w-full space-y-1', classNamePrincipalContainer)}>
       <div className={cn('relative w-full', classNameInputContainer)}>
         <Label
           className={cn(
