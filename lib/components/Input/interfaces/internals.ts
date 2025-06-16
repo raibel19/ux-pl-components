@@ -11,6 +11,7 @@ import {
   IInputProps,
   IInputValidations,
   IInputValidationsSanitize,
+  InputTheme,
   IRightElement,
   ISubscribeBetween,
 } from './input';
@@ -101,6 +102,7 @@ export interface IAutocompleteProps<Data, AutoCompData extends string> {
   classNameInput: string | undefined;
   leftWidth: string | number;
   rightWidth: string | number;
+  theme: InputTheme | undefined;
 }
 
 export type AutocompleteForwardRefType = {
@@ -206,6 +208,7 @@ export interface IInputCoreProps<Data, AutoCompData extends string> {
   setShowErrorNumeric: (newModel: IErrorNumberValidation) => void;
   variantIsError: VariantProps<typeof inputVariants>['isError'];
   variantLeftElement: VariantProps<typeof inputVariants>['leftElement'];
+  theme: InputTheme | undefined;
 }
 
 export type InputCoreForwardRefType = {

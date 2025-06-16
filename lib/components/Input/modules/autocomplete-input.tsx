@@ -150,7 +150,6 @@ export default forwardRef(function AutocompleteInput<Data, AutoCompData extends 
         asChild
         ref={inputRef}
         {...nativeInputsProps}
-        id={inputId}
         defaultValue={undefined}
         defaultChecked={undefined}
         value={valueInput}
@@ -161,6 +160,7 @@ export default forwardRef(function AutocompleteInput<Data, AutoCompData extends 
         onBlur={handleOnBlur}
       >
         <Input
+          id={inputId}
           className={cn(
             inputVariants({
               leftElement: variantLeftElement,
