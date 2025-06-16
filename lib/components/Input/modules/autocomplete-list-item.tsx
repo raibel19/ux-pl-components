@@ -60,7 +60,7 @@ const AutocompleteListItem = genericMemo(
         disabled={disable}
         className={cn(
           'rounded-none text-sm text-foreground/80 data-[selected=true]:text-foreground data-[selected=true]:hover:text-foreground',
-          isSelected ? 'border-y bg-accent/40' : null,
+          isSelected ? 'bg-ux-autocomplete-item-selected/65' : null,
           classNamePopoverScrollArea?.classNameItem || null,
         )}
       >

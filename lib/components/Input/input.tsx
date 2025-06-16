@@ -433,11 +433,13 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
     return (
       <div
         className={cn(
+          baseStyle,
+          themeStyle,
           'relative flex w-full content-center items-center justify-items-center gap-1 text-center',
           classNameSkeletonContainer || null,
         )}
       >
-        <Skeleton className={cn('h-8 w-full rounded-sm bg-input/60', classNameSkeleton || null)} />
+        <Skeleton className={cn('h-8 w-full rounded-sm bg-ux-skeleton/60', classNameSkeleton || null)} />
       </div>
     );
   }
@@ -483,6 +485,7 @@ export default forwardRef(function Input<Data, AutoCompData extends string>(
           variantLeftElement={leftElement?.show || leftElement?.renderContainer ? leftElement?.type : 'default'}
           formatter={formatter}
           sanitize={sanitize}
+          theme={theme}
         />
         <LeftElement
           disable={nativeInputsProps?.disabled}

@@ -49,6 +49,7 @@ export default forwardRef(function InputCore<Data, AutoCompData extends string>(
     setShowErrorNumeric,
     variantIsError,
     variantLeftElement,
+    theme,
   } = props;
 
   const betweenOptions = numberValidations?.between;
@@ -324,6 +325,7 @@ export default forwardRef(function InputCore<Data, AutoCompData extends string>(
           classNameInput={classNameInput}
           leftWidth={leftWidth}
           rightWidth={rightWidth}
+          theme={theme}
         />
       ) : (
         <Input

@@ -18,6 +18,7 @@ import { Popover, PopoverContent } from '@/components/ui/popover';
 
 import { cn } from '@/lib/utils';
 
+import inputStyle from '../input.module.css';
 import {
   AutocompleteForwardRefType,
   IAutocompleteInputForwardRefType,
@@ -50,6 +51,7 @@ export default forwardRef(function Autocomplete<Data, AutoCompData extends strin
     classNameInput,
     leftWidth,
     rightWidth,
+    theme,
   } = props;
 
   const {
@@ -81,6 +83,16 @@ export default forwardRef(function Autocomplete<Data, AutoCompData extends strin
   const prevInputSelectedValueRef = useRef<string>('');
   const itemsCache = useRef<Map<string, string>>(new Map());
   const autocompleteInputRef = useRef<IAutocompleteInputForwardRefType>(null);
+
+  const baseStyle = inputStyle.baseStyle;
+  const themeStyle = useMemo(() => {
+    switch (theme) {
+      case 'default':
+        return '';
+      default:
+        return theme ?? '';
+    }
+  }, [theme]);
 
   const autocompletePropsMemo = useMemo(
     (): IAutocompleteInputProps<Data, AutoCompData>['autocompleteProps'] => ({
@@ -277,7 +289,12 @@ export default forwardRef(function Autocomplete<Data, AutoCompData extends strin
 
   return (
     <Popover open={openState} onOpenChange={setOpenState}>
-      <Command shouldFilter={false} value={commandValueState} onValueChange={setCommandValueState}>
+      <Command
+        shouldFilter={false}
+        value={commandValueState}
+        onValueChange={setCommandValueState}
+        className="[&_label]:hidden"
+      >
         <AutocompleteInput
           ref={autocompleteInputRef}
           autocompleteProps={autocompletePropsMemo}
@@ -299,7 +316,12 @@ export default forwardRef(function Autocomplete<Data, AutoCompData extends strin
               e.preventDefault();
             }
           }}
-          className={cn('w-[--radix-popover-trigger-width] p-0', classNamePopover?.classNameContent || null)}
+          className={cn(
+            baseStyle,
+            themeStyle,
+            'w-[--radix-popover-trigger-width] p-0',
+            classNamePopover?.classNameContent || null,
+          )}
         >
           <CommandList className={cn(classNamePopover?.classNameList)}>
             <CommandEmpty

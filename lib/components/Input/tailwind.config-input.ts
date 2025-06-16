@@ -3,18 +3,15 @@ import type { Config } from 'tailwindcss';
 const presetConfig: Partial<Config> = {
   theme: {
     extend: {
-      backgroundColor: (cnf) => ({
-        ...cnf.theme('colors'),
-        'ux-input-label': {
-          DEFAULT: 'hsl(var(--ux-input-label-background) / <alpha-value>)',
-        },
-      }),
-      textColor: (cnf) => ({
-        ...cnf.theme('colors'),
-        'ux-input-label': {
-          DEFAULT: 'hsl(var(--ux-input-label) / <alpha-value>)',
-        },
-      }),
+      backgroundColor: {
+        'ux-autocomplete-header': 'hsl(var(--ux-autocomplete-header-background) / <alpha-value>)',
+        'ux-autocomplete-header-separator': 'hsl(var(--ux-autocomplete-header-separator-background) / <alpha-value>)',
+        'ux-autocomplete-item-selected': 'hsl(var(--ux-autocomplete-item-selected-background) / <alpha-value>)',
+        'ux-skeleton': 'hsl(var(--ux-skeleton-background) / <alpha-value>)',
+      },
+      textColor: {
+        'ux-placeholder': 'hsl(var(--ux-placeholder-foreground) / <alpha-value>)',
+      },
     },
   },
 };

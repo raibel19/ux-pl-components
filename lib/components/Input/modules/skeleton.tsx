@@ -25,7 +25,7 @@ export default function Skeleton(props: ISkeleton) {
       {copyCountValue.map((idx) => (
         <SkeletonShadcn
           key={idx}
-          className={cn('relative h-7 rounded-sm bg-input/60 py-1.5 outline-none', className || null)}
+          className={cn('relative h-7 rounded-sm bg-ux-skeleton/60 py-1.5 outline-none', className || null)}
         />
       ))}
     </>

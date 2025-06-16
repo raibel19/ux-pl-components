@@ -1,16 +1,16 @@
-.suggestionScrollArea > [data-orientation='vertical']:has(> div) {
-  background-color: hsl(var(--border));
-  padding-left: 1px;
+.suggestionScrollArea > [data-orientation="vertical"]:has(> div) {
+  background-color: hsl(var(--ux-gray-200));
   padding-right: 2px;
+  padding-left: 1px;
   width: 0.65rem;
 }
 
-.suggestionScrollArea > [data-orientation='vertical'] > div {
-  background-color: hsl(var(--muted-foreground) / 0.4);
+.suggestionScrollArea > [data-orientation="vertical"] > div {
+  background-color: hsl(var(--ux-gray-600) / 0.4);
 }
 
-.suggestionScrollArea > [data-orientation='vertical'] > div:hover {
-  background-color: hsl(var(--muted-foreground) / 0.8);
+.suggestionScrollArea > [data-orientation="vertical"] > div:hover {
+  background-color: hsl(var(--ux-gray-600) / 0.8);
 }
 
 /* 2. Estilos para el Scrollbar Completo (principalmente para el ancho en WebKit) */
@@ -20,25 +20,25 @@
 
 /* 3. Estilos para la Pista del Scrollbar (el fondo) en WebKit */
 .suggestionScrollArea::-webkit-scrollbar-track {
-  background-color: hsl(var(--border));
+  background-color: hsl(var(--ux-gray-200));
 }
 
 /* 4. Estilos para el Pulgar del Scrollbar en WebKit */
 .suggestionScrollArea::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--muted-foreground) / 0.4);
   border-radius: 4px;
+  background-color: hsl(var(--ux-gray-600) / 0.4);
 }
 
 /* 5. Estilos para el Pulgar del Scrollbar al Pasar el Ratón en WebKit */
 .suggestionScrollArea::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(var(--muted-foreground) / 0.8);
+  background-color: hsl(var(--ux-gray-600) / 0.8);
 }
 
 /* --- Estilos Específicos para Firefox --- */
 /* Nota: Firefox usa propiedades diferentes y la personalización es más limitada */
 .suggestionScrollArea {
   /* Define el color del pulgar y la pista (thumb track) */
-  scrollbar-color: hsl(var(--muted-foreground) / 0.4) hsl(var(--border));
+  scrollbar-color: hsl(var(--ux-gray-600) / 0.4) hsl(var(--ux-gray-200));
   /* Define el ancho del scrollbar */
   scrollbar-width: thin; /* 'auto' o 'none' */
 }

@@ -15,7 +15,7 @@ export default function AautocompleteListHeader<AutoCompData extends string>(
     <>
       <div
         className={cn(
-          'sticky top-0 z-10 min-h-8 content-center rounded-t-sm bg-popover px-9 py-1.5 text-xs font-medium text-foreground',
+          'sticky top-0 z-10 min-h-8 content-center rounded-t-sm bg-ux-autocomplete-header px-9 py-1.5 text-xs font-medium text-foreground',
           classNamePopoverHeader?.classNameContainer || null,
         )}
         onMouseDown={(e) => e.preventDefault()}
@@ -42,7 +42,7 @@ export default function AautocompleteListHeader<AutoCompData extends string>(
           )}
         </div>
       </div>
-      <Separator orientation="horizontal" className="bg-border/70" />
+      <Separator orientation="horizontal" className="bg-ux-autocomplete-header-separator/70" />
     </>
   );
 }
