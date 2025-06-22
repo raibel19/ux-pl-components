@@ -15,7 +15,7 @@ export default function InputRightAddon(props: InputRightAddonProps) {
 
   useResizeObserver(addonRef, (entry) => {
     const divWidth = entry.contentRect.width;
-    const width = divWidth ? `${divWidth + 7}px` : '0.75rem';
+    const width = divWidth ? `${divWidth + 16}px` : '0.75rem';
     setRightAddonWidth(width);
   });
 
