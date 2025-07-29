@@ -1,10 +1,11 @@
 import CardExamples from './components/card/examples';
-import InputsExamples from './components/input';
+import InputModules from './components/input/input-modules';
 
 function App() {
   return (
     <div className="container py-5">
-      <InputsExamples />
+      {/* <InputsExamples /> */}
+      <InputModules />
       <CardExamples />
     </div>
   );
