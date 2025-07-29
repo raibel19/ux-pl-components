@@ -1,0 +1,43 @@
+:where(.autocomplete-core) {
+  /* NIVEL 3: Tokens Semánticos Personalizados (Específicos de tu UI) */
+  --ux-placeholder-foreground: var(--muted-foreground);
+
+  --ux-autocomplete-header-background: var(--ux-white);
+  --ux-autocomplete-header-separator-background: var(--border);
+  --ux-autocomplete-item-selected-background: var(--accent);
+  --ux-skeleton-background: var(--input);
+  --ux-warning-foreground: var(--warning);
+  --ux-info-foreground: var(--info);
+}
+
+:where(.autocomplete-theme-default) {
+  /* NIVEL 1: Paleta de Colores Primitivos */
+  --ux-white: 0 0% 100%; /* #ffffff */
+  --ux-black: 0 0% 9%; /* #171717 */
+  --ux-red-500: 0 84.2% 60.2%; /* #E84D4D */
+  --ux-gray-200: 240 5.9% 90%; /* #E3E3E8 */
+  --ux-gray-300: 0 0% 83%; /* #D4D4D4 */
+  --ux-gray-600: 216 4% 46%; /* #71747A */
+  --ux-gray-950: 240 10% 3.9%; /* #09090B */
+  --ux-blue-600: 199 89% 48%; /* #0E95E7 */
+  --ux-orange-600: 38 92% 50%; /* #F79E08 */
+
+  /* #ACB0B9 */
+  /* --ux-gray-400: 220 9% 70%; */
+  /* #CDD7E5 */
+  /* --ux-slate-300: 214 32% 85%; */
+  /* #CFE8F0 */
+  /* --ux-blue-200: 196 62% 87%; */
+
+  /* NIVEL 2: Mapeo a Tokens Estándar de shadcn (Para Compatibilidad) */
+  --background: var(--ux-white);
+  --destructive: var(--ux-red-500);
+  --foreground: var(--ux-black);
+  --muted-foreground: var(--ux-gray-600);
+  --ring: var(--ux-gray-950);
+  --border: var(--ux-gray-200);
+  --input: var(--ux-gray-300);
+  --warning: var(--ux-orange-600);
+  --info: var(--ux-blue-600);
+  /* --accent: var(--ux-blue-200); */
+}
