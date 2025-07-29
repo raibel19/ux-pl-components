@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { numberFormatter } from 'ux-pl/utils/numbers';
 
 import {
@@ -36,122 +36,103 @@ interface UseManagedInputProps<Data> {
 }
 
 export default function useManagedInput<Data>(props: UseManagedInputProps<Data>) {
-  const {
-    between,
-    data,
-    defaultValue,
-    formatter,
-    limits,
-    maxLength,
-    reset,
-    resetToInitialValue,
-    sanitize,
-    type,
-    value: controlledValue,
-    onValueChange,
-    setReset,
-  } = props;
+  const { defaultValue, reset, type, value: controlledValue, setReset } = props;
 
   const isControlled = controlledValue !== undefined;
   const isTypeNumber = type === 'number';
-
-  const sanitizeOnInitialValue = sanitize?.initialValue;
-  const sanitizeOnChangeEvent = sanitize?.onChangeEvent;
-  const sanitizeDigits = sanitize?.maxDecimalDigits ?? 0;
 
   const [errors, dispatchError] = useReducer(errorReducer, new Map());
 
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [valueFormatted, setValueFormatted] = useState<string>('');
 
-  const formatValue = useCallback(
-    (value: string, setSanitze: boolean = true) => {
-      if (!formatter || !formatter.active) return;
+  const propsRef = useRef(props);
 
-      let valueSantize = value;
-      if (setSanitze) valueSantize = sanitizeNumber(value);
-      const formatted = numberFormatter(formatter).format(valueSantize);
-      setValueFormatted(formatted);
-    },
-    [formatter],
-  );
+  const formatValue = useCallback((value: string, setSanitze: boolean = true) => {
+    const { formatter } = propsRef.current;
 
-  const validateMaxLength = useCallback(
-    (value: string) => {
-      if (!maxLength || maxLength === 0) return false;
-      return isMaxLengthExceeded(value, maxLength);
-    },
-    [maxLength],
-  );
+    if (!formatter || !formatter.active) return;
 
-  const validateLimits = useCallback(
-    (valueSantize: string) => {
-      if (!limits) return;
+    let valueSantize = value;
+    if (setSanitze) valueSantize = sanitizeNumber(value);
+    const formatted = numberFormatter(formatter).format(valueSantize);
+    setValueFormatted(formatted);
+  }, []);
 
-      const { max, min, maxMessageError, minMessageError } = limits;
-      const isInvalidMin = isMinExceeded(valueSantize, min);
-      const isInvalidMax = isMaxExceeded(valueSantize, max);
+  const validateMaxLength = useCallback((value: string) => {
+    const { maxLength } = propsRef.current;
 
-      if (!isInvalidMin && !isInvalidMax) {
-        dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.limitsMin } });
-        dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.limitsMax } });
-        return;
-      }
+    if (!maxLength || maxLength === 0) return false;
+    return isMaxLengthExceeded(value, maxLength);
+  }, []);
 
-      if (isInvalidMin) {
-        dispatchError({
-          type: 'ADD_ERROR',
-          payload: { key: ErrorKeys.limitsMin, message: minMessageError ?? 'El valor es menor al mínimo permitido' },
-        });
-      } else {
-        dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.limitsMin } });
-      }
+  const validateLimits = useCallback((valueSantize: string) => {
+    const { limits } = propsRef.current;
 
-      if (isInvalidMax) {
-        dispatchError({
-          type: 'ADD_ERROR',
-          payload: { key: ErrorKeys.limitsMax, message: maxMessageError ?? 'El valor es mayor al máximo permitido' },
-        });
-      } else {
-        dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.limitsMax } });
-      }
-    },
-    [limits],
-  );
+    if (!limits) return;
 
-  const validateBetween = useCallback(
-    (valueSantize: string) => {
-      if (!between) return;
+    const { max, min, maxMessageError, minMessageError } = limits;
+    const isInvalidMin = isMinExceeded(valueSantize, min);
+    const isInvalidMax = isMaxExceeded(valueSantize, max);
 
-      const { messageError, subscribeBetween } = between;
-      const { beteween, isInvalidRange } = isBetweenExceeded(valueSantize, between);
+    if (!isInvalidMin && !isInvalidMax) {
+      dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.limitsMin } });
+      dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.limitsMax } });
+      return;
+    }
 
-      if (beteween) subscribeBetween?.(beteween);
+    if (isInvalidMin) {
+      dispatchError({
+        type: 'ADD_ERROR',
+        payload: { key: ErrorKeys.limitsMin, message: minMessageError ?? 'El valor es menor al mínimo permitido' },
+      });
+    } else {
+      dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.limitsMin } });
+    }
 
-      if (!isInvalidRange) {
-        dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.between } });
-        return;
-      }
+    if (isInvalidMax) {
+      dispatchError({
+        type: 'ADD_ERROR',
+        payload: { key: ErrorKeys.limitsMax, message: maxMessageError ?? 'El valor es mayor al máximo permitido' },
+      });
+    } else {
+      dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.limitsMax } });
+    }
+  }, []);
 
-      if (isInvalidRange) {
-        dispatchError({
-          type: 'ADD_ERROR',
-          payload: { key: ErrorKeys.between, message: messageError ?? 'El valor no encuentra en el rango permitido' },
-        });
-      } else {
-        dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.between } });
-      }
-    },
-    [between],
-  );
+  const validateBetween = useCallback((valueSantize: string) => {
+    const { between } = propsRef.current;
+
+    if (!between) return;
+
+    const { messageError, subscribeBetween } = between;
+    const { beteween, isInvalidRange } = isBetweenExceeded(valueSantize, between);
+
+    if (beteween) subscribeBetween?.(beteween);
+
+    if (!isInvalidRange) {
+      dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.between } });
+      return;
+    }
+
+    if (isInvalidRange) {
+      dispatchError({
+        type: 'ADD_ERROR',
+        payload: { key: ErrorKeys.between, message: messageError ?? 'El valor no encuentra en el rango permitido' },
+      });
+    } else {
+      dispatchError({ type: 'REMOVE_ERROR', payload: { key: ErrorKeys.between } });
+    }
+  }, []);
 
   const processRawValue = useCallback(
     (rawValue: string) => {
+      const { maxLength, sanitize } = propsRef.current;
+      const { maxDecimalDigits = 0, initialValue } = sanitize || {};
+
       const trimmed = rawValue.trim();
 
-      const sanitized = isTypeNumber
-        ? sanitizeNumber(trimmed, { ...sanitizeOnInitialValue, maxDecimalDigits: sanitizeDigits })
-        : trimmed;
+      const sanitized = isTypeNumber ? sanitizeNumber(trimmed, { ...initialValue, maxDecimalDigits }) : trimmed;
 
       const newValue = validateMaxLength(sanitized) ? sanitized.slice(0, maxLength) : sanitized;
 
@@ -162,16 +143,7 @@ export default function useManagedInput<Data>(props: UseManagedInputProps<Data>)
       }
       return newValue;
     },
-    [
-      formatValue,
-      isTypeNumber,
-      maxLength,
-      sanitizeDigits,
-      sanitizeOnInitialValue,
-      validateBetween,
-      validateLimits,
-      validateMaxLength,
-    ],
+    [formatValue, isTypeNumber, validateBetween, validateLimits, validateMaxLength],
   );
 
   const [value, setValue] = useState<string>(() => {
@@ -194,12 +166,13 @@ export default function useManagedInput<Data>(props: UseManagedInputProps<Data>)
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { data, maxLength, sanitize, onValueChange } = propsRef.current;
+      const { maxDecimalDigits = 0, onChangeEvent } = sanitize || {};
+
       const inputValue = e.target.value;
       const previousInputValue = value;
 
-      const sanitized = isTypeNumber
-        ? sanitizeNumber(inputValue, { ...sanitizeOnChangeEvent, maxDecimalDigits: sanitizeDigits })
-        : inputValue;
+      const sanitized = isTypeNumber ? sanitizeNumber(inputValue, { ...onChangeEvent, maxDecimalDigits }) : inputValue;
 
       const newValue = validateMaxLength(sanitized) ? sanitized.slice(0, maxLength) : sanitized;
 
@@ -222,38 +195,45 @@ export default function useManagedInput<Data>(props: UseManagedInputProps<Data>)
         onValueChange(payload);
       }
     },
-    [
-      data,
-      formatValue,
-      isControlled,
-      isTypeNumber,
-      maxLength,
-      onValueChange,
-      sanitizeDigits,
-      sanitizeOnChangeEvent,
-      validateBetween,
-      validateLimits,
-      validateMaxLength,
-      value,
-    ],
+    [formatValue, isControlled, isTypeNumber, validateBetween, validateLimits, validateMaxLength, value],
   );
 
   const handleReset = useCallback(
     (resetToInitialValue: boolean | undefined) => {
+      const { data, onValueChange } = propsRef.current;
+
       const initialValue = initialValueRef.current;
       const resetValue = resetToInitialValue === true ? initialValue : '';
 
       dispatchError({ type: 'CLEAR_ERRORS' });
 
-      if (isControlled) {
-        onValueChange?.({ data, initialValue: initialValue, value: resetValue });
-      } else {
+      if (!isControlled) {
         setValueFormatted('');
         setValue('');
       }
+
+      if (onValueChange) {
+        const payload: InputChangePayload<Data> = {
+          data,
+          initialValue,
+          value: resetValue,
+        };
+        onValueChange(payload);
+      }
     },
-    [data, isControlled, onValueChange],
+    [isControlled],
   );
+
+  const handleAddError = useCallback((key: string, value: string | string[]) => {
+    dispatchError({
+      type: 'ADD_ERROR',
+      payload: { key, message: value },
+    });
+  }, []);
+
+  useLayoutEffect(() => {
+    propsRef.current = props;
+  }, [props]);
 
   useEffect(() => {
     if (isControlled) {
@@ -269,10 +249,20 @@ export default function useManagedInput<Data>(props: UseManagedInputProps<Data>)
 
   useEffect(() => {
     if (reset && setReset) {
+      const { resetToInitialValue } = propsRef.current;
+
       setReset(false);
       handleReset(resetToInitialValue);
     }
-  }, [handleReset, reset, resetToInitialValue, setReset]);
+  }, [handleReset, reset, setReset]);
+
+  useEffect(() => {
+    if (isControlled && defaultValue !== undefined) {
+      console.warn(
+        `useManagedInput: Se están proporcionando las props 'value' y 'defaultValue' a un Input. Un componente no puede ser controlado y no controlado a la vez. Se dará prioridad a 'value'.`,
+      );
+    }
+  }, [isControlled, defaultValue]);
 
   return {
     displayValue,
@@ -282,8 +272,8 @@ export default function useManagedInput<Data>(props: UseManagedInputProps<Data>)
     valueFormatted,
     onBlur: handleBlur,
     onChange: handleChange,
-    onDispatchError: dispatchError,
     onFocus: handleFocus,
     onReset: handleReset,
+    onAddError: handleAddError,
   };
 }

@@ -4,21 +4,29 @@ import { cn } from '../../../lib/utils';
 import FieldMessage from '../../primitives/field-message';
 import { useInputContext } from './context';
 
-interface InputErrorsProps {
+interface InputErrorsProps extends React.HTMLAttributes<HTMLUListElement> {
   className?: string;
+  customMessageError?: string;
 }
 
 export default forwardRef<HTMLUListElement, InputErrorsProps>(function InputErrors(props, ref) {
-  const { className } = props;
+  const { className, customMessageError, ...moreProps } = props;
   const { errors, isInvalid } = useInputContext();
 
-  if (!isInvalid || !errors.length) return null;
+  const newErrors = errors;
+
+  if (customMessageError && isInvalid) {
+    newErrors.push(customMessageError);
+  }
+
+  if (!isInvalid || !newErrors.length) return null;
 
   return (
     <FieldMessage
       ref={ref}
+      {...moreProps}
       variant={{ type: 'error', size: 'sm' }}
-      messages={errors}
+      messages={newErrors}
       className={cn('mt-2 min-w-full max-w-min [text-wrap-style:pretty]', className || null)}
     />
   );

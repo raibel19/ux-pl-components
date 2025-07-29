@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import { ComponentPropsWithoutRef, forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
 import { Input } from '@/components/ui/input';
 
@@ -14,22 +14,17 @@ type InputControlForwardRef = {
 
 type NativeInputProps = Omit<
   ComponentPropsWithoutRef<'input'>,
-  keyof InputControlProps | 'className' | 'id' | 'type' | 'onChange' | 'value' | 'defaultValue' | 'disabled'
+  'id' | 'type' | 'onChange' | 'value' | 'defaultValue' | 'disabled'
 >;
 
-interface InputControlProps {
-  nativeInputsProps?: NativeInputProps;
-  className?: string;
+interface InputControlProps extends NativeInputProps {
   subscribeFocus?: (isFocus: boolean) => void;
 }
 
 export default forwardRef<InputControlForwardRef, InputControlProps>(function InputControl(props, ref) {
-  const { className, nativeInputsProps, subscribeFocus } = props;
+  const { className, subscribeFocus, onFocus: onFocusNative, onBlur: onBlurNative, ...moreProps } = props;
   const { id, onBlur, onChange, onFocus, displayValue, disabled, isInvalid, type, leftAddonWidth, rightAddonWidth } =
     useInputContext();
-
-  const onFocusNative = nativeInputsProps?.onFocus;
-  const onBlurNative = nativeInputsProps?.onBlur;
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -66,18 +61,10 @@ export default forwardRef<InputControlForwardRef, InputControlProps>(function In
     [onBlur, onBlurNative, subscribeFocus, type],
   );
 
-  useEffect(() => {
-    console.log('Component-InputControl-PROPS');
-  }, [props]);
-
-  useEffect(() => {
-    console.log('Component-InputControl-CONTEXT');
-  }, [id, onBlur, onChange, onFocus, displayValue, disabled, isInvalid, type]);
-
   return (
     <Input
       ref={inputRef}
-      {...nativeInputsProps}
+      {...moreProps}
       id={id}
       type={type === 'number' ? 'text' : type}
       value={displayValue}
@@ -86,7 +73,12 @@ export default forwardRef<InputControlForwardRef, InputControlProps>(function In
       onBlur={handleBlur}
       onChange={onChange}
       disabled={disabled}
-      className={cn(inputVariants({ isError: isInvalid }), className || null)}
+      className={cn(
+        inputVariants({ isError: isInvalid }),
+        leftAddonWidth && 'ps-[--leftWidth]',
+        rightAddonWidth && 'pe-[--rightWidth]',
+        className || null,
+      )}
       style={{ '--leftWidth': `${leftAddonWidth}`, '--rightWidth': `${rightAddonWidth}` } as React.CSSProperties}
     />
   );

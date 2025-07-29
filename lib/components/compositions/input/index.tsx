@@ -8,14 +8,13 @@ import InputAddonText from './input-addon-text';
 import InputContent from './input-content';
 import InputControl from './input-control';
 import InputErrors from './input-errors';
-import InputGroup from './input-group';
 import InputLabel from './input-label';
 import InputLeftAddon from './input-left-addon';
 import InputRightAddon from './input-right-addon';
 import InputRoot from './input-root';
 import InputSkeleton from './input-skeleton';
 
-export const Input = Object.assign(InputGroup, {
+export const Input = Object.assign(InputRoot, {
   ButtonAddon: InputAddonButton,
   ClearAddon: InputAddonClear,
   Content: InputContent,
@@ -27,7 +26,6 @@ export const Input = Object.assign(InputGroup, {
   Label: InputLabel,
   LeftAddons: InputLeftAddon,
   RightAddons: InputRightAddon,
-  Root: InputRoot,
   SeparatorAddon: InputAddonSeparator,
   Skeleton: InputSkeleton,
   TextAddon: InputAddonText,

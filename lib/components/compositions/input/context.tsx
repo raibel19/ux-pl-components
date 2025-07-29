@@ -17,6 +17,7 @@ export interface InputContextType<Data = unknown> {
   type: InputType;
   value: string;
   valueFormatted: string;
+  onAddError: (key: string, value: string | string[]) => void;
   onBlur: () => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onFocus: () => void;

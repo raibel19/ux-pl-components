@@ -9,8 +9,6 @@ export const inputVariants = cva(
     'focus-visible:ring-ring',
     'focus-visible:ring-offset-0',
     'focus-visible:ring-offset-background',
-    'pe-[--rightWidth]',
-    'ps-[--leftWidth]',
     'text-foreground',
     'border-solid',
   ],

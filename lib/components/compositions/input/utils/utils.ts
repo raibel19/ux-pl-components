@@ -149,14 +149,23 @@ export const errorReducer = (state: ErrorState, action: ErrorAction): ErrorState
   const newState = new Map(state);
 
   switch (action.type) {
-    case 'ADD_ERROR':
-      newState.set(action.payload.key, action.payload.message);
+    case 'ADD_ERROR': {
+      const messages = action.payload.message;
+      const errors = Array.isArray(messages) ? messages : [messages];
+      const validMessages = errors.filter((msg) => msg.trim() !== '');
+
+      if (!validMessages.length) return newState;
+
+      validMessages.forEach((item) => newState.set(action.payload.key, item));
       return newState;
-    case 'REMOVE_ERROR':
+    }
+    case 'REMOVE_ERROR': {
       newState.delete(action.payload.key);
       return newState;
-    case 'CLEAR_ERRORS':
+    }
+    case 'CLEAR_ERRORS': {
       return new Map();
+    }
     default:
       return state;
   }
