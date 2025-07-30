@@ -7,7 +7,7 @@ interface UseListVirtualizeScrollProps {
   rowVirtualizer: Virtualizer<HTMLDivElement, HTMLDivElement>;
   isOpen: boolean;
   preSelectedValue: string | undefined;
-  filteredItems: [string, ItemsWithIdentifier][];
+  filteredItems: ItemsWithIdentifier[];
   identifier: string | undefined;
   parentRef: React.RefObject<HTMLDivElement>;
 }
@@ -42,7 +42,7 @@ export default function useListVirtualizeScroll(props: UseListVirtualizeScrollPr
       let indexToScroll: number = -1;
 
       if (identifier) {
-        indexToScroll = filteredItems.findIndex((item) => item[1].identifier === identifier);
+        indexToScroll = filteredItems.findIndex((item) => item.identifier === identifier);
       }
 
       if (indexToScroll !== -1) {
@@ -60,7 +60,7 @@ export default function useListVirtualizeScroll(props: UseListVirtualizeScrollPr
       let indexToScroll: number = -1;
 
       if (preSelectedValue) {
-        indexToScroll = filteredItems.findIndex((item) => item[1].identifier === preSelectedValue);
+        indexToScroll = filteredItems.findIndex((item) => item.identifier === preSelectedValue);
       }
 
       if (indexToScroll !== -1) {

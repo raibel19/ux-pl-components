@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { cn } from '../../../lib/utils';
 import { CommandGroup } from '../../ui/command';
@@ -21,11 +21,49 @@ export default function AutocompleteListVirtualize(props: AutocompleteListVirtua
 
   const { filteredItems, isLoading, isOpen, selectedValue, preSelectedValue, inputValue, isSearching } =
     useAutocompleteContext();
-  const { minLengthRequired } = useAutocompleteActionsContext();
+  const { minLengthRequired, registerKeydownOverride, onPreSelectItem } = useAutocompleteActionsContext();
 
-  const itemsToRender = useMemo(() => Array.from(filteredItems.entries()), [filteredItems]);
+  const items = useMemo(() => Array.from(filteredItems.values()), [filteredItems]);
+  const itemsIndexMap = useMemo(() => {
+    const map = new Map<string, number>();
+    items.forEach((item, idx) => map.set(item.identifier, idx));
+    return map;
+  }, [items]);
+
   const identifier = selectedValue?.identifier;
   const hidden = filteredItems.size === 0 || inputValue.length < minLengthRequired || isLoading || isSearching;
+
+  const findNextEnabledIndex = (currentIndex: number, items: ItemsWithIdentifier[], direction: string) => {
+    const len = items.length;
+    const directionValue = direction === 'ArrowDown' ? 1 : -1;
+
+    let nextIndex = currentIndex;
+    let tries = 0; //evitar bucles infinitos si todos los items estuvieran deshabilitados.
+
+    do {
+      nextIndex = (nextIndex + directionValue + len) % len;
+      tries++;
+    } while (items[nextIndex]?.disabled && tries < len);
+    return nextIndex;
+  };
+
+  const handleArrowNavigation = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      event.preventDefault();
+
+      if (!items.length) return;
+
+      const currentIdentifier = preSelectedValue;
+      const currentIndex = currentIdentifier ? (itemsIndexMap.get(currentIdentifier) ?? -1) : -1;
+      const nextEnabledIndex = findNextEnabledIndex(currentIndex, items, event.key);
+
+      if (nextEnabledIndex !== currentIndex) {
+        const nextItem = items[nextEnabledIndex];
+        if (nextItem) onPreSelectItem(nextItem.identifier);
+      }
+    },
+    [items, itemsIndexMap, onPreSelectItem, preSelectedValue],
+  );
 
   const rowVirtualizer = useVirtualizer<HTMLDivElement, HTMLDivElement>({
     count: filteredItems.size,
@@ -42,7 +80,7 @@ export default function AutocompleteListVirtualize(props: AutocompleteListVirtua
   });
 
   useListVirtualizeScroll({
-    filteredItems: itemsToRender,
+    filteredItems: items,
     identifier,
     isOpen,
     preSelectedValue,
@@ -51,6 +89,16 @@ export default function AutocompleteListVirtualize(props: AutocompleteListVirtua
   });
 
   const rowItems = rowVirtualizer.getVirtualItems();
+
+  useEffect(() => {
+    const unregisterUp = registerKeydownOverride('ArrowUp', handleArrowNavigation);
+    const unregisterDown = registerKeydownOverride('ArrowDown', handleArrowNavigation);
+
+    return () => {
+      unregisterUp();
+      unregisterDown();
+    };
+  }, [handleArrowNavigation, registerKeydownOverride]);
 
   useEffect(() => {
     console.log('rowVirtualizer.getTotalSize()', rowVirtualizer.getTotalSize());
@@ -77,11 +125,11 @@ export default function AutocompleteListVirtualize(props: AutocompleteListVirtua
         }}
       >
         {rowItems.map((virtualRow) => {
-          const [key, item] = itemsToRender[virtualRow.index];
-          console.log('Render row:', virtualRow.index, 'Total visible:', rowItems.length);
+          const item = items[virtualRow.index];
+          //   console.log('Render row:', virtualRow.index, 'Total visible:', rowItems.length);
           return (
             <div
-              key={key}
+              key={item.identifier}
               ref={rowVirtualizer.measureElement}
               data-index={virtualRow.index}
               className={cn('absolute left-0 top-0 w-full')}
@@ -89,10 +137,8 @@ export default function AutocompleteListVirtualize(props: AutocompleteListVirtua
                 height: `${virtualRow.size}px`,
                 transform: `translateY(${virtualRow.start}px)`,
               }}
-              data-disabled={item.disabled ? 'true' : undefined}
-              aria-disabled={item.disabled ? 'true' : undefined}
             >
-              <AutocompleteItem key={key} item={item} className={classNameItem} renderGlobal={children} />
+              <AutocompleteItem item={item} className={classNameItem} renderGlobal={children} />
             </div>
           );
         })}
