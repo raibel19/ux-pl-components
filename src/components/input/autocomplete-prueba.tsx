@@ -190,6 +190,7 @@ export default function AutocompleteTestBed() {
                 </Autocomplete.List> */}
               </Autocomplete.Popover>
             </Autocomplete.Group>
+            <Autocomplete.Errors customMessageError="custom message error" />
           </Autocomplete>
         </div>
       </div>
