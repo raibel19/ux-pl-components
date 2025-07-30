@@ -24,6 +24,7 @@ export interface AutocompleteActionsContextProps<Data = unknown> {
   isLoadingMounted: boolean;
   minLengthRequired: number;
   theme?: AutocompleteTheme;
+  errors: string[];
   onBlur: (event: React.FocusEvent<HTMLInputElement, Element>) => void;
   onChange: (value: string) => void;
   onFocus: () => void;

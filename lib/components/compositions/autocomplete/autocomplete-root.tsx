@@ -137,6 +137,7 @@ export default forwardRef(function AutocompleteRoot<Data>(
     () => ({
       data,
       disabled,
+      errors,
       id,
       isLoadingMounted,
       minLengthRequired,
@@ -159,6 +160,7 @@ export default forwardRef(function AutocompleteRoot<Data>(
     [
       data,
       disabled,
+      errors,
       id,
       isLoadingMounted,
       minLengthRequired,
