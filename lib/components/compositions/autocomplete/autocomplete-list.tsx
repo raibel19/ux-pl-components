@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
 import { cn } from '../../../lib/utils';
 import { CommandGroup } from '../../ui/command';
@@ -23,7 +23,7 @@ export default function AutocompleteList(props: AutocompleteListProps) {
     useAutocompleteContext();
   const { minLengthRequired } = useAutocompleteActionsContext();
 
-  const itemsToRender = Array.from(filteredItems.values());
+  const itemsToRender = useMemo(() => Array.from(filteredItems.values()), [filteredItems]);
   const identifier = selectedValue?.identifier;
   const hidden = filteredItems.size === 0 || inputValue.length < minLengthRequired || isLoading || isSearching;
 
