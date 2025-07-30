@@ -9,11 +9,12 @@ export interface AutocompleteContextProps {
   isInvalid?: boolean;
   isLoading: boolean;
   isOpen: boolean;
+  isSearching: boolean;
+  lastValidSelection: ItemsWithIdentifier | null;
   leftAddonWidth: string | number;
   preSelectedValue: string | undefined;
   rightAddonWidth: string | number;
   selectedValue: ItemsWithIdentifier | null;
-  isSearching: boolean;
 }
 
 export interface AutocompleteActionsContextProps<Data = unknown> {
