@@ -3,6 +3,7 @@ import AutocompleteAddonError from './autocomplete-addon-error';
 import AutocompleteAddonIcon from './autocomplete-addon-icon';
 import AutocompleteAddonSeparator from './autocomplete-addon-separator';
 import AutocompleteAddonText from './autocomplete-addon-text';
+import AutocompleteErrors from './autocomplete-errors';
 import AutocompleteGroup from './autocomplete-group';
 import AutocompleteHeader from './autocomplete-header';
 import AutocompleteHeaderClearButton from './autocomplete-header-clear-button';
@@ -44,6 +45,7 @@ type AutocompleteComponent = typeof AutocompleteRoot & {
   Messages: typeof AutocompleteMessages;
   Popover: typeof AutocompletePopover;
   RightAddons: typeof AutocompleteRightAddon;
+  Errors: typeof AutocompleteErrors;
 };
 
 const Header = AutocompleteHeader as AutocompleteHeaderComponent;
@@ -70,5 +72,6 @@ Autocomplete.Loading = AutocompleteLoading;
 Autocomplete.Messages = AutocompleteMessages;
 Autocomplete.Popover = AutocompletePopover;
 Autocomplete.RightAddons = AutocompleteRightAddon;
+Autocomplete.Errors = AutocompleteErrors;
 
 export { Autocomplete };
