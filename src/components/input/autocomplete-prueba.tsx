@@ -130,14 +130,23 @@ export default function AutocompleteTestBed() {
                 </Autocomplete.Header>
                 <Autocomplete.Messages />
                 <Autocomplete.Loading />
-                <Autocomplete.List>
+                {/* DOS TIPOS DE LISTA UNA NORMA Y OTRA VIRTUALIZADA PARA LISTAS GRANDES */}
+                <Autocomplete.ListVirtualize>
                   {({ item, isSelected }) => (
                     <>
                       {isSelected ? <CheckboxChecked /> : <Checkbox />}
                       <span>{item.label}</span>
                     </>
                   )}
-                </Autocomplete.List>
+                </Autocomplete.ListVirtualize>
+                {/* <Autocomplete.List>
+                  {({ item, isSelected }) => (
+                    <>
+                      {isSelected ? <CheckboxChecked /> : <Checkbox />}
+                      <span>{item.label}</span>
+                    </>
+                  )}
+                </Autocomplete.List> */}
               </Autocomplete.Popover>
             </Autocomplete.Group>
           </Autocomplete>
