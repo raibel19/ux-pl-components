@@ -127,6 +127,7 @@ export default function AutocompleteTestBed() {
               <Autocomplete.Popover>
                 <Autocomplete.Header>
                   <p>Lenguajes de Programación</p>
+                  <Autocomplete.Header.ClearButton />
                 </Autocomplete.Header>
                 <Autocomplete.Messages />
                 <Autocomplete.Loading />
