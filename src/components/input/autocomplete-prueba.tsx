@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxChecked, ExecutableProgram } from '@carbon/icons-react';
+import { ActionDefinition, Checkbox, CheckboxChecked, Code, ExecutableProgram, Settings } from '@carbon/icons-react';
 import { useCallback, useMemo, useState } from 'react';
 
 import { Autocomplete } from '../../../lib/components/compositions/autocomplete';
@@ -97,12 +97,22 @@ export default function AutocompleteTestBed() {
     [initialData],
   );
 
+  const hoverContent = (
+    <div className="flex justify-between gap-4">
+      <div className="space-y-1">
+        <h4 className="text-sm font-semibold">@nextjs</h4>
+        <p className="text-sm">The React Framework – created and maintained by @vercel.</p>
+        <div className="text-xs text-muted-foreground">Joined December 2021</div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="min-h-screen bg-slate-50 p-8 font-sans">
-      <h1 className="mb-8 text-3xl font-bold text-slate-800">Banco de Pruebas para Autocomplete</h1>
+    <div className="min-h-screen">
+      <h1 className="text-3xl font-bold text-slate-800">Banco de Pruebas para Autocomplete</h1>
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {/* Escenario 1: Búsqueda Normal */}
-        <div className="space-y-4 rounded-lg bg-white p-6 shadow-md">
+        <div className="col-span-3 space-y-4 rounded-lg bg-white p-6 shadow-md">
           <h2 className="text-xl font-semibold text-slate-700">1. Búsqueda Normal</h2>
           <p className="text-sm text-slate-500">
             Simula una búsqueda realista con latencia variable. El componente debe manejar la carrera de peticiones
@@ -112,6 +122,8 @@ export default function AutocompleteTestBed() {
             items={normalSearchData}
             loading={normalSearchLoading}
             onStateChange={(p) => handleRealisticSearch(p, setNormalSearchData, setNormalSearchLoading)}
+            data={[1, 2, 3]}
+            isInvalid={true}
           >
             <Autocomplete.Label
               text="Autocomplete Modulos"
@@ -123,6 +135,34 @@ export default function AutocompleteTestBed() {
             <Autocomplete.Group>
               <Autocomplete.InputWrapper>
                 <Autocomplete.Input placeholder="Escribe un lenguaje..." />
+                <Autocomplete.LeftAddons>
+                  <Autocomplete.Addons.Button className="ps-3" icon={<Settings />} hoverContent={hoverContent} />
+                  <Autocomplete.Addons.Separator />
+                  <Autocomplete.Addons.Button
+                    text="click"
+                    className="text-xs"
+                    tooltipContent={<p>Da click</p>}
+                    onClick={(item) => console.log(item)}
+                  />
+                  <Autocomplete.Addons.Separator />
+                  <Autocomplete.Addons.Icon
+                    tooltipContent={<p>HOLLLLLLA</p>}
+                    tooltipConfig={{ disableHoverableContent: true }}
+                    show={true}
+                  />
+                  <Autocomplete.Addons.Separator />
+                  <Autocomplete.Addons.Icon
+                    hoverContent={hoverContent}
+                    hoverConfig={{ openDelay: 100, onOpenChange: (open) => console.log('IS OPEN:', open) }}
+                    icon={<Code />}
+                  />
+                  <Autocomplete.Addons.Separator />
+                  <Autocomplete.Addons.Text text="$MXN" />
+                </Autocomplete.LeftAddons>
+                <Autocomplete.RightAddons>
+                  <Autocomplete.Addons.Icon icon={<ActionDefinition />} />
+                  <Autocomplete.Addons.Error showAddonSeparatorLeft={true} />
+                </Autocomplete.RightAddons>
               </Autocomplete.InputWrapper>
               <Autocomplete.Popover>
                 <Autocomplete.Header>
