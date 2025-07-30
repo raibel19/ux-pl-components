@@ -13,14 +13,14 @@ export default forwardRef<HTMLButtonElement, AutocompleteHeaderClearButtonProps>
   function AutocompleteHeaderClearButton(props, ref) {
     const { className, classNameIcon } = props;
 
-    const { selectedValue, isLoading } = useAutocompleteContext();
+    const { lastValidSelection, isLoading } = useAutocompleteContext();
     const { onReset } = useAutocompleteActionsContext();
 
     useEffect(() => {
       console.log('Component-AutocompleteHeaderClearButton');
     }, []);
 
-    if (!selectedValue || !isLoading) return null;
+    if (!lastValidSelection || isLoading) return null;
 
     return (
       <div className={cn('absolute inset-y-0 right-0 flex items-center pe-1.5', className || null)}>

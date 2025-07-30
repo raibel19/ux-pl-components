@@ -15,10 +15,10 @@ export default function AutocompleteItem(props: AutocompleteItemProps) {
   const { item, className, renderGlobal } = props;
   const { identifier, label, disabled, render: itemRender } = item;
 
-  const { selectedValue } = useAutocompleteContext();
+  const { lastValidSelection } = useAutocompleteContext();
   const { onSelectItem } = useAutocompleteActionsContext();
 
-  const isSelected = selectedValue?.identifier === identifier;
+  const isSelected = lastValidSelection?.identifier === identifier;
 
   const renderContent = () => {
     const baseContent = renderGlobal ? renderGlobal({ item, isSelected }) : <span>{label}</span>;
