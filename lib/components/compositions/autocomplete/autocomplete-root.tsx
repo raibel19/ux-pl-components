@@ -83,6 +83,7 @@ export default forwardRef(function AutocompleteRoot<Data>(
     onSelectItem,
     onToogleLoading,
     onTooglePopover,
+    registerKeydownOverride,
   } = useManagedAutocomplete<Data>({
     data,
     defaultValue,
@@ -151,6 +152,7 @@ export default forwardRef(function AutocompleteRoot<Data>(
       setIsLoadingMounted,
       setLeftAddonWidth,
       setRightAddonWidth,
+      registerKeydownOverride,
     }),
     [
       data,
@@ -168,6 +170,7 @@ export default forwardRef(function AutocompleteRoot<Data>(
       onToogleLoading,
       onTooglePopover,
       onkeyDown,
+      registerKeydownOverride,
       theme,
     ],
   );

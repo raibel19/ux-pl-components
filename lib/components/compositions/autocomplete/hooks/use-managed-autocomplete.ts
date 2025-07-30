@@ -36,6 +36,7 @@ export default function useManagedAutocomplete<Data>(props: UseManagedAutocomple
   const propsRef = useRef(props);
   const itemsCache = useRef<Map<string, string>>(new Map());
   const isControlledUpdateRef = useRef(false);
+  const keyDownOverrides = useRef<Map<string, (event: React.KeyboardEvent<HTMLInputElement>) => void>>(new Map());
 
   const processRawItems = useCallback<(source: IItem[]) => Map<string, ItemsWithIdentifier>>((source) => {
     const processedItems = source.map<[string, ItemsWithIdentifier]>((item) => {
@@ -51,6 +52,17 @@ export default function useManagedAutocomplete<Data>(props: UseManagedAutocomple
 
     return new Map(processedItems);
   }, []);
+
+  const registerKeydownOverride = useCallback(
+    (key: string, handler: (event: React.KeyboardEvent<HTMLInputElement>) => void) => {
+      keyDownOverrides.current.set(key, handler);
+
+      return () => {
+        keyDownOverrides.current.delete(key);
+      };
+    },
+    [],
+  );
 
   const [errors, dispatchError] = useReducer(errorReducer, new Map());
   const [state, dispatch] = useReducer(autocompleteReduce, props, (): IAutocompleteState => {
@@ -233,6 +245,11 @@ export default function useManagedAutocomplete<Data>(props: UseManagedAutocomple
     (event: React.KeyboardEvent<HTMLInputElement>) => {
       const key = event.key;
 
+      if (keyDownOverrides.current.has(key)) {
+        keyDownOverrides.current.get(key)!(event);
+        return;
+      }
+
       if (key !== 'Enter') {
         if (!nonOpeningKeys.includes(key)) handleTooglePopover(true);
         return;
@@ -391,5 +408,6 @@ export default function useManagedAutocomplete<Data>(props: UseManagedAutocomple
     onSelectItem: handleOnSelect,
     onToogleLoading: handleToggleLoading,
     onTooglePopover: handleTooglePopover,
+    registerKeydownOverride,
   };
 }

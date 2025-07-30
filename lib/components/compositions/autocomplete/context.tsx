@@ -36,6 +36,7 @@ export interface AutocompleteActionsContextProps<Data = unknown> {
   setIsLoadingMounted: (isMounted: boolean) => void;
   setLeftAddonWidth: (width: string | number) => void;
   setRightAddonWidth: (width: string | number) => void;
+  registerKeydownOverride: (key: string, handler: (event: React.KeyboardEvent<HTMLInputElement>) => void) => () => void;
 }
 
 export const AutocompleteContext = createContext<AutocompleteContextProps | undefined>(undefined);
