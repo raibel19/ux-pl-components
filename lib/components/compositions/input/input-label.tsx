@@ -1,8 +1,8 @@
-import { forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
 
 import { cn } from '../../../lib/utils';
 import Label from '../../primitives/label';
-import { useInputContext } from './context';
+import { useInputActionsContext, useInputContext } from './context';
 
 interface InputLabelProps {
   className?: string | undefined;
@@ -26,11 +26,8 @@ export default forwardRef<HTMLLabelElement, InputLabelProps>(function InputLabel
     text,
     textRequired,
   } = props;
-  const { isInvalid, id, disabled } = useInputContext();
-
-  useEffect(() => {
-    console.log('Component-InputLabel');
-  }, [props]);
+  const { isInvalid } = useInputContext();
+  const { id, disabled } = useInputActionsContext();
 
   if (!showText && !textRequired && !isRequired) return null;
 

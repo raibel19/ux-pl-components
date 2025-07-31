@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 
 import { cn } from '../../../lib/utils';
 import Addon from '../../primitives/addon';
-import { useInputContext } from './context';
+import { useInputActionsContext, useInputContext } from './context';
 import InputAddonSeparator from './input-addon-separator';
 
 interface InputAddonClearProps {
@@ -37,7 +37,8 @@ export default forwardRef<HTMLButtonElement, InputAddonClearProps>(function Inpu
     ...moreProps
   } = props;
 
-  const { isInvalid, onReset, value, disabled } = useInputContext();
+  const { isInvalid, value } = useInputContext();
+  const { onReset, disabled } = useInputActionsContext();
 
   if (!show || value.length === 0) return null;
 

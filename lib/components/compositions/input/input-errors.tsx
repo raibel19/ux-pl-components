@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import { cn } from '../../../lib/utils';
 import FieldMessage from '../../primitives/field-message';
-import { useInputContext } from './context';
+import { useInputActionsContext, useInputContext } from './context';
 
 interface InputErrorsProps extends React.HTMLAttributes<HTMLUListElement> {
   className?: string;
@@ -11,7 +11,8 @@ interface InputErrorsProps extends React.HTMLAttributes<HTMLUListElement> {
 
 export default forwardRef<HTMLUListElement, InputErrorsProps>(function InputErrors(props, ref) {
   const { className, customMessageError, ...moreProps } = props;
-  const { errors, isInvalid } = useInputContext();
+  const { isInvalid } = useInputContext();
+  const { errors } = useInputActionsContext();
 
   const newErrors = errors;
 

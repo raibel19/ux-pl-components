@@ -6,7 +6,7 @@ import React from 'react';
 
 import { cn } from '../../../lib/utils';
 import Addon from '../../primitives/addon';
-import { useInputContext } from './context';
+import { useInputActionsContext, useInputContext } from './context';
 import { InputChangePayload } from './types/types';
 
 interface InputAddonButtonProps {
@@ -28,7 +28,8 @@ interface InputAddonButtonProps {
 export default forwardRef<HTMLButtonElement, InputAddonButtonProps>(function InputAddonButton(props, ref) {
   const { classNameIcon, icon, onClick, show = true, text, ...moreProps } = props;
 
-  const { isInvalid, value, data, initialValueRef, disabled } = useInputContext();
+  const { isInvalid, value, initialValueRef } = useInputContext();
+  const { data, disabled } = useInputActionsContext();
 
   if (!show) return null;
 

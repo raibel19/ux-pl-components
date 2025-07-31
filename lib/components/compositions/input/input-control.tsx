@@ -3,7 +3,7 @@ import { ComponentPropsWithoutRef, forwardRef, useCallback, useImperativeHandle,
 import { Input } from '@/components/ui/input';
 
 import { cn } from '../../../lib/utils';
-import { useInputContext } from './context';
+import { useInputActionsContext, useInputContext } from './context';
 import { inputVariants } from './input-control.variants';
 
 type InputControlForwardRef = {
@@ -23,8 +23,8 @@ interface InputControlProps extends NativeInputProps {
 
 export default forwardRef<InputControlForwardRef, InputControlProps>(function InputControl(props, ref) {
   const { className, subscribeFocus, onFocus: onFocusNative, onBlur: onBlurNative, ...moreProps } = props;
-  const { id, onBlur, onChange, onFocus, displayValue, disabled, isInvalid, type, leftAddonWidth, rightAddonWidth } =
-    useInputContext();
+  const { displayValue, isInvalid, leftAddonWidth, rightAddonWidth } = useInputContext();
+  const { id, onBlur, onChange, onFocus, disabled, type } = useInputActionsContext();
 
   const inputRef = useRef<HTMLInputElement>(null);
 

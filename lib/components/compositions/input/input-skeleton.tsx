@@ -1,8 +1,8 @@
-import { forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
 
 import { cn } from '../../../lib/utils';
 import { Skeleton } from '../../ui/skeleton';
-import { useInputContext } from './context';
+import { useInputActionsContext } from './context';
 import useTheme from './hooks/use-theme';
 import inputStyle from './input.module.css';
 
@@ -13,12 +13,8 @@ interface InputSkeletonProps {
 }
 export default forwardRef<HTMLDivElement, InputSkeletonProps>(function InputSkeleton(props, ref) {
   const { className, classNameContainer, show = true } = props;
-  const { theme } = useInputContext();
+  const { theme } = useInputActionsContext();
   const { themeCore, themeStyle } = useTheme({ style: inputStyle, theme });
-
-  useEffect(() => {
-    console.log('Component-InputSkeleton');
-  }, [props]);
 
   if (!show) return null;
 

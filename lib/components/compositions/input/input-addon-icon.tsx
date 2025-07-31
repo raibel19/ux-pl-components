@@ -6,7 +6,7 @@ import React from 'react';
 
 import { cn } from '../../../lib/utils';
 import Addon from '../../primitives/addon';
-import { useInputContext } from './context';
+import { useInputActionsContext, useInputContext } from './context';
 
 interface InputAddonIconProps {
   className?: string | undefined;
@@ -25,7 +25,8 @@ interface InputAddonIconProps {
 export default forwardRef<HTMLDivElement, InputAddonIconProps>(function InputAddonIcon(props, ref) {
   const { classNameIcon, icon, show = true, ...moreProps } = props;
 
-  const { isInvalid, disabled } = useInputContext();
+  const { isInvalid } = useInputContext();
+  const { disabled } = useInputActionsContext();
 
   if (!show) return null;
 
