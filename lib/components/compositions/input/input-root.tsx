@@ -1,7 +1,7 @@
 import { ForwardedRef, forwardRef, ReactNode, useEffect, useId, useMemo, useState } from 'react';
 
 import { cn } from '../../../lib/utils';
-import { InputContext, InputContextType } from './context';
+import { InputActionsContext, InputActionsContextProps, InputContext, InputContextProps } from './context';
 import useManagedInput from './hooks/use-managed-input';
 import useTheme from './hooks/use-theme';
 import inputStyle from './input.module.css';
@@ -97,22 +97,28 @@ export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, 
 
   const isInvalidMemo = useMemo(() => isInvalid || Boolean(errors.length), [errors.length, isInvalid]);
 
-  const contextValue = useMemo<InputContextType<Data>>(
+  const contextValue = useMemo<InputContextProps>(
     () => ({
-      data,
-      disabled,
       displayValue,
-      errors,
-      id,
       initialValueRef,
       isInvalid: isInvalidMemo,
       leftAddonWidth,
-      maxLength,
       rightAddonWidth,
-      theme,
-      type,
       value,
       valueFormatted,
+    }),
+    [displayValue, initialValueRef, isInvalidMemo, leftAddonWidth, rightAddonWidth, value, valueFormatted],
+  );
+
+  const contextActionsValue = useMemo<InputActionsContextProps<Data>>(
+    () => ({
+      data,
+      disabled,
+      errors,
+      id,
+      maxLength,
+      theme,
+      type,
       onAddError,
       onBlur,
       onChange,
@@ -121,27 +127,7 @@ export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, 
       setLeftAddonWidth,
       setRightAddonWidth,
     }),
-    [
-      data,
-      disabled,
-      displayValue,
-      errors,
-      id,
-      initialValueRef,
-      isInvalidMemo,
-      leftAddonWidth,
-      maxLength,
-      onAddError,
-      onBlur,
-      onChange,
-      onFocus,
-      onReset,
-      rightAddonWidth,
-      theme,
-      type,
-      value,
-      valueFormatted,
-    ],
+    [data, disabled, errors, id, maxLength, onAddError, onBlur, onChange, onFocus, onReset, theme, type],
   );
 
   useEffect(() => {
@@ -154,15 +140,13 @@ export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, 
     };
   }, [isInvalidMemo, subscribeIsInvalid]);
 
-  useEffect(() => {
-    console.log('Component-InputRoot');
-  }, [props]);
-
   return (
     <InputContext.Provider value={contextValue}>
-      <div ref={ref} className={cn(themeCore, themeStyle, 'w-full space-y-1', className || null)}>
-        {children}
-      </div>
+      <InputActionsContext.Provider value={contextActionsValue}>
+        <div ref={ref} className={cn(themeCore, themeStyle, 'w-full space-y-1', className || null)}>
+          {children}
+        </div>
+      </InputActionsContext.Provider>
     </InputContext.Provider>
   );
 }) as <Data>(props: InputRootProps<Data> & { ref?: ForwardedRef<HTMLDivElement> }) => React.JSX.Element;
