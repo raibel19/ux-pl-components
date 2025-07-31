@@ -81,26 +81,26 @@ export default function InputModules() {
                 <Input.Control />
                 <Input.Label text="Input Modulos" isRequired={true} textRequired={'Required'} />
                 <Input.LeftAddons ref={leftAddonRef}>
-                  <Input.IconAddon
+                  <Input.Addons.Icon
                     className="ps-3"
                     tooltipContent={<p>HOLLLLLLA</p>}
                     tooltipConfig={{ disableHoverableContent: true }}
                     show={true}
                   />
-                  <Input.SeparatorAddon />
-                  <Input.IconAddon
+                  <Input.Addons.Separator />
+                  <Input.Addons.Icon
                     hoverContent={hoverContent}
                     hoverConfig={{ openDelay: 100, onOpenChange: (open) => console.log('IS OPEN:', open) }}
                     icon={<Code />}
                   />
-                  <Input.SeparatorAddon />
-                  <Input.IconAddon icon={<ActionDefinition />} />
-                  <Input.SeparatorAddon />
-                  <Input.TextAddon text="$MXN" />
-                  <Input.SeparatorAddon />
-                  <Input.ButtonAddon icon={<Settings />} hoverContent={hoverContent} />
-                  <Input.SeparatorAddon />
-                  <Input.ButtonAddon
+                  <Input.Addons.Separator />
+                  <Input.Addons.Icon icon={<ActionDefinition />} />
+                  <Input.Addons.Separator />
+                  <Input.Addons.Text text="$MXN" />
+                  <Input.Addons.Separator />
+                  <Input.Addons.Button icon={<Settings />} hoverContent={hoverContent} />
+                  <Input.Addons.Separator />
+                  <Input.Addons.Button
                     text="click"
                     className="text-xs"
                     tooltipContent={<p>Da click</p>}
@@ -108,9 +108,67 @@ export default function InputModules() {
                   />
                 </Input.LeftAddons>
                 <Input.RightAddons>
-                  <Input.CounterAddon />
-                  <Input.ErrorAddon showAddonSeparatorLeft={true} />
-                  <Input.ClearAddon showAddonSeparatorLeft={true} tooltipContent={<p>Clear</p>} />
+                  <Input.Addons.Counter />
+                  <Input.Addons.Error showAddonSeparatorLeft={true} />
+                  <Input.Addons.Clear showAddonSeparatorLeft={true} tooltipContent={<p>Clear</p>} />
+                </Input.RightAddons>
+              </Input.Content>
+              <Input.Errors customMessageError="Mi error" />
+            </>
+          )}
+        </Input>
+      </div>
+      <div className="flex gap-3">
+        <Input
+          type="text"
+          // value={controllerValue}
+          data={[1, 2, 3]}
+          //   reset={reset}
+          //   setReset={setReset}
+          //   resetToInitialValue={true}
+          onValueChange={(item) => {
+            console.log('onValueChange', item);
+            setControllerValue(item.value);
+          }}
+        >
+          {isLoadig ? (
+            <Input.Skeleton />
+          ) : (
+            <>
+              <Input.Content>
+                <Input.Control />
+                <Input.Label text="Input Modulos" isRequired={true} textRequired={'Required'} />
+                <Input.LeftAddons ref={leftAddonRef}>
+                  <Input.Addons.Icon
+                    className="ps-3"
+                    tooltipContent={<p>HOLLLLLLA</p>}
+                    tooltipConfig={{ disableHoverableContent: true }}
+                    show={true}
+                  />
+                  <Input.Addons.Separator />
+                  <Input.Addons.Icon
+                    hoverContent={hoverContent}
+                    hoverConfig={{ openDelay: 100, onOpenChange: (open) => console.log('IS OPEN:', open) }}
+                    icon={<Code />}
+                  />
+                  <Input.Addons.Separator />
+                  <Input.Addons.Icon icon={<ActionDefinition />} />
+                  <Input.Addons.Separator />
+                  <Input.Addons.Text text="$MXN" />
+                  <Input.Addons.Separator />
+                  <Input.Addons.Button icon={<Settings />} hoverContent={hoverContent} />
+                  <Input.Addons.Separator />
+                  <Input.Addons.Button
+                    text="click"
+                    className="text-xs"
+                    tooltipContent={<p>Da click</p>}
+                    onClick={(item) => console.log(item)}
+                  />
+                </Input.LeftAddons>
+                <Input.RightAddons>
+                  <Input.Addons.Counter />
+                  <Input.Addons.Error showAddonSeparatorLeft={true} />
+                  <Input.Addons.Clear showAddonSeparatorLeft={true} tooltipContent={<p>Clear</p>} />
                 </Input.RightAddons>
               </Input.Content>
               <Input.Errors customMessageError="Mi error" />
