@@ -74,7 +74,6 @@ export default function AutocompleteListVirtualize(props: AutocompleteListVirtua
     paddingEnd: 4,
     scrollPaddingStart: 4,
     measureElement: (element) => {
-      console.log('measureElement: ', element.scrollHeight);
       return element.scrollHeight;
     },
   });
@@ -99,10 +98,6 @@ export default function AutocompleteListVirtualize(props: AutocompleteListVirtua
       unregisterDown();
     };
   }, [handleArrowNavigation, registerKeydownOverride]);
-
-  useEffect(() => {
-    console.log('rowVirtualizer.getTotalSize()', rowVirtualizer.getTotalSize());
-  }, [rowVirtualizer]);
 
   return (
     <div

@@ -1,5 +1,5 @@
 import { Close } from '@carbon/icons-react';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
 
 import { cn } from '../../../lib/utils';
 import { useAutocompleteActionsContext, useAutocompleteContext } from './context';
@@ -15,10 +15,6 @@ export default forwardRef<HTMLButtonElement, AutocompleteHeaderClearButtonProps>
 
     const { lastValidSelection, isLoading } = useAutocompleteContext();
     const { onReset } = useAutocompleteActionsContext();
-
-    useEffect(() => {
-      console.log('Component-AutocompleteHeaderClearButton');
-    }, []);
 
     if (!lastValidSelection || isLoading) return null;
 

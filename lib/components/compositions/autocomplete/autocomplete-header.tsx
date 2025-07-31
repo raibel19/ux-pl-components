@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode, useEffect } from 'react';
+import { forwardRef, ReactNode } from 'react';
 
 import { cn } from '../../../lib/utils';
 import { Separator } from '../../ui/separator';
@@ -11,10 +11,6 @@ interface AutocompleteHeaderProps {
 
 export default forwardRef<HTMLDivElement, AutocompleteHeaderProps>(function AutocompleteHeader(props, ref) {
   const { children, className, showSeparator = true } = props;
-
-  useEffect(() => {
-    console.log('Component-AutocompleteHeader');
-  }, []);
 
   return (
     <>

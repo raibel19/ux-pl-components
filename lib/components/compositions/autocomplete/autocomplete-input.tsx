@@ -1,5 +1,5 @@
 import { Command as CommandPrimitive } from 'cmdk';
-import { ComponentPropsWithoutRef, forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
+import { ComponentPropsWithoutRef, forwardRef, useCallback, useImperativeHandle, useRef } from 'react';
 
 import { cn } from '../../../lib/utils';
 import { Input } from '../../ui/input';
@@ -65,10 +65,6 @@ export default forwardRef<AutocompleteInputForwardRef, AutocompleteInputProps>(f
     },
     [onBlur, onBlurNative],
   );
-
-  useEffect(() => {
-    console.log('Component-AutocompleteInput');
-  }, []);
 
   return (
     <PopoverTrigger asChild>

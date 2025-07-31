@@ -80,7 +80,6 @@ export function autocompleteReduce(state: IAutocompleteState, action: Autocomple
     case 'SET_PRE_SELECTION_VALUE': {
       if (action.payload === state.preSelectedValue) return state;
 
-      console.log('Setting pre-selected value:', action.payload);
       return {
         ...state,
         preSelectedValue: action.payload,

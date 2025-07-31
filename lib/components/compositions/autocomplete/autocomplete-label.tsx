@@ -1,4 +1,4 @@
-import { forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
 
 import { cn } from '../../../lib/utils';
 import Label from '../../primitives/label';
@@ -28,10 +28,6 @@ export default forwardRef<HTMLLabelElement, InputLabelProps>(function Autocomple
   } = props;
   const { isInvalid } = useAutocompleteContext();
   const { id, disabled } = useAutocompleteActionsContext();
-
-  useEffect(() => {
-    console.log('Component-AutocompleteLabel');
-  }, [props]);
 
   if (!showText && !textRequired && !isRequired) return null;
 

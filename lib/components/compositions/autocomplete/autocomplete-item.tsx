@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { cn } from '../../../lib/utils';
 import { CommandItem } from '../../ui/command';
 import { useAutocompleteActionsContext, useAutocompleteContext } from './context';
@@ -29,10 +27,6 @@ export default function AutocompleteItem(props: AutocompleteItemProps) {
 
     return baseContent;
   };
-
-  useEffect(() => {
-    console.log('Component-AutocompleteItem');
-  }, []);
 
   return (
     <CommandItem

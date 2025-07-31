@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { cn } from '../../../lib/utils';
 import { CommandGroup } from '../../ui/command';
@@ -28,10 +28,6 @@ export default function AutocompleteList(props: AutocompleteListProps) {
   const hidden = filteredItems.size === 0 || inputValue.length < minLengthRequired || isLoading || isSearching;
 
   useListScroll({ filteredItems, identifier, isOpen, preSelectedValue, scrollAreaRef });
-
-  useEffect(() => {
-    console.log(`Component-AutocompleteList-${Date.now()}`);
-  }, []);
 
   return (
     <ScrollArea

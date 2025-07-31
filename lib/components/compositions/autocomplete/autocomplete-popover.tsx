@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, forwardRef, ReactNode, useEffect } from 'react';
+import { ComponentPropsWithoutRef, forwardRef, ReactNode } from 'react';
 
 import { cn } from '../../../lib/utils';
 import { CommandList } from '../../ui/command';
@@ -17,10 +17,6 @@ export default forwardRef<HTMLDivElement, AutocompletePopoverProps>(function Aut
 
   const { theme } = useAutocompleteActionsContext();
   const { themeCore, themeStyle } = useTheme({ style: autocompleteStyle, theme });
-
-  useEffect(() => {
-    console.log('Component-AutocompletePopover');
-  }, []);
 
   return (
     <PopoverContent

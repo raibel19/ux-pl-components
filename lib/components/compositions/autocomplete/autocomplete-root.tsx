@@ -196,10 +196,6 @@ export default forwardRef(function AutocompleteRoot<Data>(
   //   });
   // }, [setLoading, state.isLoading]);
 
-  useEffect(() => {
-    console.log('Component-AutocompleteRoot');
-  }, []);
-
   return (
     <div ref={ref} className={cn(themeCore, themeStyle, 'w-full space-y-1', className || null)}>
       <div className="relative w-full">

@@ -17,7 +17,6 @@ export default forwardRef<HTMLDivElement, AutocompleteLoadingProps>(function Aut
   const { minLengthRequired, setIsLoadingMounted } = useAutocompleteActionsContext();
 
   useEffect(() => {
-    console.log('Component-AutocompleteLoading');
     setIsLoadingMounted(true);
     return () => setIsLoadingMounted(false);
   }, [setIsLoadingMounted]);
