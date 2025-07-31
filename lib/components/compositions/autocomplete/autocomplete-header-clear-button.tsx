@@ -27,8 +27,9 @@ export default forwardRef<HTMLButtonElement, AutocompleteHeaderClearButtonProps>
           )}
           aria-label="clear input"
           onMouseDown={(e) => e.preventDefault}
+          onClick={onReset}
         >
-          <Close className={classNameIcon} size={18} strokeWidth={2} aria-hidden="true" onClick={onReset} />
+          <Close className={classNameIcon} size={18} strokeWidth={2} aria-hidden="true" />
         </button>
       </div>
     );

@@ -257,11 +257,11 @@ export default function useManagedAutocomplete<Data>(props: UseManagedAutocomple
 
       event.preventDefault();
 
-      const preselectValue = state.preSelectedValue;
+      const preselectValue = stateRef.current.preSelectedValue;
       if (preselectValue) handleOnSelect(preselectValue);
       handleTooglePopover(false);
     },
-    [handleOnSelect, handleTooglePopover, state.preSelectedValue],
+    [handleOnSelect, handleTooglePopover],
   );
 
   const handleOnMouseDown = useCallback(() => handleOpenAndRepopulate(), [handleOpenAndRepopulate]);
