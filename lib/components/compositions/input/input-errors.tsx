@@ -14,7 +14,7 @@ export default forwardRef<HTMLUListElement, InputErrorsProps>(function InputErro
   const { isInvalid } = useInputContext();
   const { errors } = useInputActionsContext();
 
-  const newErrors = errors;
+  const newErrors = [...errors];
 
   if (customMessageError && isInvalid) {
     newErrors.push(customMessageError);

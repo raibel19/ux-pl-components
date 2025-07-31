@@ -14,7 +14,7 @@ export default forwardRef<HTMLUListElement, AutocompleteErrorsProps>(function Au
   const { isInvalid } = useAutocompleteContext();
   const { errors } = useAutocompleteActionsContext();
 
-  const newErrors = errors;
+  const newErrors = [...errors];
 
   if (customMessageError && isInvalid) {
     newErrors.push(customMessageError);
