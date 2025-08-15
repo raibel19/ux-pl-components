@@ -20,7 +20,7 @@ export type ItemsWithIdentifier = IItem & { identifier: string };
 export type ErrorState = Map<string, string>;
 
 export type ErrorAction =
-  | { type: 'ADD_ERROR'; payload: { key: string; message: string | string[] } }
+  | { type: 'ADD_ERROR'; payload: { key: string; message: string } }
   | { type: 'REMOVE_ERROR'; payload: { key: string } }
   | { type: 'CLEAR_ERRORS' };
 

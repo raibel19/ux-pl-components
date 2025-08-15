@@ -97,24 +97,27 @@ export function autocompleteReduce(state: IAutocompleteState, action: Autocomple
 }
 
 export function errorReducer(state: ErrorState, action: ErrorAction): ErrorState {
-  const newState = new Map(state);
-
   switch (action.type) {
     case 'ADD_ERROR': {
-      const messages = action.payload.message;
-      const errors = Array.isArray(messages) ? messages : [messages];
-      const validMessages = errors.filter((msg) => msg.trim() !== '');
+      const { key, message } = action.payload;
 
-      if (!validMessages.length) return newState;
+      if (state.get(key) === message || message === '') return state;
 
-      validMessages.forEach((item) => newState.set(action.payload.key, item));
+      const newState = new Map(state);
+      newState.set(key, message);
       return newState;
     }
     case 'REMOVE_ERROR': {
-      newState.delete(action.payload.key);
+      const { key } = action.payload;
+
+      if (!state.has(key)) return state;
+
+      const newState = new Map(state);
+      newState.delete(key);
       return newState;
     }
     case 'CLEAR_ERRORS': {
+      if (!state.size) return state;
       return new Map();
     }
     default:

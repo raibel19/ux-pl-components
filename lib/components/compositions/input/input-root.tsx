@@ -1,7 +1,14 @@
 import { ForwardedRef, forwardRef, ReactNode, useEffect, useId, useMemo, useState } from 'react';
 
 import { cn } from '../../../lib/utils';
-import { InputActionsContext, InputActionsContextProps, InputContext, InputContextProps } from './context';
+import {
+  InputActionsContext,
+  InputActionsContextProps,
+  InputContext,
+  InputContextProps,
+  InputLayoutContext,
+  InputLayoutContextProps,
+} from './context';
 import useManagedInput from './hooks/use-managed-input';
 import useTheme from './hooks/use-theme';
 import inputStyle from './input.module.css';
@@ -13,17 +20,12 @@ import {
   ISanitize,
   IValidationBetween,
   IValidationLimits,
+  NumericPayload,
+  ResolvedVariantsProps,
+  TextPayload,
 } from './types/types';
 
-interface ITextProcessor {
-  sanitize?: ISanitize;
-  maxLength?: number;
-  between?: IValidationBetween;
-  formatter?: IFormatter;
-  limits?: IValidationLimits;
-}
-
-interface InputRootProps<Data> {
+interface BaseInputRootProps<Data> {
   children: ReactNode;
   className?: string;
   data?: Data;
@@ -32,14 +34,34 @@ interface InputRootProps<Data> {
   isInvalid?: boolean;
   reset?: boolean;
   resetToInitialValue?: boolean;
-  textProcessor?: ITextProcessor;
   theme?: InputTheme;
   type: InputType;
   value?: string;
-  onValueChange?: (payload: InputChangePayload<Data>) => void;
   setReset?: React.Dispatch<React.SetStateAction<boolean>>;
   subscribeIsInvalid?: (isInvalid: boolean) => void;
 }
+
+type InputRootProps<Data> = BaseInputRootProps<Data> &
+  (
+    | {
+        type: 'text';
+        onValueChange?: (payload: TextPayload<Data>) => void;
+        textProcessor: {
+          maxLength?: number;
+        };
+      }
+    | {
+        type: 'number';
+        onValueChange?: (payload: NumericPayload<Data>) => void;
+        textProcessor: {
+          sanitize?: ISanitize;
+          maxLength?: number;
+          between?: IValidationBetween;
+          formatter?: IFormatter;
+          limits?: IValidationLimits;
+        };
+      }
+  );
 
 export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, ref: ForwardedRef<HTMLDivElement>) {
   const {
@@ -60,13 +82,21 @@ export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, 
     subscribeIsInvalid,
   } = props;
 
-  const { between, formatter, limits, maxLength, sanitize } = textProcessor || {};
-
   const id = useId();
   const { themeCore, themeStyle } = useTheme({ style: inputStyle, theme });
 
   const [leftAddonWidth, setLeftAddonWidth] = useState<string | number>(0);
   const [rightAddonWidth, setRightAddonWidth] = useState<string | number>(0);
+
+  const resolvedVariantsProps = useMemo<ResolvedVariantsProps>(() => {
+    if (type === 'number') {
+      const { between, formatter, limits, maxLength, sanitize } = textProcessor;
+      return { between, formatter, limits, maxLength, sanitize };
+    }
+
+    const { maxLength } = textProcessor;
+    return { between: undefined, formatter: undefined, limits: undefined, maxLength, sanitize: undefined };
+  }, [textProcessor, type]);
 
   const {
     displayValue,
@@ -80,18 +110,14 @@ export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, 
     onFocus,
     onReset,
   } = useManagedInput<Data>({
-    between,
+    ...resolvedVariantsProps,
     data,
     defaultValue,
-    formatter,
-    limits,
-    maxLength,
     reset,
     resetToInitialValue,
-    sanitize,
     type,
     value: controllerValue,
-    onValueChange,
+    onValueChange: onValueChange as (payload: InputChangePayload<Data>) => void,
     setReset,
   });
 
@@ -102,12 +128,10 @@ export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, 
       displayValue,
       initialValueRef,
       isInvalid: isInvalidMemo,
-      leftAddonWidth,
-      rightAddonWidth,
       value,
       valueFormatted,
     }),
-    [displayValue, initialValueRef, isInvalidMemo, leftAddonWidth, rightAddonWidth, value, valueFormatted],
+    [displayValue, initialValueRef, isInvalidMemo, value, valueFormatted],
   );
 
   const contextActionsValue = useMemo<InputActionsContextProps<Data>>(
@@ -116,7 +140,7 @@ export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, 
       disabled,
       errors,
       id,
-      maxLength,
+      maxLength: resolvedVariantsProps.maxLength,
       theme,
       type,
       onAddError,
@@ -124,10 +148,31 @@ export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, 
       onChange,
       onFocus,
       onReset,
+    }),
+    [
+      data,
+      disabled,
+      errors,
+      id,
+      onAddError,
+      onBlur,
+      onChange,
+      onFocus,
+      onReset,
+      resolvedVariantsProps.maxLength,
+      theme,
+      type,
+    ],
+  );
+
+  const contextLayoutValue = useMemo<InputLayoutContextProps>(
+    () => ({
+      leftAddonWidth,
+      rightAddonWidth,
       setLeftAddonWidth,
       setRightAddonWidth,
     }),
-    [data, disabled, errors, id, maxLength, onAddError, onBlur, onChange, onFocus, onReset, theme, type],
+    [leftAddonWidth, rightAddonWidth],
   );
 
   useEffect(() => {
@@ -141,12 +186,14 @@ export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, 
   }, [isInvalidMemo, subscribeIsInvalid]);
 
   return (
-    <InputContext.Provider value={contextValue}>
-      <InputActionsContext.Provider value={contextActionsValue}>
-        <div ref={ref} className={cn(themeCore, themeStyle, 'w-full space-y-1', className || null)}>
-          {children}
-        </div>
-      </InputActionsContext.Provider>
-    </InputContext.Provider>
+    <InputLayoutContext.Provider value={contextLayoutValue}>
+      <InputContext.Provider value={contextValue}>
+        <InputActionsContext.Provider value={contextActionsValue}>
+          <div ref={ref} className={cn(themeCore, themeStyle, 'w-full space-y-1', className || null)}>
+            {children}
+          </div>
+        </InputActionsContext.Provider>
+      </InputContext.Provider>
+    </InputLayoutContext.Provider>
   );
 }) as <Data>(props: InputRootProps<Data> & { ref?: ForwardedRef<HTMLDivElement> }) => React.JSX.Element;

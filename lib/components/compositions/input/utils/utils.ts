@@ -1,4 +1,4 @@
-import { ErrorAction, ErrorState, ISanitizeConfig, ISubscribeBetween } from '../types/types';
+import { ErrorAction, ErrorState, ISanitize, ISubscribeBetween } from '../types/types';
 
 /**
  * Función que valida si el número escrito no es menor al minínimo permitodo.
@@ -71,68 +71,6 @@ export const isBetweenExceeded = (
 };
 
 /**
- * Función para sanitizar un string, esta sanitización se centra en validaciones para números.
- * @param value - String a sanitizar
- * @param config - Opciones para configurar el resultado de la sanitación
- * @returns String sanitizado
- */
-export const sanitizeNumber = (value: string, config: ISanitizeConfig = {}): string => {
-  const {
-    removeDecimalPoint = false,
-    removeNegativeSign = false,
-    removeDotIfLastCharacter = true,
-    removeDecimalPointIfSingleCharacter = true,
-    removeNegativeIfSingleCharacter = true,
-    maxDecimalDigits = undefined,
-  } = config;
-  let numericValue = value.replace(/[^0-9.-]/g, '');
-
-  if (maxDecimalDigits !== undefined) {
-    const regex = new RegExp(`^([-+]?(?:\\d+)?(?:\\.\\d{0,${maxDecimalDigits}})?).*$`);
-    numericValue = numericValue.replace(regex, '$1');
-
-    // Si el último caracter es un punto lo elimina.
-    if (maxDecimalDigits === 0) numericValue = numericValue.replace(/\.$/, '');
-  }
-
-  if (removeDecimalPoint) {
-    // Eliminamos todos puntos.
-    numericValue = numericValue.replace(/\./g, '');
-  } else {
-    numericValue = numericValue
-      // Marcamos el primer punto encontrado.
-      .replace('.', 'x')
-      // Eliminamos otros puntos.
-      .replace(/\./g, '')
-      // Restauramos el primer punto.
-      .replace('x', '.');
-  }
-
-  if (removeNegativeSign) {
-    // Eliminamos todos guiones.
-    numericValue = numericValue.replace(/-/g, '');
-  } else {
-    // Eliminamos guiones que no están al inicio.
-    numericValue = numericValue.replace(/(?!^)-/g, '');
-  }
-
-  if (removeDotIfLastCharacter) {
-    // Si el último caracter es un punto lo elimina.
-    numericValue = numericValue.replace(/\.$/, '');
-  }
-
-  if (removeDecimalPointIfSingleCharacter && numericValue === '.') {
-    numericValue = '';
-  }
-
-  if (removeNegativeIfSingleCharacter && numericValue === '-') {
-    numericValue = '';
-  }
-
-  return numericValue;
-};
-
-/**
  * Función que valida si un string no pasa de un límite de carácteres.
  * @param value - String a validar.
  * @param maxLength - Cantidad de carácteres permitidos.
@@ -145,25 +83,89 @@ export const isMaxLengthExceeded = (value: string, maxLength: number | undefined
   return value.length > maxLength;
 };
 
-export const errorReducer = (state: ErrorState, action: ErrorAction): ErrorState => {
-  const newState = new Map(state);
+export const isPartial = (value: string, decimalSeparator: ISanitize['decimalSeparator'] = '.') => {
+  if (!value) return false;
+  if (value === '-') return true;
+  if (value === decimalSeparator) return true;
+  if (value.endsWith(decimalSeparator)) return true;
+  return false;
+};
 
+export const sanitize = (value: string, sanitize?: ISanitize, maxLength?: number) => {
+  const { allowNegative = false, decimalSeparator = '.', maxDecimalDigits } = sanitize || {};
+
+  // // 1. Manejo de borrado completo
+  // if (!value) return { value: '', update: true };
+
+  // // 2. Manejo de casos intermedios por ejemplo: '-', '.'
+  // // 2.1 Caso el cual se empieza escribiendo un negativo.
+  // if (allowNegative && value === '-') return { value: '-', update: false };
+  // // 2.2 Caso en el cual se escribe un punto/coma al final.
+  // if (
+  //   maxDecimalDigits !== 0 &&
+  //   value.endsWith(decimalSeparator) &&
+  //   value.indexOf(decimalSeparator) === value.lastIndexOf(decimalSeparator)
+  // )
+  //   return { value, update: false };
+
+  // 3. Sanitización principal
+  // 3.1 Se crea un regex para limpiar todo lo que no sea un número o separador.
+  const regex = new RegExp(`[^0-9${decimalSeparator}-]`, 'g');
+  let sanitized = value.replace(regex, '');
+
+  // 3.2 Si no se permiten negativos eliminamos el signo.
+  if (!allowNegative) sanitized = sanitized.replace(/-/g, '');
+  // En caso contrario nos aseguramos que solamente exista uno al principio.
+  else sanitized = sanitized.replace(/(?!^)-/g, '');
+
+  // 3.3 Permitir un solo separador decimal.
+  const separatorRegex = new RegExp(`\\${decimalSeparator}`, 'g');
+  const separatorCount = (sanitized.match(separatorRegex) || []).length;
+
+  if (separatorCount > 1) {
+    const firstIndex = sanitized.indexOf(decimalSeparator);
+    sanitized = sanitized.replace(separatorRegex, (_, offset: number) =>
+      offset === firstIndex ? decimalSeparator : '',
+    );
+  }
+
+  // 4 Aplicando límite de dcimales
+  if (maxDecimalDigits !== undefined) {
+    const parts = sanitized.split(decimalSeparator);
+    if (parts[1] && parts[1].length > maxDecimalDigits) {
+      parts[1] = parts[1].substring(0, maxDecimalDigits);
+      sanitized = parts.join(decimalSeparator);
+    }
+  }
+
+  // 5 Aplicando maxLength
+  if (maxLength && sanitized.length > maxLength) sanitized = sanitized.slice(0, maxLength);
+
+  return sanitized;
+};
+
+export const errorReducer = (state: ErrorState, action: ErrorAction): ErrorState => {
   switch (action.type) {
     case 'ADD_ERROR': {
-      const messages = action.payload.message;
-      const errors = Array.isArray(messages) ? messages : [messages];
-      const validMessages = errors.filter((msg) => msg.trim() !== '');
+      const { key, message } = action.payload;
 
-      if (!validMessages.length) return newState;
+      if (state.get(key) === message || message === '') return state;
 
-      validMessages.forEach((item) => newState.set(action.payload.key, item));
+      const newState = new Map(state);
+      newState.set(key, message);
       return newState;
     }
     case 'REMOVE_ERROR': {
-      newState.delete(action.payload.key);
+      const { key } = action.payload;
+
+      if (!state.has(key)) return state;
+
+      const newState = new Map(state);
+      newState.delete(key);
       return newState;
     }
     case 'CLEAR_ERRORS': {
+      if (!state.size) return state;
       return new Map();
     }
     default:

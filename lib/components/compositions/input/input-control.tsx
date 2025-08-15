@@ -3,7 +3,7 @@ import { ComponentPropsWithoutRef, forwardRef, useCallback, useImperativeHandle,
 import { Input } from '@/components/ui/input';
 
 import { cn } from '../../../lib/utils';
-import { useInputActionsContext, useInputContext } from './context';
+import { useInputActionsContext, useInputContext, useInputLayopoutContext } from './context';
 import { inputVariants } from './input-control.variants';
 
 type InputControlForwardRef = {
@@ -23,8 +23,9 @@ interface InputControlProps extends NativeInputProps {
 
 export default forwardRef<InputControlForwardRef, InputControlProps>(function InputControl(props, ref) {
   const { className, subscribeFocus, onFocus: onFocusNative, onBlur: onBlurNative, ...moreProps } = props;
-  const { displayValue, isInvalid, leftAddonWidth, rightAddonWidth } = useInputContext();
+  const { displayValue, isInvalid } = useInputContext();
   const { id, onBlur, onChange, onFocus, disabled, type } = useInputActionsContext();
+  const { leftAddonWidth, rightAddonWidth } = useInputLayopoutContext();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -56,9 +57,9 @@ export default forwardRef<InputControlForwardRef, InputControlProps>(function In
     (event: React.FocusEvent<HTMLInputElement, Element>) => {
       onBlurNative?.(event);
       if (subscribeFocus) subscribeFocus(false);
-      if (type === 'number') onBlur();
+      onBlur();
     },
-    [onBlur, onBlurNative, subscribeFocus, type],
+    [onBlur, onBlurNative, subscribeFocus],
   );
 
   return (

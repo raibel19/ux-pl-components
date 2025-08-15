@@ -1,13 +1,19 @@
 import { INumberFormatterOptions } from 'ux-pl/utils/numbers';
 
-export interface InputChangePayload<Data> {
+interface BasePayload<Data> {
   value: string;
-  //   checked: boolean | undefined;
-  //   files: Map<string, File> | undefined;
-  //   defaultValue: string | number | boolean | undefined;
   initialValue: string;
   data: Data | undefined;
 }
+
+export type TextPayload<Data> = BasePayload<Data>;
+
+export type NumericPayload<Data> = BasePayload<Data> & {
+  floatValue: number | null;
+  isComplete: boolean;
+};
+
+export type InputChangePayload<Data> = TextPayload<Data> | NumericPayload<Data>;
 
 export type InputType = 'text' | 'number';
 
@@ -37,26 +43,16 @@ export interface IValidationBetween {
   subscribeBetween?: (_: { isLess: boolean; isGreater: boolean; inRange: boolean }) => void;
 }
 
-export interface ISanitizeConfig {
-  maxDecimalDigits?: number;
-  removeDecimalPoint?: boolean;
-  removeDecimalPointIfSingleCharacter?: boolean;
-  removeDotIfLastCharacter?: boolean;
-  removeNegativeIfSingleCharacter?: boolean;
-  removeNegativeSign?: boolean;
-}
-
 export interface ISanitize {
-  initialValue?: ISanitizeConfig;
   maxDecimalDigits?: number;
-  onChangeEvent?: ISanitizeConfig;
-  whileTyping?: ISanitizeConfig;
+  allowNegative?: boolean;
+  decimalSeparator?: '.' | ',';
 }
 
 export type ErrorState = Map<string, string>;
 
 export type ErrorAction =
-  | { type: 'ADD_ERROR'; payload: { key: string; message: string | string[] } }
+  | { type: 'ADD_ERROR'; payload: { key: string; message: string } }
   | { type: 'REMOVE_ERROR'; payload: { key: string } }
   | { type: 'CLEAR_ERRORS' };
 
@@ -67,3 +63,11 @@ export const ErrorKeys = Object.freeze({
   between: 'between',
   custom: 'custom',
 });
+
+export interface ResolvedVariantsProps {
+  between?: IValidationBetween;
+  formatter?: IFormatter;
+  limits?: IValidationLimits;
+  maxLength?: number;
+  sanitize?: ISanitize;
+}

@@ -2,7 +2,7 @@ import { forwardRef, ReactNode, useRef } from 'react';
 
 import mergeRefs from '../../../lib/merge-refs';
 import { cn } from '../../../lib/utils';
-import { useInputActionsContext } from './context';
+import { useInputLayopoutContext } from './context';
 import useResizeObserver from './hooks/use-resize-observer';
 
 interface InputRightAddonProps {
@@ -14,7 +14,7 @@ export default forwardRef<HTMLDivElement, InputRightAddonProps>(function InputRi
   const { children, className } = props;
 
   const addonRef = useRef<HTMLDivElement>(null);
-  const { setRightAddonWidth } = useInputActionsContext();
+  const { setRightAddonWidth } = useInputLayopoutContext();
 
   useResizeObserver(addonRef, (entry) => {
     const divWidth = entry.contentRect.width;
