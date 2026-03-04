@@ -268,7 +268,7 @@ export default function useManagedInput<Data>(props: UseManagedInputProps<Data>)
   useEffect(() => {
     if (!isControlled) return;
 
-    const sanitizeValue = processRawValue(controlledValue ?? '');
+    const sanitizeValue = processRawValue(controlledValue ?? '', false);
 
     if (sanitizeValue !== controlledValue) {
       setCurrentValue(sanitizeValue);
