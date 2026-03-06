@@ -44,11 +44,21 @@ export interface IValidationBetween {
   subscribeBetween?: (_: { isLess: boolean; isGreater: boolean; inRange: boolean }) => void;
 }
 
-export interface ISanitize {
-  maxDecimalDigits?: number;
+interface BaseSanitize {
   allowNegative?: boolean;
-  decimalSeparator: '.' | ',';
 }
+
+export type ISanitize = BaseSanitize &
+  (
+    | {
+        maxDecimalDigits?: 0;
+        decimalSeparator?: '.' | ',';
+      }
+    | {
+        maxDecimalDigits: number;
+        decimalSeparator: '.' | ',';
+      }
+  );
 
 export type ErrorState = Map<string, string>;
 

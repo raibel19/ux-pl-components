@@ -94,44 +94,37 @@ export const isPartial = (value: string, decimalSeparator: ISanitize['decimalSep
 export const sanitize = (value: string, sanitize?: ISanitize, maxLength?: number) => {
   const { allowNegative = false, decimalSeparator, maxDecimalDigits } = sanitize || {};
 
-  // // 1. Manejo de borrado completo
-  // if (!value) return { value: '', update: true };
-
-  // // 2. Manejo de casos intermedios por ejemplo: '-', '.'
-  // // 2.1 Caso el cual se empieza escribiendo un negativo.
-  // if (allowNegative && value === '-') return { value: '-', update: false };
-  // // 2.2 Caso en el cual se escribe un punto/coma al final.
-  // if (
-  //   maxDecimalDigits !== 0 &&
-  //   value.endsWith(decimalSeparator) &&
-  //   value.indexOf(decimalSeparator) === value.lastIndexOf(decimalSeparator)
-  // )
-  //   return { value, update: false };
-
-  // 3. Sanitización principal
-  // 3.1 Se crea un regex para limpiar todo lo que no sea un número o separador.
+  // 1. Sanitización principal: Limpiar todo lo que no sea número, separador o signo menos.
   const regex = new RegExp(`[^0-9${decimalSeparator || ''}-]`, 'g');
   let sanitized = value.replace(regex, '');
 
-  // 3.2 Si no se permiten negativos eliminamos el signo.
-  if (!allowNegative) sanitized = sanitized.replace(/-/g, '');
-  // En caso contrario nos aseguramos que solamente exista uno al principio.
-  else sanitized = sanitized.replace(/(?!^)-/g, '');
+  // 2. Manejo del signo negativo
+  if (!allowNegative) {
+    sanitized = sanitized.replace(/-/g, '');
+  } else {
+    // Solo permitir el signo menos si está en la primera posición
+    sanitized = sanitized.replace(/(?!^)-/g, '');
+  }
 
+  // 3. Manejo de Decimales
   if (decimalSeparator) {
-    // 3.3 Permitir un solo separador decimal.
-    const separatorRegex = new RegExp(`\\${decimalSeparator}`, 'g');
-    const separatorCount = (sanitized.match(separatorRegex) || []).length;
+    // Si maxDecimalDigits es 0, simplemente borramos todos los separadores
+    if (!maxDecimalDigits) {
+      const allSeparatorsRegex = new RegExp(`\\${decimalSeparator}`, 'g');
+      sanitized = sanitized.replace(allSeparatorsRegex, '');
+    } else {
+      // Permitir un solo separador decimal.
+      const separatorRegex = new RegExp(`\\${decimalSeparator}`, 'g');
+      const separatorCount = (sanitized.match(separatorRegex) || []).length;
 
-    if (separatorCount > 1) {
-      const firstIndex = sanitized.indexOf(decimalSeparator);
-      sanitized = sanitized.replace(separatorRegex, (_, offset: number) =>
-        offset === firstIndex ? decimalSeparator : '',
-      );
-    }
+      if (separatorCount > 1) {
+        const firstIndex = sanitized.indexOf(decimalSeparator);
+        sanitized = sanitized.replace(separatorRegex, (_, offset: number) =>
+          offset === firstIndex ? decimalSeparator : '',
+        );
+      }
 
-    // 4 Aplicando límite de dcimales
-    if (maxDecimalDigits !== undefined) {
+      // Aplicando límite de dcimales
       const parts = sanitized.split(decimalSeparator);
       if (parts[1] && parts[1].length > maxDecimalDigits) {
         parts[1] = parts[1].substring(0, maxDecimalDigits);
@@ -140,8 +133,10 @@ export const sanitize = (value: string, sanitize?: ISanitize, maxLength?: number
     }
   }
 
-  // 5 Aplicando maxLength
-  if (maxLength && sanitized.length > maxLength) sanitized = sanitized.slice(0, maxLength);
+  // 4. Aplicando maxLength general
+  if (maxLength && sanitized.length > maxLength) {
+    sanitized = sanitized.slice(0, maxLength);
+  }
 
   return sanitized;
 };
