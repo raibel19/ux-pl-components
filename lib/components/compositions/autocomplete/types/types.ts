@@ -1,14 +1,12 @@
 export type Actions = 'INPUT_CHANGE' | 'ITEM_SELECTED' | 'RESET';
 
-export type AutocompleteStateChangePayload<Data = unknown> = {
+export type AutocompleteStateChangePayload<Data> = {
   type: Actions;
-  data: Data | undefined;
+  data: Data;
   initialValue: string;
   inputValue: string;
   selectedValue: string;
 };
-
-// export type AutocompleteTheme = 'default' | 'inherit' | (string & {});
 
 export interface IItem {
   label: string;

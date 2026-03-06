@@ -10,7 +10,7 @@ export interface AutocompleteVolatileContextProps {
   preSelectedValue: string | undefined;
 }
 
-export interface AutocompleteStableContextProps<Data = unknown> {
+export interface AutocompleteStableContextProps<Data = undefined> {
   data?: Data;
   disabled?: boolean;
   errors: string[];
@@ -57,7 +57,7 @@ export function useAutocompleteVolatileContext() {
   return context;
 }
 
-export function useAutocompleteStableContext<Data = unknown>() {
+export function useAutocompleteStableContext<Data = undefined>() {
   const context = useContext(AutocompleteStableContext) as AutocompleteStableContextProps<Data> | undefined;
 
   if (context === undefined) {

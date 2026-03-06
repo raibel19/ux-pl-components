@@ -9,7 +9,7 @@ import Addon from '../../primitives/addon';
 import { useAutocompleteStableContext, useAutocompleteVolatileContext } from './context';
 import { AutocompleteStateChangePayload } from './types/types';
 
-export interface AutocompleteAddonButtonProps<Data = unknown> {
+export interface AutocompleteAddonButtonProps<Data = undefined> {
   className?: string | undefined;
   classNameHoverContent?: string | undefined;
   classNameIcon?: string | undefined;
@@ -25,7 +25,7 @@ export interface AutocompleteAddonButtonProps<Data = unknown> {
   onClick?: (payload: Omit<AutocompleteStateChangePayload<Data>, 'type'>) => void;
 }
 
-export default forwardRef(function AutocompleteAddonButton<Data = unknown>(
+export default forwardRef(function AutocompleteAddonButton<Data = undefined>(
   props: AutocompleteAddonButtonProps<Data>,
   ref: ForwardedRef<HTMLButtonElement>,
 ) {
@@ -36,7 +36,7 @@ export default forwardRef(function AutocompleteAddonButton<Data = unknown>(
 
   const onClickHandler = useCallback(() => {
     onClick?.({
-      data,
+      data: data as Data,
       initialValue: initialValueRef.current,
       inputValue,
       selectedValue: lastValidSelection?.value ?? '',
@@ -77,6 +77,6 @@ export default forwardRef(function AutocompleteAddonButton<Data = unknown>(
       {text ?? iconElement}
     </Addon>
   );
-}) as <Data>(
+}) as <Data = undefined>(
   props: AutocompleteAddonButtonProps<Data> & { ref?: ForwardedRef<HTMLButtonElement> },
 ) => React.JSX.Element;

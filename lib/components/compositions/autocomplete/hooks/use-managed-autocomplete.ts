@@ -13,7 +13,7 @@ import {
 import { autocompleteReduce, errorReducer, findMatchingItem, formatStr } from '../utils/utils';
 import useLoading from './use-loading';
 
-interface UseManagedAutocompleteProps<Data> {
+interface UseManagedAutocompleteProps<Data = undefined> {
   blurAction: 'restore' | 'clear' | 'keep';
   caseSensitive?: boolean;
   data?: Data;
@@ -30,7 +30,7 @@ interface UseManagedAutocompleteProps<Data> {
   setReset?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function useManagedAutocomplete<Data>(props: UseManagedAutocompleteProps<Data>) {
+export default function useManagedAutocomplete<Data = undefined>(props: UseManagedAutocompleteProps<Data>) {
   const { defaultValue, items: itemsProps, reset, value: controlledValue, loading: loadingRaw, setReset } = props;
 
   const propsRef = useRef(props);
@@ -97,7 +97,7 @@ export default function useManagedAutocomplete<Data>(props: UseManagedAutocomple
 
     onStateChange?.({
       type: action,
-      data,
+      data: data as Data,
       initialValue: initialValueRef.current,
       inputValue: newValue,
       selectedValue: lastValidSelection?.value ?? '',

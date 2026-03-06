@@ -24,7 +24,7 @@ import {
 import useManagedAutocomplete from './hooks/use-managed-autocomplete';
 import { AutocompleteStateChangePayload, IItem, Items } from './types/types';
 
-interface BaseAutocompleteRootProps<Data> {
+interface BaseAutocompleteRootProps<Data = undefined> {
   blurAction?: 'restore' | 'clear'; // | 'keep';
   children: ReactNode;
   className?: string;
@@ -40,6 +40,8 @@ interface BaseAutocompleteRootProps<Data> {
   subscribeIsInvalid?: (isInvalid: boolean) => void;
 }
 
+type DataState<Data> = { data: Data } | { data?: never };
+
 type ControlledState =
   | {
       value: string;
@@ -54,7 +56,8 @@ type ControlledState =
       defaultValue?: never;
     };
 
-export type AutocompleteRootProps<Data> = BaseAutocompleteRootProps<Data> &
+export type AutocompleteRootProps<Data = undefined> = BaseAutocompleteRootProps<Data> &
+  DataState<Data> &
   ControlledState &
   (
     | {
@@ -68,7 +71,7 @@ export type AutocompleteRootProps<Data> = BaseAutocompleteRootProps<Data> &
       }
   );
 
-export default forwardRef(function AutocompleteRoot<Data>(
+export default forwardRef(function AutocompleteRoot<Data = undefined>(
   props: AutocompleteRootProps<Data>,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
@@ -237,4 +240,6 @@ export default forwardRef(function AutocompleteRoot<Data>(
       </div>
     </div>
   );
-}) as <Data>(props: AutocompleteRootProps<Data> & { ref?: ForwardedRef<HTMLDivElement> }) => React.JSX.Element;
+}) as <Data = undefined>(
+  props: AutocompleteRootProps<Data> & { ref?: ForwardedRef<HTMLDivElement> },
+) => React.JSX.Element;
