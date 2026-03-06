@@ -8,7 +8,7 @@ export interface InputVolatileContextProps {
   valueFormatted: string;
 }
 
-export interface InputStableContextProps<Data = unknown> {
+export interface InputStableContextProps<Data = undefined> {
   data?: Data;
   disabled?: boolean;
   errors: string[];
@@ -48,7 +48,7 @@ export function useInputVolatileContext() {
   return context;
 }
 
-export function useInputStableContext<Data = unknown>() {
+export function useInputStableContext<Data = undefined>() {
   const context = useContext(InputStableContext) as InputStableContextProps<Data> | undefined;
   if (context === undefined) {
     throw new Error('useInputStableContext debe ser usado dentro de un componente <Input>');

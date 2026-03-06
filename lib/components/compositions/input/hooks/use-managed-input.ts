@@ -22,7 +22,7 @@ import {
   sanitize,
 } from '../utils/utils';
 
-interface BaseUseManagedInputProps<Data> {
+interface BaseUseManagedInputProps<Data = undefined> {
   data?: Data;
   defaultValue?: string;
   reset?: boolean;
@@ -32,7 +32,7 @@ interface BaseUseManagedInputProps<Data> {
   setReset?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export type UseManagedInputProps<Data> = BaseUseManagedInputProps<Data> &
+export type UseManagedInputProps<Data = undefined> = BaseUseManagedInputProps<Data> &
   (
     | {
         type: 'text';
@@ -54,7 +54,7 @@ export type UseManagedInputProps<Data> = BaseUseManagedInputProps<Data> &
       }
   );
 
-export default function useManagedInput<Data>(props: UseManagedInputProps<Data>) {
+export default function useManagedInput<Data = undefined>(props: UseManagedInputProps<Data>) {
   const { defaultValue, reset, type, value: controlledValue, setReset } = props;
 
   const isTypeNumber = type === 'number';
@@ -184,7 +184,7 @@ export default function useManagedInput<Data>(props: UseManagedInputProps<Data>)
         const floatValue = parseFloat(newValue);
         onValueChange({
           inputType: 'number',
-          data,
+          data: data as Data,
           floatValue: isNaN(floatValue) ? undefined : floatValue,
           initialValue: initialValueRef.current,
           isComplete: !isPartialNumber(newValue),
@@ -193,7 +193,7 @@ export default function useManagedInput<Data>(props: UseManagedInputProps<Data>)
       } else {
         onValueChange({
           inputType: 'text',
-          data,
+          data: data as Data,
           initialValue: initialValueRef.current,
           value: newValue,
         });

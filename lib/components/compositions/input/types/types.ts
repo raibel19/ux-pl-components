@@ -3,7 +3,7 @@ import { INumberFormatterOptions } from '@pl-core/utils/numbers';
 interface BasePayload<Data> {
   value: string;
   initialValue: string;
-  data: Data | undefined;
+  data: Data;
 }
 
 export type TextPayload<Data> = BasePayload<Data> & {

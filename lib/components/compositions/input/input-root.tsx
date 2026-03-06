@@ -32,10 +32,9 @@ import {
   TextPayload,
 } from './types/types';
 
-interface BaseInputRootProps<Data> {
+interface BaseInputRootProps {
   children: ReactNode;
   className?: string;
-  data?: Data;
   disabled?: boolean;
   isInvalid?: boolean;
   reset?: boolean;
@@ -44,6 +43,8 @@ interface BaseInputRootProps<Data> {
   setReset?: React.Dispatch<React.SetStateAction<boolean>>;
   subscribeIsInvalid?: (isInvalid: boolean) => void;
 }
+
+type DataState<Data> = { data: Data } | { data?: never };
 
 type ControlledState =
   | {
@@ -59,7 +60,8 @@ type ControlledState =
       defaultValue?: never;
     };
 
-export type InputRootProps<Data> = BaseInputRootProps<Data> &
+export type InputRootProps<Data = undefined> = BaseInputRootProps &
+  DataState<Data> &
   ControlledState &
   (
     | {
@@ -82,7 +84,10 @@ export type InputRootProps<Data> = BaseInputRootProps<Data> &
       }
   );
 
-export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, ref: ForwardedRef<HTMLDivElement>) {
+export default forwardRef(function InputRoot<Data = undefined>(
+  props: InputRootProps<Data>,
+  ref: ForwardedRef<HTMLDivElement>,
+) {
   const {
     children,
     className,
@@ -224,4 +229,4 @@ export default forwardRef(function InputRoot<Data>(props: InputRootProps<Data>, 
       </InputStableContext.Provider>
     </InputLayoutContext.Provider>
   );
-}) as <Data>(props: InputRootProps<Data> & { ref?: ForwardedRef<HTMLDivElement> }) => React.JSX.Element;
+}) as <Data = undefined>(props: InputRootProps<Data> & { ref?: ForwardedRef<HTMLDivElement> }) => React.JSX.Element;

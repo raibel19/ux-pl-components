@@ -9,7 +9,7 @@ import Addon from '../../primitives/addon';
 import { useInputActionsContext, useInputStableContext, useInputVolatileContext } from './context';
 import { InputChangePayload } from './types/types';
 
-export interface InputAddonButtonProps<Data = unknown> {
+export interface InputAddonButtonProps<Data = undefined> {
   className?: string | undefined;
   classNameHoverContent?: string | undefined;
   classNameIcon?: string | undefined;
@@ -25,7 +25,7 @@ export interface InputAddonButtonProps<Data = unknown> {
   onClick?: (payload: InputChangePayload<Data>) => void;
 }
 
-export default forwardRef(function InputAddonButton<Data = unknown>(
+export default forwardRef(function InputAddonButton<Data = undefined>(
   props: InputAddonButtonProps<Data>,
   ref: ForwardedRef<HTMLButtonElement>,
 ) {
@@ -40,7 +40,7 @@ export default forwardRef(function InputAddonButton<Data = unknown>(
       const floatValue = parseFloat(value);
       onClick?.({
         inputType: 'number',
-        data,
+        data: data as Data,
         initialValue: initialValueRef.current,
         value,
         isComplete: !isPartialNumber(value),
@@ -49,7 +49,7 @@ export default forwardRef(function InputAddonButton<Data = unknown>(
     } else {
       onClick?.({
         inputType: 'text',
-        data,
+        data: data as Data,
         initialValue: initialValueRef.current,
         value,
       });
@@ -90,4 +90,6 @@ export default forwardRef(function InputAddonButton<Data = unknown>(
       {text ?? iconElement}
     </Addon>
   );
-}) as <Data>(props: InputAddonButtonProps<Data> & { ref?: ForwardedRef<HTMLButtonElement> }) => React.JSX.Element;
+}) as <Data = undefined>(
+  props: InputAddonButtonProps<Data> & { ref?: ForwardedRef<HTMLButtonElement> },
+) => React.JSX.Element;
