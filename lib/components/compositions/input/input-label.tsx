@@ -11,6 +11,7 @@ export interface InputLabelProps {
   classNameTextRequired?: string;
   isRequired?: boolean;
   showText?: boolean;
+  showTextRequired?: boolean;
   text?: string;
   textRequired?: string;
 }
@@ -23,6 +24,7 @@ export default forwardRef<HTMLLabelElement, InputLabelProps>(function InputLabel
     classNameTextRequired,
     isRequired = false,
     showText = true,
+    showTextRequired = true,
     text,
     textRequired,
   } = props;
@@ -42,7 +44,7 @@ export default forwardRef<HTMLLabelElement, InputLabelProps>(function InputLabel
       aria-disabled={disabled}
     >
       {showText && <span className={cn('pe-2', classNameText || null)}>{text}</span>}
-      {textRequired && isRequired && (
+      {showTextRequired && textRequired && isRequired && (
         <span className={cn(isInvalid && 'text-destructive', 'pe-2', classNameTextRequired || null)}>
           {textRequired}
         </span>
