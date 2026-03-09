@@ -30,7 +30,7 @@ export default forwardRef<HTMLLabelElement, InputLabelProps>(function InputLabel
   } = props;
   const { isInvalid, id, disabled } = useInputStableContext();
 
-  if (!showText && !textRequired && !isRequired) return null;
+  if (!showText && (!textRequired || !showTextRequired) && !isRequired) return null;
 
   return (
     <Label

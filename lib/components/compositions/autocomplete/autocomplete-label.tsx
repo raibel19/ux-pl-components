@@ -11,6 +11,7 @@ export interface InputLabelProps {
   classNameTextRequired?: string;
   isRequired?: boolean;
   showText?: boolean;
+  showTextRequired?: boolean;
   text?: string;
   textRequired?: string;
 }
@@ -23,12 +24,13 @@ export default forwardRef<HTMLLabelElement, InputLabelProps>(function Autocomple
     classNameTextRequired,
     isRequired = false,
     showText = true,
+    showTextRequired = true,
     text,
     textRequired,
   } = props;
   const { isInvalid, id, disabled } = useAutocompleteStableContext();
 
-  if (!showText && !textRequired && !isRequired) return null;
+  if (!showText && (!textRequired || !showTextRequired) && !isRequired) return null;
 
   return (
     <Label
@@ -42,7 +44,7 @@ export default forwardRef<HTMLLabelElement, InputLabelProps>(function Autocomple
       aria-disabled={disabled}
     >
       {showText && <span className={cn(classNameText || null)}>{text}</span>}
-      {textRequired && isRequired && (
+      {showTextRequired && textRequired && isRequired && (
         <span className={cn(isInvalid && 'text-destructive', classNameTextRequired || null)}>{textRequired}</span>
       )}
       {isRequired && <span className={cn(isInvalid && 'text-destructive', classNameRequired || null)}>*</span>}
