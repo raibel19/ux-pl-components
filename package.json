@@ -1,7 +1,7 @@
 {
   "name": "@pl-core/components",
   "private": false,
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Componentes",
   "keywords": [
     "typescript",
