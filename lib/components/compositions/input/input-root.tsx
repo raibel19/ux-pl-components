@@ -145,8 +145,8 @@ export default forwardRef(function InputRoot<Data = undefined>(
     displayValue,
     errors,
     initialValueRef,
+    intlFormat,
     value,
-    valueFormatted,
     isPartialNumber,
     onAddError,
     onBlur,
@@ -160,10 +160,10 @@ export default forwardRef(function InputRoot<Data = undefined>(
   const contextVolatileValue = useMemo<InputVolatileContextProps>(
     () => ({
       displayValue,
+      intlFormat,
       value,
-      valueFormatted,
     }),
-    [displayValue, value, valueFormatted],
+    [displayValue, intlFormat, value],
   );
 
   const contextStableValue = useMemo<InputStableContextProps<Data>>(

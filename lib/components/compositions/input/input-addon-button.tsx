@@ -37,7 +37,9 @@ export default forwardRef(function InputAddonButton<Data = undefined>(
 
   const onClickHandler = useCallback(() => {
     if (type === 'number') {
-      const floatValue = parseFloat(value);
+      const normalizeValue = value.replace(',', '.');
+      const floatValue = parseFloat(normalizeValue);
+
       onClick?.({
         inputType: 'number',
         data: data as Data,

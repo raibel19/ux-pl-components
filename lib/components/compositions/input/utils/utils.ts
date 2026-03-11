@@ -10,10 +10,10 @@ import { ErrorAction, ErrorState, ISanitize, ISubscribeBetween } from '../types/
  * @example
  * isMinExceeded('5', 10) --> "true ya que el 5 es menor al 10"
  */
-export const isMinExceeded = (value: string, min: number | undefined = undefined): boolean => {
+export function isMinExceeded(value: string, min: number | undefined = undefined): boolean {
   if (min === undefined || value === '') return false;
   return Number(value) < min;
-};
+}
 
 /**
  * Función que valida si el número escrito no es mayor al máximo permitodo.
@@ -25,10 +25,10 @@ export const isMinExceeded = (value: string, min: number | undefined = undefined
  * @example
  * isMaxExceeded('10', 5) --> "true ya que el 10 es mayor al 5"
  */
-export const isMaxExceeded = (value: string, max: number | undefined = undefined): boolean => {
+export function isMaxExceeded(value: string, max: number | undefined = undefined): boolean {
   if (!max || value === '') return false;
   return Number(value) > max;
-};
+}
 
 /**
  * Función que valida si un número se encuentra dentro de un rango de mínimo y máximo.
@@ -38,10 +38,10 @@ export const isMaxExceeded = (value: string, max: number | undefined = undefined
  *  - beteween: objeto el cual tiene las siguientes propiedades { isLess: boolean, isGreater: boolean, inRange: boolean };
  *  - isInvalidRange: regresa un 'true' cuando el valor ingresado es menor o mayor al rango y 'false' cuando se ecnuentra dentro del rango.
  */
-export const isBetweenExceeded = (
+export function isBetweenExceeded(
   value: string,
   between: { min: number; max: number } | undefined = undefined,
-): { beteween: ISubscribeBetween | undefined; isInvalidRange: boolean } => {
+): { beteween: ISubscribeBetween | undefined; isInvalidRange: boolean } {
   if (!between || value === '') return { beteween: undefined, isInvalidRange: false };
 
   const valueNumber = Number(value);
@@ -68,7 +68,7 @@ export const isBetweenExceeded = (
     response.inRange = false;
   }
   return { beteween: response, isInvalidRange: invalidRange };
-};
+}
 
 /**
  * Función que valida si un string no pasa de un límite de carácteres.
@@ -78,20 +78,20 @@ export const isBetweenExceeded = (
  *  - true: el string tiene mas carácteres de los permitidos
  *  - false: el string esta dentro de la cantidad máxima de carácteres permitidos.
  */
-export const isMaxLengthExceeded = (value: string, maxLength: number | undefined = undefined): boolean => {
+export function isMaxLengthExceeded(value: string, maxLength: number | undefined = undefined): boolean {
   if (!maxLength) return false;
   return value.length > maxLength;
-};
+}
 
-export const isPartial = (value: string, decimalSeparator: ISanitize['decimalSeparator'] = '.') => {
+export function isPartial(value: string, decimalSeparator: ISanitize['decimalSeparator'] = '.') {
   if (!value) return false;
   if (value === '-') return true;
   if (value === decimalSeparator) return true;
   if (value.endsWith(decimalSeparator)) return true;
   return false;
-};
+}
 
-export const sanitize = (value: string, sanitize?: ISanitize, maxLength?: number) => {
+export function sanitize(value: string, sanitize?: ISanitize, maxLength?: number) {
   const { allowNegative = false, decimalSeparator, maxDecimalDigits } = sanitize || {};
 
   // 1. Sanitización principal: Limpiar todo lo que no sea número, separador o signo menos.
@@ -139,9 +139,9 @@ export const sanitize = (value: string, sanitize?: ISanitize, maxLength?: number
   }
 
   return sanitized;
-};
+}
 
-export const errorReducer = (state: ErrorState, action: ErrorAction): ErrorState => {
+export function errorReducer(state: ErrorState, action: ErrorAction): ErrorState {
   switch (action.type) {
     case 'ADD_ERROR': {
       const { key, message } = action.payload;
@@ -168,4 +168,4 @@ export const errorReducer = (state: ErrorState, action: ErrorAction): ErrorState
     default:
       return state;
   }
-};
+}

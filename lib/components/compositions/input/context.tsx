@@ -5,7 +5,7 @@ import { InputType } from './types/types';
 export interface InputVolatileContextProps {
   displayValue: string;
   value: string;
-  valueFormatted: string;
+  intlFormat: string;
 }
 
 export interface InputStableContextProps<Data = undefined> {

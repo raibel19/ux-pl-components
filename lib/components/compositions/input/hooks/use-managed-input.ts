@@ -62,7 +62,7 @@ export default function useManagedInput<Data = undefined>(props: UseManagedInput
   const [errors, dispatchError] = useReducer(errorReducer, new Map());
 
   const [isFocused, setIsFocused] = useState<boolean>(false);
-  const [valueFormatted, setValueFormatted] = useState<string>('');
+  const [intlFormat, setIntlFormat] = useState<string>('');
 
   const propsRef = useRef(props);
 
@@ -85,7 +85,7 @@ export default function useManagedInput<Data = undefined>(props: UseManagedInput
       let valueSantize = value;
       if (setSanitze) valueSantize = sanitizeNumber(value);
       const formatted = numberFormatter(formatter).format(valueSantize);
-      setValueFormatted(formatted);
+      setIntlFormat(formatted);
     },
     [sanitizeNumber],
   );
@@ -181,7 +181,9 @@ export default function useManagedInput<Data = undefined>(props: UseManagedInput
       if (!onValueChange) return;
 
       if (type === 'number') {
-        const floatValue = parseFloat(newValue);
+        const normalizeValue = newValue.replace(',', '.');
+        const floatValue = parseFloat(normalizeValue);
+
         onValueChange({
           inputType: 'number',
           data: data as Data,
@@ -215,7 +217,7 @@ export default function useManagedInput<Data = undefined>(props: UseManagedInput
   });
 
   const initialValueRef = useRef<string>(currentValue);
-  const displayValue = isFocused ? currentValue : valueFormatted || currentValue;
+  const displayValue = isFocused ? currentValue : intlFormat || currentValue;
 
   const handleBlur = useCallback(() => {
     setIsFocused(false);
@@ -228,7 +230,7 @@ export default function useManagedInput<Data = undefined>(props: UseManagedInput
 
   const handleFocus = useCallback(() => {
     setIsFocused(true);
-    if (isTypeNumber) setValueFormatted('');
+    if (isTypeNumber) setIntlFormat('');
   }, [isTypeNumber]);
 
   const handleChange = useCallback(
@@ -248,7 +250,7 @@ export default function useManagedInput<Data = undefined>(props: UseManagedInput
 
       dispatchError({ type: 'CLEAR_ERRORS' });
 
-      setValueFormatted('');
+      setIntlFormat('');
       setCurrentValue(resetValue);
     },
     [setCurrentValue],
@@ -296,8 +298,8 @@ export default function useManagedInput<Data = undefined>(props: UseManagedInput
     displayValue,
     errors: Array.from(errors.values()),
     initialValueRef,
+    intlFormat,
     value: currentValue,
-    valueFormatted,
     isPartialNumber,
     onAddError: handleAddError,
     onBlur: handleBlur,
